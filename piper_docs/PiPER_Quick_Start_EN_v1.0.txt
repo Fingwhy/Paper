@@ -1,0 +1,451 @@
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+PiPER ROBOTIC ARM 
+Quick start user manual  V 1 . 0
+2 0 2 4 . 0 9
+
+
+1
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+Important Safety Information 
+This chapter contains important safety information. Any individual or organization must read and
+understand this information before using the device, especially before powering it on for the first time. It
+is crucial to follow and comply with all assembly instructions and guidelines in this manual. Pay special
+attention to the text related to warning signs. Before using the device, be sure to obtain and read the
+"PiPER User Manual." If you have any questions about usage, feel free to contact us at support@agilex.ai.
+Warning icon：⚠This refers to situations that may pose a danger, which, if not avoided, could lead to
+personal injury, property damage, and severe equipment damage.
+Warning⚠：Songling Robot Co., Limited (Brand name: AgileX Robotics. Hereinafter referred to as AgileX
+Robotics. ) will not be held responsible if the robotic arm is damaged, altered or modified in any way.
+AgileX Robotics will not be held responsible for any damage to the robotic arm or any other equipment
+caused by programming errors or operating failures.
+Limitation of Liability: Once the robotic arm is put into use, it is considered that you have read,
+understood, acknowledged, and accepted all the terms and contents of this product's user manual and
+safety information. The user commits to being responsible for their own actions and all consequences
+arising from them. The user agrees to use the robotic arm only for legitimate purposes and accepts these
+terms, as well as any relevant policies or guidelines that AgileX Robotics may establish. During the use of
+the robotic arm, please strictly comply with and follow the requirements outlined in, but not limited to,
+the user manual and safety information. AgileX Robotics will not be liable for any personal injury,
+accidents, property damage, legal disputes, or conflicts of interest resulting from improper use or force
+majeure. The robotic arm is not suitable for individuals under the age of 18 or those lacking full civil
+capacity. Please ensure such individuals do not come into contact with this product, and take extra
+precautions when operating the device in their presence.
+The information in this manual does not cover the design, installation, and operation of a complete
+robotic arm application, nor does it include all possible peripheral equipment that may impact the safety
+of the entire system. The design and use of the complete system must comply with the safety
+requirements established by the standards and regulations of the country where the robotic arm is
+installed.
+It is the responsibility of the robotic arm integrator and the end customer to ensure compliance with the
+relevant regulations and applicable laws, ensuring that no significant hazards exist in the complete
+robotic arm application. This includes, but is not limited to, the following:
+1.
+Effectiveness and Responsibility                                                                                ● Conduct a risk 
+assessment for the complete robotic arm system.
+● Connect additional safety devices for other machinery as defined in the risk assessment.
+● Ensure the accurate design and installation of the entire robotic arm system, including both software 
+and hardware.
+● The integrator and end customer must follow relevant regulations and applicable legal requirements for
+safety assessment to ensure that the developed robotic arm has no major hazards or safety risks in actual
+applications.
+● Be aware of any potential safety risks before operating and using the equipment.
+● Ensure that users do not modify any safety measures.
+● Collect all documents in the technical files, including the risk assessment and this manual.
+2.
+Environment                                                                                                
+● Before first use, carefully read this manual to understand basic operations and usage guidelines.
+● Choose a relatively open area for use, as the robotic arm does not come with any automatic obstacle-
+avoidance or sensing sensors.
+● Use the robotic arm in an environment with a temperature between -20°C and 50°C.
+● If the robotic arm is not custom-made with a specific IP protection rating, its water and dust resistance 
+is rated at IP22.
+3.
+Check                                                                                                  ● Ensure the robotic arm has no 
+visible abnormalities.
+● Ensure proper connection of the wiring harness during use.
+AgileX Robotics
+
+
+2
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+4.
+Operation                                                                                                  
+● Ensure the surrounding area is relatively open during operation.
+● Operate within visual range.
+● The maximum payload of the robotic arm is 1.5KG; ensure that the effective load does not exceed 
+1.5KG during use.
+● If the equipment shows abnormalities, stop using it immediately to avoid secondary damage.
+● If abnormalities occur, contact relevant technical personnel and do not handle it on your own.
+● Use the equipment in an environment that meets the IP protection rating requirements.
+5.
+Warnings⚠：                                                                                          
+● Ensure that the robotic arm and tools/end effectors are always correctly and securely fixed in place.
+● If you must enter the robotic arm's working space, wear safety goggles and protective equipment to 
+protect yourself.
+● Ensure that the robotic arm has enough space for free movement.
+● Ensure that safety measures are established as defined in the risk assessment.
+● Do not wear loose clothing while operating the robotic arm. Tie back long hair when operating the 
+robotic arm.
+● Do not use the robotic arm if it is damaged or showing any abnormalities.
+● If the host computer software displays error messages, immediately perform an emergency stop and 
+contact relevant technical personnel.
+● Ensure that people keep their heads, faces, or other body parts away from the operating robotic arm or
+from the area the robotic arm can reach during operation.
+● Never modify the robotic arm. Altering the robotic arm may introduce unforeseen dangers for the 
+integrator.
+● Do not expose the robotic arm to permanent magnetic fields. Strong magnetic fields can damage the 
+robotic arm.
+● The robotic arm generates heat during operation. Do not handle or touch the robotic arm while it is 
+operating or shortly after it has stopped, as prolonged contact may cause discomfort. Power off the 
+system and wait for one hour for the robotic arm to cool down.
+● Connecting different machines together may increase risk or introduce new hazards. Always perform a 
+comprehensive risk assessment for the entire installation. Depending on the risk assessment, different 
+functional safety levels may apply; therefore, when different safety and emergency stop performance 
+levels are required, always choose the highest performance level. Always read and understand the 
+manuals for all devices used in the installation.
+● The robotic arm is not suitable for use by individuals under the age of 18 or those who do not possess 
+full civil capacity.
+AgileX Robotics
+
+
+3
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+Table of Contents
+1. Introduction............................................................................................................................................- 4 -
+1.1. Packing List...................................................................................................................................- 4 -
+2. Basic Usage............................................................................................................................................- 4 -
+2.1. Electrical Interface Introduction....................................................................................................- 5 -
+2.1.1 Robotic Arm Electrical Panel Instructions.............................................................................- 5 -
+2.1.2 Aviation plug Instructions.....................................................................................................- 5 -
+2.1.3 CAN connection....................................................................................................................- 6 -
+2.2. Robotic Arm Teach/Demonstration Mode Instructions..................................................................- 6 -
+2.3. Base Installation Instructions........................................................................................................- 7 -
+2.4. End Part Installation Instructions..................................................................................................- 8 -
+3. ArmRobotUA Host Computer Usage Instructions...................................................................................- 8 -
+4. Secondary Development......................................................................................................................- 10 -
+5. Technical Specifications.......................................................................................................................- 10 -
+AgileX Robotics
+
+
+4
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+1. Introduction 
+This 6 DOFs robotic arm is specifically designed for the education and research industry, consumer-level
+applications, and industrial automation. With a payload capacity of 1.5kg, it is suitable for various
+research and industrial applications, including humanoid robots, automatic assembly, and automated
+handling. The six rotating joints provide full-range operational flexibility, ensuring high precision and
+repeatability. The robotic arm features a modular design, making it easy to maintain and upgrade. It
+offers an intuitive user interface that simplifies programming and operation, allowing even non-
+professionals to get started quickly. It can be widely applied in fields such as scientific research,
+education, automotive manufacturing, electronics assembly, food processing, laboratory automation,
+and medical equipment operation.
+1.1.
+Packing List
+Name
+Quantity
+6 DOFs Robotic arm
+1
+USB toCAN module
+1
+Power adapter
+1
+MicroUSB cable
+1
+Power and communication cable
+1
+Base mounting screws
+4
+Base installation wrench
+1
+2. Basic Usage
+The robotic arm has 6 DOFs and a 1.5kg payload at the end. The six rotating joints provide full-range
+operational flexibility, ensuring high precision and repeatability. It features a lightweight design, allowing
+the robotic arm to achieve fast motion capabilities while maintaining a relatively high payload capacity. It
+can be widely used in embodied intelligence for real-world data collection.
+AgileX Robotics
+Button for teach/demonstration
+Electrical panel
+
+
+5
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+2.1.
+Electrical Interface Introduction
+2.1.1 Robotic Arm Electrical Panel Instructions
+2.1.2 Aviation plug Instructions
+1:  Power and communication port
+2:  Status indicator light
+3:  J1J2 connection port
+4:  Power positive
+5:  Power negative
+6:  CAN-H
+7:  CAN-L
+Note: Align the red dot with the corresponding red dot on the cable. The textured area of the connector is
+designed to retract under force. During installation, align the red dot downward with the protruding point 
+and insert it directly. To remove, press down on the textured area and pull it out.
+AgileX Robotics
+Power and communication
+port
+Status Indicator Light
+J1 & J2 connection port
+
+
+6
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+2.1.3 CAN connection
+CAN Connection and Preparation
+Lead out the CAN cable and connect the CAN_H and CAN_L wires to the CAN_TO_USB adapter.
+Connect the CAN_TO_USB adapter to the laptop's USB port. The connection diagram is shown in Figure 
+3.4.
+Note: If using a non-standard charger, the power input must not exceed 26V, and the current must be no 
+less than 10A.   
+2.2.
+Robotic Arm Teach/Demonstration Mode Instructions
+The robotic arm's drag & teach mode status is indicated by the button light between J5 and J6.
+There are three types of robotic arm status light displays:
+1. No light display: Robotic arm’s drag & teach mode is stopped, or the drag recording has ended.
+2. Solid green light: The robotic arm has entered the drag & teach mode for trajectory recording.
+3. Flashing green light: The robotic arm has entered the drag & teach mode for trajectory playback.
+How to switch to drag mode:
+1.
+Single click button: Toggle between drag teach trajectory recording and stopping the drag 
+recording.
+2.
+Double click button: Activates the drag teach trajectory playback mode.
+Instructions:
+First, observe the indicator light status:
+AgileX Robotics
+
+
+7
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+1.
+If the light is off, click the button once. The green light should turn solid, indicating that the
+user can drag the robotic arm to start recording the trajectory.
+2.
+If the light is off and a trajectory has been recorded previously, double-click the button. The
+green light should flash every 500ms, indicating the robotic arm is in playback mode and will reproduce
+the recorded trajectory.
+3.
+If the light is solid, it indicates trajectory recording is in progress. To stop the recording, click
+the button once; the light should turn off, indicating that recording has ended. If you want to replay the
+trajectory, follow step 2.
+4.
+If the light is flashing, the robotic arm is currently in playback mode.
+Notes:
+1.
+During trajectory playback, the user must keep a safe distance from the robotic arm to avoid injury.
+2.
+Each time the robotic arm enters teach trajectory recording mode, the previously recorded
+trajectory is erased. The playback mode will use the most recent recorded trajectory.
+3.
+The maximum trajectory recording time is 3 minutes; any trajectory exceeding this time will be
+invalid.
+4.
+After finishing drag teaching, ensure the indicator light is off/drag teaching mode is stopped.
+5.
+If you want to switch to host computer control or command control, ensure the indicator light is
+off/drag teach mode is stopped. Then switch to standby mode via the host computer, and after entering
+standby mode, switch to CAN mode. The same applies to command control—first switch to standby mode,
+then switch to CAN control mode.
+Note: When switching from link mode and teach by dragging mode to CAN control mode, the robotic arm
+must be positioned at the zero point before changing modes. The zero point is shown in the figure below:
+Robotic Arm Zero Point
+2.3.
+Base Installation Instructions
+The robotic arm base is installed using screws for fixation. The base has four pre-drilled M5 threaded 
+holes. The accessory kit includes four M5 screws, which can be tightened using the provided hex tool. The
+hole spacing is 70mm. If you need to attach the base to mobile equipment or a fixed surface, you can 
+design the corresponding structure with 70mm hole spacing.
+AgileX Robotics
+
+
+8
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+2.4.
+End Part Installation Instructions
+The end can be equipped with other tools via a flange. Optional accessories include a two-finger gripper 
+and a teach pendant. The installation method is shown in the diagram below. Details of the two-finger 
+gripper and teaching device parameters can be found in the technical specifications at the end.
+3. ArmRobotUA Host Computer Usage Instructions
+Software Download:
+Link: https://drive.google.com/file/d/1771e87UGdkGwgVuO4XFAio8x4Uajmneh/view?usp=drive_link
+Using a PC with Windows 7 or higher, double-click to open the host computer software. Through this 
+human-machine interaction software, you can operate the robotic arm and read feedback data from the 
+external network of the robotic arm. The user interface is shown as follows:        
+AgileX Robotics
+
+
+9
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+Host software
+Host Computer Operation Interface
+Names of the functional areas in the host computer software panel
+Index
+Name
+1
+Robotic Arm Communication Button
+2
+Menu Options
+3
+Speed Percentage Setting
+4
+Robotic Arm Enable Button
+5
+Robotic Arm Emergency Stop Button
+6
+Window Resize/Close Buttons
+7
+Operation Function Area
+8
+3D Simulation Model
+9
+Trajectory Library Function
+10
+Robotic Arm Joint Status
+11
+Robotic Arm Status Bar
+AgileX Robotics
+
+
+10
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+4. Secondary Development
+Currently, the robotic arm supports secondary development through a Python SDK and ROS1 driver
+package. For detailed secondary development instructions, please refer to the GitHub link.
+SDK:https://github.com/agilexrobotics/piper_sdk
+ROS1:https://github.com/agilexrobotics/Piper_ros/tree/ros-noetic-no-aloha
+ROS2:https://github.com/agilexrobotics/Piper_ros/tree/ros-foxy-no-aloha
+5. Technical Specifications
+Robotic Arm Specifications:
+Parameter Type
+Item
+Specification
+Structure Parameters
+Degrees of Freedom
+6
+Effective Load
+1.5KG
+Weight
+4.2KG
+Repeatability
+±.0.1mm
+Working Radius
+626.75mm
+Standard Power Supply
+Voltage
+DC24V (Min: 24V, Max: 26V)
+Power Consumption
+Max Power ≤ 120W, Comprehensive
+Power ≤ 40W
+Material
+Aluminum Alloy Frame, Plastic Shell
+Controller
+Integrated
+Communication Method
+CAN
+Control Method
+Teach by Dragging / Offline
+Trajectory / API / Host Computer
+External Interfaces
+Power Interface x1, CAN Interface x1
+Base Installation Size
+70mm x 70mm x M5 x 4
+Working Environment
+Temperature: -20 to 50℃, Humidity:
+25%-85%, Non-condensing
+Noise
+<60dB
+Installation
+Compatible with all AgileX robotics
+products
+Motion Parameters:
+Joint Motion Range
+J1:±154°
+J2:0°~195°
+J3:-175°~0°
+J4:-106°~106°
+J5:-75°~75°
+J6:±100°
+Joint Max Speed
+J1:180°/s
+J2:195°/s
+J3:180°/s
+J4:225°/s
+J5:225°/s
+J6:225°/s
+Note: The above data are test results of the AgileX robotics arm in a controlled testing environment. 
+Results may vary under different environments and usage methods. Actual experience should be 
+considered.
+Optional follower Gripper Specifications:
+AgileX Robotics
+
+
+11
+PiPER Robotic Arm Quick Start User Manual                                                                            AgileX Robotics
+Two-Finger Gripper Parameters
+Weight
+500g
+Accuracy
+±.0.5mm
+Opening Distance
+0-70mm
+Rated Clamping Force
+40N
+Max Clamping Force
+50N
+Power Supply Voltage
+DC24V
+Power Consumption
+Max Power ≤ 50W, Comprehensive Power ≤ 30W
+Contact Surface Material
+Rubber
+Controller
+Integrated
+Communication Method
+CAN
+Control Method
+Teach by Dragging / Offline Trajectory / API / Host Computer
+External Interfaces
+Power Interface x1, CAN Interface x1
+Installation Method
+Flange Mount
+Working Environment
+Temperature: -20 to 50℃, Humidity: 25%-85%, Non-condensing
+Noise
+<60dB
+Note: The above data are test results of AgileX in a controlled testing environment. Results may vary 
+under different environments and usage methods; actual experience should be considered.
+Optional leader gripper Specifications:
+Teaching Device Parameters
+Weight
+550g
+Accuracy
+±.0.5mm
+Opening Distance
+0-70mm
+Rated Clamping Force
+40N (Force Control, Force Feedback)）
+Max Clamping Force
+50N (Force Control, Force Feedback)
+Power Supply Voltage
+DC24V
+Power Consumption
+Max Power ≤ 50W, Comprehensive Power ≤ 30W
+Contact Surface Material
+Rubber
+Controller
+Integrated
+Communication Method
+CAN
+Control Method
+Teach by Dragging / Offline Trajectory / API / Host Computer
+External Interfaces
+Power Interface x1, CAN Interface x1
+Installation Method
+Flange Mount
+Working Environment
+Temperature: -20 to 50℃, Humidity: 25%-85%, Non-condensing
+Noise
+<60dB
+Note: The above data are test results of AgileX in a controlled testing environment. Results may vary 
+under different environments and usage methods; actual experience should be considered.
+AgileX Robotics

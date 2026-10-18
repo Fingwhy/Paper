@@ -22,3 +22,7 @@ desktop.ini
 ~$*.docx
 ~$*.pdf
 paper/preview.pdf
+
+# 生成过程的临时预览（不随仓库分发）
+paper/repro_preview/
+paper/_*

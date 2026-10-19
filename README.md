@@ -11,6 +11,7 @@
 | **FACTR 2** 论文解析 | 让无力度传感器的普通机械臂学会「感知」外力 | [DOCX](./FACTR2_论文解析报告.docx) · [PDF](./FACTR2_论文解析报告.pdf) |
 | **FACTR 2 在 PiPER 上的复现说明** | 逐项对照论文设定与 PiPER 标准版，给出 L0–L4 复现路线与验收指标 | [DOCX](./PiPER_FACTR2_复现说明报告.docx) · [PDF](./PiPER_FACTR2_复现说明报告.pdf) |
 | **PiPER 标准版 官方参数与使用说明** | 完整规格、接口、上电流程、SDK、CAN 协议速查（中文整理） | [DOCX](./piper_docs/PiPER_标准版_官方参数与使用说明.docx) · [PDF](./piper_docs/PiPER_标准版_官方参数与使用说明.pdf) · [MD](./piper_docs/PiPER_标准版_官方参数与使用说明.md) |
+| **汇报幻灯片** | 论文解析 + PiPER 复现路线，20 页 16:9，可直接用于组会 / 复现评审 | [PPTX](./FACTR2_论文解析与Piper复现.pptx) · [大纲源](./slide-outline.md) |
 
 ---
 
@@ -103,8 +104,10 @@
 
 ```
 .
-├── FACTR2_论文解析报告.docx / .pdf      # 论文解析报告（19 页）
+├── FACTR2_论文解析报告.docx / .pdf        # 论文解析报告（19 页）
 ├── PiPER_FACTR2_复现说明报告.docx / .pdf  # 复现说明报告（17 页，PiPER 视角）
+├── FACTR2_论文解析与Piper复现.pptx        # 汇报幻灯片（20 页）
+├── slide-outline.md                     # 幻灯片大纲 / 版式与图表分配
 ├── piper_docs/                          # PiPER 官方资料 + 中文整理版
 │   ├── PiPER_标准版_官方参数与使用说明.md / .docx / .pdf
 │   ├── PiPER_Quick_Start_EN_v1.0.pdf    # 官方快速上手
@@ -112,16 +115,18 @@
 │   ├── PiPER_CAN协议_API手册_zh_v1.5.xlsx # 官方 CAN 协议
 │   └── *.txt                            # 上述 PDF 的文本抽取（便于检索）
 └── paper/
-    ├── 2606.12406v2.pdf                 # arXiv 官方原文
+    ├── 2606.12406v2.pdf                 # arXiv 官方原文（22 页）
+    ├── arxiv_abs.html                   # arXiv 摘要页存档
     ├── paper_fulltext.md                # 全文文本（按页切分）
     ├── paper_cn_summary.md              # 论文中文摘要
     ├── piper_repro_report.md            # 复现说明报告的 Markdown 源（唯一内容源）
+    ├── captions.txt                     # 图表标题抽取
     ├── figures/                         # 13 张论文插图（PNG + 文档用 JPEG）
-    ├── pages/ · preview/                # 原文 / 报告的整页渲染
+    ├── pages/ · preview/                # 原文 22 页 / 报告 19 页的整页渲染
     ├── build_docx.py                    # 解析报告排版脚本
     ├── build_piper_report.py            # 复现报告 + 官方文档排版脚本（md → docx / pdf）
     ├── docx_kit.py                      # 从 build_docx.py 抽出的可复用排版组件
-    └── extract.py · crop_figs.py · prep_figs.py
+    └── extract.py · crop_figs.py · prep_figs.py · make_figs.py
 ```
 
 ## 重新生成

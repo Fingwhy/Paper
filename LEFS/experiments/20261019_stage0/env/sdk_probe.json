@@ -1,0 +1,193 @@
+{
+  "probe": "stage0_probe/1.8-20261019",
+  "generated_at": "2026-10-19T13:27:57+0800",
+  "host": "zzz-VMware-Virtual-Platform",
+  "argv": [
+    "scripts/stage0_probe.py",
+    "--phase",
+    "sdk",
+    "--allow-write",
+    "--query-limits"
+  ],
+  "sdk": {
+    "version": {
+      "value": "0.6.1",
+      "state": "已核验"
+    },
+    "firmware_via": "SearchPiperFirmwareVersion → GetPiperFirmwareVersion",
+    "firmware": {
+      "value": "S-V1.8-8",
+      "state": "已核验",
+      "how": "读不到：0.6.1 需要先发 0x?? 搜索帧（SearchPiperFirmwareVersion），本脚本仅在 --allow-write 时才会发；也可用厂家上位机读同一值",
+      "error": null
+    },
+    "status_0x2A1": {
+      "value": {
+        "ctrl_mode": {
+          "name": "TEACHING_MODE",
+          "code": 2
+        },
+        "arm_status": {
+          "name": "NORMAL",
+          "code": 0
+        },
+        "mode_feed": {
+          "name": "MOVE_J",
+          "code": 1
+        },
+        "teach_status": {
+          "name": "STOP_RECORDING",
+          "code": 2
+        },
+        "motion_status": {
+          "name": "REACH_TARGET_POS_SUCCESSFULLY",
+          "code": 0
+        },
+        "raw": "time stamp:1792387677.9404016 Hz:0.0 Control Mode: TEACHING_MODE(0x2) Arm Status: NORMAL(0x0) Mode Feed: MOVE_J(0x1) Teach Status: STOP_RECORDING(0x2) Motion St"
+      },
+      "state": "已核验",
+      "how": "ctrl_mode 应为 CAN_CTRL(0x1)；STANDBY(0x0) 表示待机"
+    },
+    "enable_status_passive": {
+      "value": {
+        "all_enabled": true,
+        "flags": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "state": "已核验",
+      "note": "只读确认，未发送任何使能帧"
+    },
+    "slave_mode": {
+      "value": {
+        "mode_before": "TEACHING_MODE",
+        "sent": false
+      },
+      "state": "不适用",
+      "note": "单臂直连不需要主从配置；要拿程序控请用 --to-can-ctrl"
+    },
+    "can_ctrl": {
+      "value": {
+        "before": "TEACHING_MODE",
+        "sent": false
+      },
+      "state": "不适用",
+      "how": "--allow-write --to-can-ctrl"
+    },
+    "hardware_limits": {
+      "value": {
+        "joint_1": {
+          "min_deg": -150.0,
+          "max_deg": 150.0,
+          "max_spd_rad_s": 0.3,
+          "spd_raw": 300,
+          "spd_scale": "ambiguous：两种换算都合理，按文档取 0.001"
+        },
+        "joint_2": {
+          "min_deg": 0.0,
+          "max_deg": 180.0,
+          "max_spd_rad_s": 0.3,
+          "spd_raw": 300,
+          "spd_scale": "ambiguous：两种换算都合理，按文档取 0.001"
+        },
+        "joint_3": {
+          "min_deg": -170.0,
+          "max_deg": 0.0,
+          "max_spd_rad_s": 0.3,
+          "spd_raw": 300,
+          "spd_scale": "ambiguous：两种换算都合理，按文档取 0.001"
+        },
+        "joint_4": {
+          "min_deg": -100.0,
+          "max_deg": 100.0,
+          "max_spd_rad_s": 0.3,
+          "spd_raw": 300,
+          "spd_scale": "ambiguous：两种换算都合理，按文档取 0.001"
+        },
+        "joint_5": {
+          "min_deg": -70.0,
+          "max_deg": 70.0,
+          "max_spd_rad_s": 0.3,
+          "spd_raw": 300,
+          "spd_scale": "ambiguous：两种换算都合理，按文档取 0.001"
+        },
+        "joint_6": {
+          "min_deg": -180.0,
+          "max_deg": 180.0,
+          "max_spd_rad_s": 0.3,
+          "spd_raw": 300,
+          "spd_scale": "ambiguous：两种换算都合理，按文档取 0.001"
+        }
+      },
+      "state": "已核验",
+      "note": "0.1°/关节限位；速度按数据判档（见 spd_scale）；应答后 4.0 ms",
+      "missing_joints": [],
+      "age_ms": 4.0,
+      "raw_repr": "time stamp:1792387677.9449098\nArmMsgFeedbackCurrentMotorAngleLimitMaxSpd(\n  motor_num: 1\n  max_angle_limit: 1500\n  min_angle_limit: -1500\n  max_joint_spd: 300\n)\nArmMsgFeedbackCurrentMotorAngleLimitMaxSpd(\n  motor_num: 2\n  max_angle_limit: 1800\n  min_angle_limit: 0\n  max_joint_spd: 300\n)\nArmMsgFeedbackCurrentMotorAngleLimitMaxSpd(\n  motor_num: 3\n  max_angle_limit: 0\n  min_angle_limit: -1700\n  max_joint_spd: 300\n)\nArmMsgFeedbackCurrentMotorAngleLimitMaxSpd(\n  motor_num: 4\n  max_angle_limit: 1000\n  min_angle_limit: -1000\n  max_joint_spd: 300\n)\nArmMsgFeedbackCurrentMotorAngleLimitMaxSpd(\n  motor_num: 5\n  max_angle_limit: 700\n  min_angle_limit: -700\n  max_joint_spd: 300\n)\nArmMsgFeedbackCurrentMotorAngleLimitMaxSpd(\n  motor_num: 6\n  max_angle_limit: 1800\n  min_angle_limit: -1800\n  max_joint_spd: 300\n)\n)\n"
+    },
+    "first_frame_guard": {
+      "value": {
+        "opened": true,
+        "opened_after_samples": 11,
+        "discarded": 10,
+        "reject_reasons": {
+          "baseline": 1,
+          "accumulate": 9
+        },
+        "urdf_violations": {},
+        "samples_examined": 11,
+        "limits_used": "URDF 标称（软判据，只计数不拒收）",
+        "caveat": "SDK 层只能判「值可用」，不能证明帧新鲜；新鲜度见 --phase bus"
+      },
+      "state": "已核验"
+    },
+    "enable_command": {
+      "value": null,
+      "state": "不适用",
+      "how": "本机臂上电即自使能，0x471 不需要也不应发；确需时 --force-enable"
+    },
+    "bus_liveness": {
+      "value": {
+        "listened_s": 0.6,
+        "error_frames": 0,
+        "frames": 1856,
+        "feedback_ids": [
+          "0x251",
+          "0x252",
+          "0x253",
+          "0x254",
+          "0x255",
+          "0x256",
+          "0x2a1",
+          "0x2a2",
+          "0x2a3",
+          "0x2a4",
+          "0x2a5",
+          "0x2a6",
+          "0x2a7",
+          "0x2a8"
+        ],
+        "other_ids": [
+          "0x1c0",
+          "0x1c1",
+          "0x1c2",
+          "0x1c3",
+          "0x261",
+          "0x262",
+          "0x263",
+          "0x264",
+          "0x265",
+          "0x266"
+        ],
+        "has_feedback": true
+      },
+      "state": "已核验",
+      "note": "收到反馈帧，读数可信"
+    }
+  }
+}

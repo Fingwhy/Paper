@@ -1,0 +1,33 @@
+{
+  "schema": "nameplate/v1",
+  "captured_local": "2026-10-19T12:03+08:00",
+  "photo": "evidence/nameplate_20261019.jpg",
+  "photo_sha256": "34c51b67a555a146b257e45d58c77775420e2f8a58f36aca251477d7e5b38797",
+  "photo_bytes": 218518,
+  "read_method": "手机拍照 → 旋转 90° 转正 → 表格区放大 5x 目视转录；S/N 另用 OpenCV QRCodeDetector 解二维码交叉核验，两法一致",
+  "fields": {
+    "brand": "AGILE.X 松灵机器人",
+    "model": "六轴机械臂 PIPER",
+    "serial_number": "MA100101000019006400985",
+    "serial_number_len": 23,
+    "serial_number_source": "二维码 SN: 字段（cv2.QRCodeDetector.detectAndDecodeMulti）与铭牌印刷体逐字符一致",
+    "phone": "0755-86165015",
+    "website": "WWW.AGILEX.AI",
+    "manufacturer": "东莞松灵科技有限公司（中国制造）",
+    "address": "东莞市松山湖园区工业北路1号11栋201室"
+  },
+  "product_info_qr": {
+    "payload": "https://qr61.cn/oMm9uo/qLVLutk",
+    "note": "在线短链，非离线数据；不作为阶段 0 判据，仅记录。断网时不可解析",
+    "power_needed": false
+  },
+  "not_on_plate": [
+    "生产日期（铭牌无此字段）",
+    "额定负载（铭牌无此字段，标称 1.5 kg 来自产品手册）"
+  ],
+  "verification": {
+    "two_independent_reads_agree": true,
+    "human_read_first_attempt": "MA10010100019006400985（20 位，漏一个 0，已作废）",
+    "final": "MA100101000019006400985"
+  }
+}

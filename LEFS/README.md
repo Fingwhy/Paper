@@ -15,6 +15,10 @@ FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。GitHub 仓库 `Fing
 | **FACTR 2 × PiPER 复现操作指南** | 承接实施报告的执行手册：每阶段做什么、拿什么验收、卡住怎么查 | [DOCX](./PiPER_FACTR2_复现指南.docx) · [PDF](./PiPER_FACTR2_复现指南.pdf) |
 | **PiPER 标准版 官方参数与使用说明** | 完整规格、接口、上电流程、SDK、CAN 协议速查（中文整理） | [DOCX](./piper_docs/PiPER_标准版_官方参数与使用说明.docx) · [PDF](./piper_docs/PiPER_标准版_官方参数与使用说明.pdf) · [MD](./piper_docs/PiPER_标准版_官方参数与使用说明.md) |
 | **汇报幻灯片** | 论文解析 + PiPER 复现路线，20 页 16:9，可直接用于组会 / 复现评审 | [PPTX](./FACTR2_论文解析与Piper复现.pptx) · [大纲源](./slide-outline.md) |
+| **复现进度看板** | 指南八阶段当前状态、阶段 0 九项门明细、下一步与风险 —— **每次汇报进度以此为准** | [PROGRESS.md](./PROGRESS.md) |
+| **复现实验记录** | 按 L0–L4 逐阶段留证的执行档案，从「阶段 0 环境与版本冻结」开始 | [阶段 0 报告](./experiments/20261019_stage0/STAGE0_REPORT.md) · [登记表](./experiments/20261019_stage0/manifest.json) |
+| **阶段 0 + L0 完成总结** | 截至 2026-10-19 17:00 的工作总结：九道门逐项结果、L0 判据、13 条技术定案、工具清单、现场事故方法论 | [SUMMARY_20261019.md](./experiments/SUMMARY_20261019.md) |
+| **门 9 末端配置留证** | 官方三方交叉数据（本体 4.2 kg / 负载 1.5 kg / 夹爪 500 g）、五套限位矛盾对照、有条件闭合逻辑 | [GATE9_END_EFFECTOR.md](./experiments/20261019_stage0/GATE9_END_EFFECTOR.md) |
 
 ---
 
@@ -108,6 +112,15 @@ LEFS/                                    # 仓库根目录下唯一的文件夹
 ├── PiPER_FACTR2_复现指南.docx / .pdf      # 复现操作指南（11 页，按 L0–L4 执行）
 ├── FACTR2_论文解析与Piper复现.pptx        # 汇报幻灯片（20 页）
 ├── slide-outline.md                     # 幻灯片大纲 / 版式与图表分配
+├── experiments/                         # 复现实操档案（第三方克隆不入库）
+│   └── 20261019_stage0/                 # 阶段 0：环境与版本冻结
+│       ├── STAGE0_REPORT.md             # 做了什么、发现什么、门怎么打
+│       ├── STAGE0_ACTIONS.md            # 按现有机器改写的现场动作清单（20 分钟）
+│       ├── WHERE_TO_PUT.md              # 文件/命令落点对照：哪台机器、哪个目录
+│       ├── manifest.json                # 版本登记表 + 配置冻结 + 风险清单
+│       ├── source_commit.txt            # factr2_next commit 冻结记录
+│       ├── env/                         # 依赖意图、建环境脚本、环境快照
+│       └── scripts/stage0_probe.py      # 只读探针 + 首帧守卫（带离线自测）
 ├── piper_docs/                          # PiPER 官方资料 + 中文整理版
 │   ├── PiPER_标准版_官方参数与使用说明.md / .docx / .pdf
 │   ├── PiPER_Quick_Start_EN_v1.0.pdf    # 官方快速上手

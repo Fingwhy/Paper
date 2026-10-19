@@ -1,0 +1,32 @@
+{
+  "frozen_at": "2026-10-19T11:23:19+08:00",
+  "host": "zzz-VMware-Virtual-Platform",
+  "kernel": "7.0.0-38-generic",
+  "os": "Ubuntu 26.04",
+  "os_pretty": "Ubuntu 26.04.1 LTS",
+  "venv_python": "3.12.15",
+  "venv_python_requested": "3.12",
+  "system_python": "3.12.15",
+  "python_executable": "/home/zzz/stage0/20261019_stage0/.venv-py3.12/bin/python",
+  "ros_distro": "lyrical",
+  "rclpy_importable_in_venv": false,
+  "apt_ros_packages": "ros-lyrical-desktop 0.13.0-3resolute.20260919.194812\nros-lyrical-ros-base 0.13.0-3resolute.20260919.194435",
+  "pip_packages": {
+    "piper-sdk": "0.6.1",
+    "python-can": "4.6.1",
+    "numpy": null,
+    "torch": null,
+    "h5py": null,
+    "pyyaml": null,
+    "scipy": null,
+    "dynamixel-sdk": null,
+    "cffi": null,
+    "setuptools": "79.0.1"
+  },
+  "with_hardware_demo": false,
+  "track": "A_train_offline_py312",
+  "lock_file": "requirements-lock.txt",
+  "lock_sha256": "5d174257197b2522f63026a85096ef1649ad7828c3d726c6f2223a05709d57f3",
+  "lock_lines": 6,
+  "note": "torch 与 numpy 的实际版本以本文件与 lock 为准；两轨不得混装"
+}

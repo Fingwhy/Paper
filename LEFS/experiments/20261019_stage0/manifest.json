@@ -1,0 +1,1479 @@
+{
+  "schema_version": "stage0/1.0",
+  "run_id": "20261019_stage0",
+  "title": "阶段 0：环境与版本冻结",
+  "created_local": "2026-10-19T10:50:00+08:00",
+  "plan_ref": "PiPER_FACTR2_复现指南 §3 阶段 0 / §2.3 一页版本登记表",
+  "state_legend": {
+    "已核验": "本机或远程源可复核，附证据路径/哈希",
+    "未核验": "未取得证据，禁止填默认值",
+    "不适用": "本阶段不涉及"
+  },
+  "table_2_3": {
+    "robot_serial_and_firmware": {
+      "robot_serial": {
+        "value": "MA100101000019006400985",
+        "state": "已核验",
+        "how": "臂体铭牌 + piper_sdk.GetPiperFirmwareVersion()",
+        "blocked_by": null,
+        "when": "2026-10-19T12:03+08:00",
+        "evidence": "evidence/nameplate.json + nameplate_20261019.jpg（sha256 34c51b67…）",
+        "method": "肉眼读数与 cv2 QR 解码两路互验，首次肉眼漏读一位（20→23 位）"
+      },
+      "firmware": {
+        "value": "S-V1.8-8",
+        "state": "已核验",
+        "how": "stage0_probe.py --phase sdk",
+        "blocked_by": null,
+        "when": "2026-10-19T12:12+08:00",
+        "evidence": "env/sdk_probe.json → firmware（SearchPiperFirmwareVersion → GetPiperFirmwareVersion）"
+      }
+    },
+    "piper_sdk": {
+      "value": "0.6.1",
+      "state": "已核验",
+      "source": "官方实现 README 固定写入 piper-sdk==0.6.1",
+      "pypi_wheel_sha256": "743557e1b8dfe685f2c33d728ab28c3ff510de8860d6494e54ed5d801493d65c",
+      "pypi_upload_time": "2025-10-30T06:38:51Z",
+      "newer_available": "0.6.2 / 0.7.0a1（存在但不采用，冻结 0.6.1）",
+      "note": "commit 字段仅在从源码安装时才有意义；pip 安装请按 wheel sha256 校验，不要追新"
+    },
+    "factr2_next": {
+      "value": "0df02c5b26e33911078152b6c587d6e8a160d279",
+      "state": "已核验",
+      "branch": "main",
+      "commit_date": "2026-09-04T01:15:29-07:00",
+      "commit_subject": "Update README.md",
+      "repo": "https://github.com/philiphan0109/factr2_next",
+      "license": "Apache-2.0",
+      "other_branch_seen": "glorbot2-integration@cc7643ff（不使用）",
+      "evidence": "source_commit.txt"
+    },
+    "urdf": {
+      "value": "piper_description.urdf @ agilexrobotics/piper_ros 017ffefa64511bc6325bd77ddc4e16065c152051 (humble)",
+      "state": "已核验",
+      "sha256": "22c15f95e50003b01713bae158638f7d19cdb71b1bd1095289865b835067002b",
+      "size_bytes": 12339,
+      "path_in_repo": "src/piper_description/urdf/piper_description.urdf",
+      "caveat": "上游只有 noetic/foxy/humble 三个分支，没有 Jazzy 分支；本仓库只取 URDF 做运动学与限位参考，不引入其 ROS1 驱动",
+      "evidence": "_vendor/urdf/piper_description.urdf"
+    },
+    "control_mode_and_speed_limit": {
+      "control_mode": {
+        "value": "MIT 模式（JointMitCtrl，0x15A~0x15F 含 T_ref）",
+        "state": "已核验",
+        "evidence": "_vendor/factr2_next/src/piper_control/piper_control/piper.py:284"
+      },
+      "command_hz": {
+        "value": 200,
+        "state": "已核验",
+        "evidence": "piper_arm.yaml shared.command_hz"
+      },
+      "read_hz": {
+        "value": 200,
+        "state": "已核验",
+        "evidence": "piper_arm.yaml shared.read_hz"
+      },
+      "publish_hz": {
+        "value": 100,
+        "state": "已核验",
+        "evidence": "piper_arm.yaml shared.publish_hz"
+      },
+      "kp": {
+        "value": [
+          8.4,
+          6.0,
+          6.0,
+          12.0,
+          12.0,
+          12.0
+        ],
+        "state": "已核验",
+        "evidence": "piper.py:66 = [0.7,0.5,0.5,1.0,1.0,1.0]*12"
+      },
+      "kd": {
+        "value": [
+          0.84,
+          0.6,
+          0.6,
+          1.2,
+          1.2,
+          1.2
+        ],
+        "state": "已核验",
+        "evidence": "piper.py:67 = [0.07,0.05,0.05,0.1,0.1,0.1]*12"
+      },
+      "speed_limit": {
+        "value": null,
+        "state": "未核验",
+        "how": "阶段 0 只允许静止/示教观察；速度上限在 L0 采集前按关节限速的 30% 起，实测后再冻结"
+      },
+      "auto_enable": {
+        "value": true,
+        "state": "已核验",
+        "evidence": "piper_arm.yaml shared.auto_enable=true → 启动即 EnableArm(7) 并 go_to_home_config()",
+        "risk": "launch 即运动，首次上电必须现场确认工作空间"
+      }
+    },
+    "end_effector_and_payload": {
+      "end_effector": {
+        "value": "本次复现不使用夹爪（2026-10-19 16:04 用户决策）；法兰上实际安装物为「标准两指夹爪（用户 15:49 装上，是否保留待确认）」",
+        "state": "配置待冻结（是否拆夹爪未定）",
+        "how": "用户口述 + 现场确认",
+        "note": "不使用 = 不驱动、不采集、不参与验收。但「不用」≠「不在法兰上」：若夹爪仍在，它是一块被动质量，阶段 2 的重力项必须计入"
+      },
+      "total_payload_kg": {
+        "value": null,
+        "state": "未实测",
+        "budget_max_kg": 1.5,
+        "nominal_if_gripper_kept_kg": 0.5,
+        "nominal_if_bare_flange_kg": 0.0,
+        "note": "官方只给到「夹爪 500 g」。相机/支架/线缆/转接板**官方无数据**，只能实测。若法兰上确实只有官方两指夹爪，可先用 0.5 kg 作标称值，但必须标注为标称、不得当实测",
+        "why_not_filled": "指南 §2.3 明文：「未知项写未核验，不要填一个看起来精确的默认值。伪精确比空白更危险」"
+      },
+      "official_nominal_20261019": {
+        "source_local": "piper_docs/PiPER_标准版_官方参数与使用说明.md:74-86（§2.3 末端执行器）",
+        "source_web": [
+          "https://www.agilex.ai/products/piper （标准版：负载 1.5 kg / 本体 4.2 kg / 工作半径 626 mm）",
+          "https://www.agilex.ai/raw/product-documents/1784306088271-488177041.pdf （PIPER X 用户手册：两指夹爪 本体重量 500 g，额定夹合力 40 N，开合 0-100 mm）"
+        ],
+        "arm_body_kg": 4.2,
+        "rated_payload_kg": 1.5,
+        "rated_payload_semantics": "1.5 kg 是**含末端工具**的总量，不是「还能再搬 1.5 kg」",
+        "gripper_follower_g": 500,
+        "gripper_leader_g": 550,
+        "residual_for_object_kg": 1.0,
+        "state": "官方标称（**未实测**）"
+      }
+    },
+    "k_calibration_version": {
+      "value": null,
+      "state": "未核验",
+      "how": "阶段 2 产出；此时不得引用任何 K 值"
+    },
+    "data_version_and_seed": {
+      "value": null,
+      "state": "未核验",
+      "how": "阶段 3/4 产出：splits.json 哈希 + 训练种子命中 train.yaml train.seed",
+      "preset": {
+        "seed": 0,
+        "state": "计划值，非实测"
+      }
+    }
+  },
+  "software_stack": {
+    "dev_machine": {
+      "role": "仅文档与代码仓库（指南 §2.2：Windows 不能当实验环境）",
+      "os": "Windows 11 家庭版 中文版 10.0.26200 (build 26200)",
+      "arch": "AMD64",
+      "python": "3.13.14",
+      "git": "2.55.0.windows.3",
+      "can_capability": "无（无 COM 口、无 CAN 适配器）；WSL 未验证——检查命令被本机安全策略拦截",
+      "evidence": "env/dev_env_windows.json"
+    },
+    "robot_side": {
+      "os": "Ubuntu（VMware 虚拟机；同名工程归档未记录具体版本号）",
+      "ros_distro": "Lyrical（/opt/ros/lyrical）—— 官方 factr2_next 只验证过 Jazzy",
+      "python": "系统 3.14.4（ROS 用）；训练/离线用 uv venv --python 3.12",
+      "env_manager": "uv",
+      "state": "已核验（来源 FIRST_ARM 归档）",
+      "pins": {
+        "setuptools": "79.0.1",
+        "numpy": "<2.0",
+        "piper_sdk": "0.6.1",
+        "dynamixel_sdk": "4.0.5",
+        "pyyaml": "未冻结（安装后由 lock 固定）",
+        "termcolor": "未冻结（安装后由 lock 固定）",
+        "h5py": "未冻结（安装后由 lock 固定）",
+        "scipy": "未冻结（安装后由 lock 固定）",
+        "cffi": "未冻结（安装后由 lock 固定）",
+        "torch": "未冻结（官方 README 有意不 pin，必须在本机 lock 里定死）"
+      },
+      "lock": {
+        "file": "env/requirements-lock.txt",
+        "sha256": "5d174257197b2522f63026a85096ef1649ad7828c3d726c6f2223a05709d57f3",
+        "track": "A_train_offline_py312",
+        "venv_python": "3.12.15",
+        "install_mode": "minimal（python-can + piper-sdk，无 numpy/torch）",
+        "state": "已核验（2026-10-19 11:23 于 VM 实跑）"
+      },
+      "track_split": {
+        "A_train_offline": "3.12 venv：numpy==1.26.4 + torch + h5py，与官方口径一致；无 rclpy",
+        "B_ros_live": "系统 3.14：numpy>=2.3.2（cp314 下限），与官方 <2.0 不符，属显式偏离",
+        "reason": "numpy 1.x 无 cp314 轮子（实测 1.26.4 仅到 cp312；cp314 自 2.3.2 起）"
+      },
+      "verified_20261019": {
+        "state": "已核验（VM 首次实跑）",
+        "python3": "3.14.4（系统，ROS 2 Lyrical 用）",
+        "python3_12": "未安装 → 由 uv 0.13.1 下载 CPython 3.12.15 建 venv",
+        "packages": {
+          "piper-sdk": "0.6.1",
+          "python-can": "4.6.1",
+          "setuptools": "79.0.1"
+        },
+        "rclpy_in_venv": false,
+        "can_adapter": "lsusb 1d50:606f Geschwister Schneider CAN adapter；gs_usb 已加载；can0 可 up @1Mbps",
+        "disk_free_mb": 1009,
+        "sdk_phase": {
+          "verdict": "全部读数为 SDK 默认值，不可用",
+          "bus_liveness": "10 s 监听 47768 帧，distinct_ids=1，仅 0x24；0x251-0x256 与 0x2A1 一条都没有",
+          "tx": "SearchFirmware / SearchMotorMaxAngleSpdAccLimit / MasterSlaveConfig 三帧均 SEND_MESSAGE_FAILED(100017)",
+          "ctrl_mode": "STANDBY(0x0)（= 枚举默认值，非实测）",
+          "enable_all_joints": false,
+          "first_frame_guard": "opened(discarded=10)，但输入是恒定零值 → 假阳性，证据作废"
+        },
+        "unresolved": "使能位与 FIRST_ARM 归档「上电即自使能」矛盾，待用 stage0_dump.py 的 ctrl_mode 判定",
+        "can_link": {
+          "state": "UP",
+          "bitrate_bps": 1000000,
+          "sample_point": 0.75,
+          "note": "接口起来了，但总线上没有第二个节点应答（TX 无 ACK）"
+        }
+      }
+    }
+  },
+  "config_freeze": {
+    "sample_rate_hz": 50,
+    "history_steps": 25,
+    "history_deviation": "官方 train.yaml 默认 history=50，配 record target_hz=50 就是 1.0 s，与论文 H=50@100 Hz≈0.5 s 不等价；本复现冻结 H=25（0.5 s），这是显式偏离，必须写进实验记录",
+    "precontact_seconds": 1.0,
+    "state_mode": "stateless",
+    "record_target_hz": 50,
+    "sync_slop_seconds": 0.03,
+    "contact_score": "l1_sum",
+    "dilation_of_official_defaults": [
+      "history 50 -> 25（理由：50 Hz 下保持 0.5 s）"
+    ]
+  },
+  "risks_found_in_official_impl": [
+    {
+      "id": "R1",
+      "title": "观测时间戳不是 CAN 帧到达时间",
+      "detail": "piper_node 用 create_timer(1/publish_hz) 以 ROS 时钟 now() 打戳，数据来自 200 Hz 读取线程的缓存；同一帧会被重复发布 2~4 次，且无法从消息头判断新鲜度",
+      "impact": "L0 的「字段年龄 / 跨关节时间跨度」无法从 ROS 话题获得，必须自建原始层时间戳",
+      "evidence": "piper_node.py:35,71-84"
+    },
+    {
+      "id": "R2",
+      "title": "发布的 joint_vel 是位置差分，不是电机测速",
+      "detail": "joint_vel_obs 发的是 joint_arithmetic_velocity=(q_t-q_{t-1})/(1/read_hz)，200 Hz 采样 50~200 Hz 的位置会产生大量零增量；SDK 的 motor_speed 已解析成 joint_motor_velocity 但从未发布",
+      "impact": "NEXT 的 dq 输入被量化；L0 必须同时留存两路速度并做对比",
+      "evidence": "piper.py:199,201-208; piper_node.py:74"
+    },
+    {
+      "id": "R3",
+      "title": "官方实现没有首帧丢弃逻辑",
+      "detail": "enable_arm() 只轮询 driver_enable_status 直到全为 True 就返回，随后 go_to_home_config() 立即下发目标；没有任何作废前若干帧的代码",
+      "impact": "阶段 0 验收门「首帧丢弃逻辑已在代码里体现」按官方实现不成立，需自建守卫",
+      "evidence": "piper.py:114-140,32"
+    },
+    {
+      "id": "R4",
+      "title": "限位三方不一致，代码里是硬编码旧值",
+      "detail": "factr2_next 硬编码值 = piper_ros humble URDF 值（±150°/180°/-170°/±100°/±70°/±120°），均小于官方手册最新值（±154°/195°/-175°/±102°/±75°/±120°）",
+      "impact": "不会越限但会提前触发软件边界；换固件后不得据此推断真实可达范围",
+      "evidence": "_vendor/factr2_next/src/piper_control/piper_control/piper.py:52-53"
+    },
+    {
+      "id": "R5",
+      "title": "MIT 的 T_ref 与 N·m 不是 1:1",
+      "detail": "官方代码注释：t_ref 范围 ±18.0，其中 18.0 约对应 8.0 Nm，即 1 单位 T_ref ≈ 0.444 N·m",
+      "impact": "阶段 2 标定不得把 T_ref 当力矩真值（指南 §5.4 红线一），此处只作记录",
+      "evidence": "piper.py:268"
+    },
+    {
+      "id": "R6",
+      "title": "effort 不是单系数 K·I，SDK 内置两组系数",
+      "detail": "piper_sdk 0.6.1 的 ArmMsgFeedbackHighSpd.cal_effort() 用固定系数把原始电流换算成力矩：J1~J3 用 1.18125、J4~J6 用 0.95844，输出单位 0.001 N·m；factr2_next 再除以 1000 得 N·m",
+      "impact": "等价于 K_sdk=[1.18125×3, 0.95844×3] N·m/A，六关节并不同值；这是厂家标称值，不含个体差异、减速比分解、效率与符号，只能作为阶段 2 的起点，不能当校准结果",
+      "evidence": "_vendor/sdk/unpacked/piper_sdk/piper_msgs/msg_v2/feedback/arm_feedback_high_spd.py:70-96; piper.py:219-226"
+    },
+    {
+      "id": "R7",
+      "title": "URDF 的 velocity 限值比手册大，不能当速度上限",
+      "detail": "piper_description.urdf 六个关节 velocity=5 rad/s（≈286°/s），手册最大关节速度为 180~225°/s（3.14~3.93 rad/s）；effort=100 也只是占位值",
+      "impact": "URDF 只能用于运动学/限位参考，速度上限必须按手册并在实机用 0x473 回读的 max_joint_spd 为准",
+      "evidence": "_vendor/urdf/piper_description.urdf"
+    },
+    {
+      "id": "R8",
+      "title": "SDK 接口名与指南示例有出入（版本敏感）",
+      "detail": "piper_sdk 0.6.1 里是 GetArmStatus()（无 Msgs）；EnableArm 走 0x471；JointMitCtrl 走 0x15A~0x15F",
+      "impact": "照抄指南示例会 AttributeError；换 SDK 版本必须重新核对（0.6.2/0.7.0a1 已存在）",
+      "evidence": "_vendor/sdk/unpacked/piper_sdk/interface/piper_interface_v2.py"
+    },
+    {
+      "id": "R9",
+      "title": "机器人机是 Python 3.14 + ROS 2 Lyrical，官方要 3.12 + Jazzy",
+      "detail": "FIRST_ARM 归档记录系统 Python 3.14.4、/opt/ros/lyrical；官方 README 写 3.12 + Jazzy",
+      "impact": "官方依赖 numpy<2.0 在 3.14 上装不了（无 cp314 轮子）；rclpy 只给 3.14 编译，3.12 venv 里 import 会失败",
+      "evidence": "ARM/FIRST_ARM/00-总纲.md:31-33；PyPI numpy 轮子清单"
+    },
+    {
+      "id": "R10",
+      "title": "两套 SDK 并存",
+      "detail": "既有工程用 pyAgxArm 1.0.0，本复现按官方用 piper_sdk 0.6.1",
+      "impact": "混装后无法判断哪套在发帧；限位/单位/默认值也不同源",
+      "evidence": "ARM/FIRST_ARM/00-总纲.md:36"
+    },
+    {
+      "id": "R11",
+      "title": "J6 限位三方不一致",
+      "detail": "FIRST_ARM 归档 J6 ±170°(±2.967)；piper_ros humble URDF ±2.0944(120°)；官方手册 ±120°",
+      "impact": "若按 ±170 放行会超出手册允许范围；必须先 0x473 回读定案",
+      "evidence": "ARM 总纲 §0.6 vs _vendor/urdf"
+    },
+    {
+      "id": "R12",
+      "title": "0x251 位置单位有两种说法",
+      "detail": "SDK 文档写 int32 单位 rad；FIRST_ARM 逐字节实测记 0.001 rad。**2026-10-19T13:57 用真机 660 s 数据定案：0.001 rad（mrad）**。",
+      "impact": "差 1000 倍；factr2_next 用 0x2A5(0.001°) 取 q 不受影响，但自建原始层若用 0x251 位置必须先定标",
+      "evidence": "sdk arm_feedback_high_spd.py vs ARM 总纲 §0.6",
+      "severity": "已定案",
+      "resolution": {
+        "when": "2026-10-19T13:57+08:00",
+        "how": "L0-a 660 s 静止数据，同源两路交叉：0x251 位置(int32) ÷ 0x2A5~0x2A7 关节角(rad)，33000 样本取中位数",
+        "measured_ratio": 999.893,
+        "verdict": "比值 ≈1000 → 0x251 位置单位是 0.001 rad；指南 §4.2 表「字节 4-7 位置，int32，rad」写错 1000 倍",
+        "side_check": "0x2A5 是 0.001° 量化（1 步=1.745e-5 rad），0x251 是 0.001 rad 量化（1 步=57.3 个 0x2A5 步），所以单样本比值会在 1000 附近跳，中位数 999.893 的 -0.01% 偏差就是这个量化的残差，不是单位又不对",
+        "action": "stage1_l0.py parse 一律用 --pos251-unit mrad；1.3 起单位选错直接退出码 2，不再只打警告",
+        "note": "q 只取 0x2A5~0x2A7，所以单位选错不会污染 q；但 A/B 任何要碰 dq 或 pos 的下游必须先修这一条"
+      }
+    },
+    {
+      "id": "R13",
+      "title": "CAN 适配器在虚拟机里，且有 Windows 侧仲裁冲突",
+      "detail": "gs_usb 1d50:606f 需 USB 直通；Windows 直连时 VMUSBArbService 会占设备",
+      "impact": "can0 时有时无，L0 压测前必须固定直通配置并记录",
+      "evidence": "ARM README、总纲 §0.7 第 9 条"
+    },
+    {
+      "id": "R14",
+      "title": "该机臂上电即自使能，阶段 0 的'使能'步骤不适用",
+      "detail": "0x471 不需要发；FIRST_ARM 红线 #1 明确禁止发使能/失能",
+      "impact": "指南 §3 步骤 5 在本机改为'只读确认已使能'；探针脚本已按此调整（默认不发 0x471）",
+      "evidence": "ARM 总纲 §0.4；scripts/stage0_probe.py probe_sdk()"
+    },
+    {
+      "id": "R15",
+      "title": "SDK 在「从未收到反馈帧」时返回初始默认值，看起来像真实读数",
+      "detail": "2026-10-19 11:29 首次读到 all_enabled=False、ctrl_mode=STANDBY(0x0)，误判为「臂未使能」；11:39 复测确认总线上 0x2A1/0x251-0x256 一条都没有，所有读数是新建对象的默认值",
+      "impact": "会把「总线不通」误诊成「使能策略不同」，进而去动 0x471（违反红线 #1）。同时守卫会被恒定零值骗过，产出漂亮但无意义的证据",
+      "evidence": "bus_probe.json（distinct_ids=1, 仅 0x24）；sdk_probe.json bus_liveness",
+      "state": "已定性（2026-10-19 11:39）"
+    },
+    {
+      "id": "R16",
+      "title": "VM 磁盘仅 1009 MB，训练栈无法安装",
+      "detail": "torch 的 PyPI 默认包带 CUDA 约 2.3 GB，numpy/scipy/h5py 另需数百 MB",
+      "impact": "阶段 0 用 --minimal 可过；但 dataset/train 阶段必须先扩盘或改用 --torch-cpu",
+      "evidence": "--check 输出 磁盘可用MB 1009；freeze_robot_env.sh 磁盘闸门"
+    },
+    {
+      "id": "R17",
+      "title": "CAN 物理层未通：适配器 TX 无 ACK，总线只剩单一异常 ID",
+      "detail": "can0 UP @1Mbps，10 s 收 47768 帧但 distinct_ids=1（0x24），0x251-0x256/0x2A1 全无；SDK 三帧 TX 报 SEND_MESSAGE_FAILED(100017)",
+      "impact": "阶段 0 的全部硬件项（固件/从站/限位/使能/守卫）都无法取证；L0 无法开工",
+      "evidence": "bus_probe.json；sdk_probe.json；vm 控制台 11:39:58 日志",
+      "next_check": "① 臂是否上电、急停是否松开 ② CAN_H/CAN_L 与 120Ω ③ 臂侧波特率是否 1 Mbps ④ 用 0.875 采样点复测"
+    },
+    {
+      "id": "R18",
+      "title": "首帧守卫在恒定零值上会假阳性",
+      "detail": "守卫判据是「值有限且落在限位内 + dt 合理」，全 0 的默认值同时满足，于是 10 帧就开门",
+      "impact": "会把「没有数据」报成「守卫通过」，与 R15 叠加产生系统性误判",
+      "evidence": "sdk_probe.json first_frame_guard opened=True, discarded=10, reasons={'baseline':1,'accumulate':9}",
+      "mitigation": "1.3 版已加 bus_liveness 前置闸：0.6 s 内无 0x2A1/0x251 反馈帧时，所有「已核验」整体降级为「不通过」"
+    },
+    {
+      "id": "R19",
+      "severity": "已关闭",
+      "title": "ctrl_mode 是 TEACHING_MODE(0x2)，不是 CAN_CTRL(0x1)",
+      "detail": "12:12 实测 ctrl_mode=TEACHING_MODE(0x2)、teach_status=STOP_RECORDING(0x2)。示教模式下 CAN 运动指令是否被执行需要验证；FACTR2 需要程序控。",
+      "impact": "若不解决，L1 下发的 q_cmd 会被忽略，策略训练出的是恒等映射",
+      "action": "上电确认姿态后，人在旁边守急停，跑 --set-slave 走完整流程，再用 0x2A1 复核 ctrl_mode",
+      "resolution": {
+        "when": "2026-10-19T15:26+08:00",
+        "how": "J6 单轴正弦：3° 幅值 / 0.1 Hz / 40 s，下发 100 Hz；录制 90 s，`parse --qcmd` + `track` 判读",
+        "measured": {
+          "state": "跟随",
+          "q_cmd_p2p_deg": 5.9999,
+          "q_p2p_deg": 5.937,
+          "resp_ratio": 0.8672,
+          "delay_ms": 60.0,
+          "rmse0_rad": 0.001399,
+          "rmse_best_rad": 0.000793
+        },
+        "verdict": "CAN_CTRL(0x1) 下 `JointCtrl` 真的驱动了臂。响应比 0.867（幅度跟得上）、实测滞后 60 ms、平移后 RMSE 降到 57%。阶段 2/3 的前提成立",
+        "note": "滞后 60 ms 是**实测值**，L1 时序对齐要用它，不要用猜的。它同时包含「发送节拍→固件插补→机械响应」三段的合计，不能再拆。",
+        "caveat": "单轴 3° 的结论不能外推到六轴大幅值；六轴联动时是否同样跟随、耦合与限速是否介入，要等 L0-b 第二档（六轴）才能说"
+      }
+    },
+    {
+      "id": "R20",
+      "severity": "中",
+      "title": "固件 S-V1.8-8 官方建议改用 C_PiperInterface_V3",
+      "detail": "官方文档：firmware 1.8-8 及以后请用 C_PiperInterface_V3 替代 C_PiperInterface（V3 协议）。我们目前用的还是默认类，但帧已能全收。",
+      "impact": "若 V3 的状态帧字段布局不同，ctrl_mode 读成 None（见 R21）可能与此同源",
+      "action": "先确认 0.6.1 里是否导出 C_PiperInterface_V3；有则用 --sdk-class 切换并对比一次 sdk_probe 前后差异"
+    },
+    {
+      "id": "R21",
+      "severity": "高",
+      "title": "发完 0xFC 未 reset，臂可能停在从站过渡态",
+      "detail": "0xFC 后 0.2 s 读 ctrl_mode 得 None。官方切从站流程还要求 MotionCtrl_1(0x02,0,0) 复位 + MotionCtrl_2(0x01,0x01,100,0)。",
+      "impact": "过渡态下指令行为未定义；最坏情况是 L0 录到的数据不代表稳态",
+      "action": "断电重启回干净状态（最安全），或按完整流程重切一次并复核 ctrl_mode"
+    },
+    {
+      "id": "R22",
+      "severity": "高",
+      "title": "反馈是 200 Hz，不是文档口径的 50 Hz",
+      "detail": "0x251~0x256 与 0x2A1~0x2A8 的 median 间隔 5.00 ms。stage1_l0 v1.1 的 NOMINAL_DT=0.020 与真机差 4 倍。",
+      "impact": "丢帧判据偏松 4 倍：真丢一半帧也看不出来；「期望帧数」全线偏小",
+      "action": "已修：NOMINAL_DT=0.005，v1.2。采样层仍可 --hz 50 抽点，但源口径改 200 Hz",
+      "resolution": {
+        "when": "2026-10-19T13:57+08:00",
+        "how": "L0-a 660.2 s 实采",
+        "measured": "2073061 帧 / 660.2 s = 3139.6 帧/s；0x251~0x256 各 132000 帧 = 199.94 Hz（周期 5.0015 ms）",
+        "verdict": "确认为 200 Hz，R22 关闭。判据侧同步改：不再写死「中位数 20 ms」，改为「六路同档且落在 200Hz(4~6ms) 或 50Hz(15~25ms)」"
+      }
+    },
+    {
+      "id": "R23",
+      "severity": "中",
+      "title": "0x2A8 是夹爪，不是第七个关节对",
+      "detail": "状态类 ID 实际是 0x2A1~0x2A8 共 8 个；关节角仍只在 0x2A5~0x2A7。",
+      "impact": "若把 0x2A8 当关节解码，会多出两个假关节值（很可能恒为 0 或夹爪行程）",
+      "action": "已修：GRIPPER_ID=0x2A8 单列，不计入 JOINT_ANGLE_IDS",
+      "state": "已关闭（16:45 读到 S-V1.8-8）"
+    },
+    {
+      "id": "R24",
+      "severity": "中",
+      "title": "can0 处于 ERROR-WARNING，且 sample_point=0.75",
+      "detail": "ip -details 显示 can state ERROR-WARNING（error_frames=0，本窗口无错帧）；sample_point 用的是默认 0.75，CiA 在 1 Mbps 推荐 0.875。",
+      "impact": "ERROR-WARNING 多为历史 TEC 累积（上电前 TX 无 ACK 几百次）；但若是持续态则说明物理层裕度不足",
+      "action": "ip -details -statistics link show can0 看 berr-counter；TEC 不回落就查 120Ω 终端与线序"
+    },
+    {
+      "id": "R25",
+      "severity": "低",
+      "title": "总线有 3.2% 未知 ID 帧",
+      "detail": "0x1c0~0x1c3（载荷全 0）与 0x212=04010f02，合计约 1010 帧/10 s。",
+      "impact": "不影响解码，但会污染「帧率/丢帧」分母；也可能藏着别的设备",
+      "action": "L0 原始层全记并打 F_UNKNOWN_ID，解析层不计入关节；后续确认 0x212 是否为末端/夹爪状态"
+    },
+    {
+      "id": "R26",
+      "severity": "中",
+      "title": "max_joint_spd 单位随固件换档，之前按 0.001 换算是错的",
+      "detail": "官方 INTERFACE_V2：V1.5-8 之前 0.001 rad/s，V1.5-8 及以后 0.01 rad/s。本机 S-V1.8-8 属后者。原代码 /1000.0。",
+      "impact": "限位回读的速度上限会小 10 倍，若直接当安全上限用会过度保守；反过来若写回则危险",
+      "action": "已修：按 _fw_ge(fw,'V1.5-8') 选 100 或 1000，并保留 spd_raw 原值"
+    },
+    {
+      "id": "R27",
+      "severity": "中",
+      "title": "限位查询整段静默跳过（接口名不存在）",
+      "detail": "hasattr(piper,'GetCurrentMotorAngleLimitMaxVel') 为 False，if 不成立 → 无异常、无日志，报告只写「未查询」。同型问题：任何依赖 hasattr 的可选能力都会这样静默降级。",
+      "impact": "「没查」和「查不到」看起来一样，门项状态会被误读成硬件问题",
+      "action": "已修：进入 else 分支时明确写 error 文案；解析失败也保留 raw_repr 原文"
+    },
+    {
+      "id": "R28",
+      "severity": "中",
+      "title": "J6 固件限位 ±180°，官方 URDF 只写 ±120°",
+      "detail": "13:24 实测 0x473：joint_6 ∈ [-180, +180]°；experiments/_vendor/urdf/piper_description.urdf 写 lower=-2.0944 upper=2.0944（±120°）。J1–J5 两侧完全一致，只有 J6 差 60°。",
+      "impact": "① 拿 URDF 当守卫边界会把 120°~180° 的正常姿态误判为越界（当前软判据只计数，不拒收，所以没炸）；② 拿 URDF 做运动规划会白白丢掉 1/3 的 J6 行程；③ 反向风险：如果 URDF 的 ±120° 才是机械真限制、固件 ±180° 是配置错误，那么按固件下发会撞限位",
+      "action": "指令层一律用固件值（env/joint_limits.json）。L0-b 第一次动 J6 时，从 ±100° 起小步试，目视确认 150° 附近没有机械阻挡，再放开到 ±170°",
+      "when_noticed": "2026-10-19T13:24+08:00"
+    },
+    {
+      "id": "R29",
+      "severity": "低",
+      "title": "关节最大速度 raw=300 的量纲待实测确认",
+      "detail": "0x473 的 max_joint_spd 六轴全是 300。SDK 源码写单位 0.001 rad/s、量程 [0,3000] → 0.3 rad/s；但 URDF velocity 字段是 5.0 rad/s，且六轴同值 suspicious。两种解释差 10 倍。",
+      "impact": "L0-b 的正弦幅值/频率若按 3.0 设计，实际只有 0.3 能力，指令会被固件截断→轨迹失真；反之只会更慢",
+      "action": "① 现在一律按 0.3 rad/s 设计（慢的一侧安全）；② L0-b 首次运动时下发已知斜率，用原始层 0x251 反算实测角速度，一次即可定档；③ 定档后回填 env/joint_limits.json",
+      "when_noticed": "2026-10-19T13:24+08:00"
+    },
+    {
+      "id": "R30",
+      "kind": "平台 / 工具链",
+      "severity": "高",
+      "title": "并发「录制 + 下发」时录制端断流：90.2 s 的录制只覆盖 52.0 s",
+      "detail": "15:26 两个终端并行：A 录 90 s，B 发 40 s 正弦。A 报告 175081 帧 / 90.2 s，但帧时间跨度只有 52.0 s；0x251 各 10393 帧 / 52.0 s = 199.9 Hz（一帧没丢）。同一秒 B 收到约 80 条 SEND_MESSAGE_FAILED(100017)。175081/52.0 = 3367 帧/s，恰等于平时 3139 帧/s 加上异常流量 —— 三个数互相对得上。",
+      "impact": "① 单看 record 的「期望 18032 上下」会以为丢了 42%，方向完全错（要查断流不是丢帧）；② 更严重的是：**阶段 3 的数据集采集必须同时录 + 发**，如果每次并行都会让录制断流，采出来的数据集会大段缺帧，而按墙钟算还会显示成「丢 40%」这种误导性的数",
+      "not_proven": "机制未确认。候选：① gs_usb 适配器在双进程 + TX 压力下掉线（15:05 已发生过 `CAN port can0 is not UP`）；② `bus.send()` 把 TX 队列打满导致适配器复位；③ 两个 socket 抢同一个 RX 缓冲。要 `ip -s link show can0` 的 RX dropped/overrun/errors 计数才能定",
+      "action": "① 工具侧已改：record 打「帧时间跨度 vs 墙钟」，parse 加 `data_covers_window` 判据（1.6）；② 现场先跑 `ip -s link show can0` 定性；③ 若确属双进程问题，L0-c 改成**单进程**：一个 socket 同时收发 + 落盘（也是 stage1_cmd 2.0 的方向）",
+      "when_noticed": "2026-10-19T15:30+08:00"
+    },
+    {
+      "id": "R31",
+      "kind": "我方工具",
+      "severity": "高",
+      "title": "`JointCtrl()` 返回 None，CSV 记录了下发失败的指令",
+      "detail": "piper_sdk 0.6.1 `piper_interface.py:2716` 的 `JointCtrl()` 无返回值；`__JointCtrl_12/34/56` 里 `feedback is not SEND_MESSAGE_SUCCESS` 时只`logger.error(...)`，调用方拿不到任何信号。所以 15:26 那 80 帧发送失败，`stage1_cmd.py` 完全不知道，CSV 照写 4000 行。",
+      "impact": "直接违反本文件第一条硬规矩「只记录真的发出去的值」。后果是 q_cmd 里混入臂从未收到的目标点——正是 R19 那类「数据看着完美、因果断掉」的问题",
+      "action": "`stage1_cmd/2.0` 起自己建 socket 发 0x155/0x156/0x157，`bus.send(timeout=5ms)` 逐帧判定；失败的那一拍不写 CSV 且不推进 q_prev（否则下一拍增量会变两拍、轨迹被悄悄拉长）；连续 30 拍失败直接 ABORT。同时把固件限位与 URDF 取交集做包络（补回 SDK 内部那道夹紧，J6 因此被收紧到 ±120°，见 R28）",
+      "when_noticed": "2026-10-19T15:29+08:00"
+    },
+    {
+      "id": "R32",
+      "kind": "官方文档",
+      "severity": "中",
+      "title": "`EnableArm(7)` 的 7 到底指什么，手册与 SDK 消息定义互相矛盾",
+      "detail": "piper_docs/PiPER_标准版_官方参数与使用说明.md:283 写 `EnableArm(7)  # 7 = 六关节 + 夹爪`；而 piper_sdk 0.6.1 `piper_msgs/msg_v2/transmit/arm_motor_enable_disable.py:23` 写「1-6 关节驱动器，7 代表夹爪电机，0xFF 代表全部关节电机(包含夹爪)」。",
+      "impact": "若按手册理解，会以为发 7 就使能了六轴；按 SDK 消息定义实际只作用于夹爪。两种解释差一个数量级的电机数",
+      "action": "夹爪相关一律走 0x159 的 gripper_code=0x01（夹爪专用、无歧义）；需要全使能时显式用 0xFF，不用 7",
+      "scope_note": "本次复现不使用夹爪，因此不触发；工具 stage0_gripper_check.py 已按此规避"
+    },
+    {
+      "id": "R33",
+      "kind": "我方工具",
+      "severity": "高",
+      "title": "`GripperCtrl()` 与 `JointCtrl()` 同型：返回 None，发送失败只写日志",
+      "detail": "piper_sdk 0.6.1 `piper_interface.py:2925` 的 `GripperCtrl()` 无 return；失败时仅 `logger.error(\"GripperCtrl send failed: ...\")`。",
+      "impact": "与 R31 完全同型。若直接用 SDK 做夹爪致动验证，会把「没发出去」记成「发了但夹爪没动」，从而误判夹爪坏了",
+      "action": "stage0_gripper_check.py 自建 socket 发 0x159，逐帧判成败；失败的拍不推进目标轨迹",
+      "scope_note": "本次复现不使用夹爪，因此不触发；工具 stage0_gripper_check.py 已按此规避"
+    },
+    {
+      "id": "R34",
+      "kind": "环境/操作",
+      "severity": "中",
+      "title": "`ip link set can0 up type can bitrate 1000000` 一体化写法在本机报 No such device，拆成三步才成功",
+      "detail": "16:08 执行一体化命令 → `RTNETLINK answers: No such device`，同时 dmesg 连续三条 `A link change request failed with some changes committed already. Interface can0 may have been left with an inconsistent configuration`。16:12 改为 `ip link set can0 down` → `ip link set can0 type can bitrate 1000000` → `ip link set can0 up` 三步，一次成功：`state UP / bitrate 1000000 / can state ERROR-ACTIVE / parentdev 2-2:1.0`。期间 lsusb 一直有 1d50:606f、gs_usb 一直在，设备从未真正消失。",
+      "impact": "报错文案说的「No such device」会把人指向 USB 直通/驱动，实际只是 netlink 事务在「改参数 + up」同一请求里中途失败，netdev 半提交。按字面去查硬件会浪费大量时间（本次已误导一轮）",
+      "action": "can0 拉起一律用三步法：down → `type can bitrate 1000000` → up。若三步法仍失败再查 USB 直通（这时才是真没设备）"
+    },
+    {
+      "id": "R35",
+      "kind": "官方文档/现场判据",
+      "severity": "高",
+      "title": "「电源指示灯亮」不等于「主控就绪」；官方判据是面板指示灯**绿色慢闪**。且 24 V 与 CAN 在同一个 7 芯航插里",
+      "detail": "PiPER_标准版_官方参数与使用说明.md §3.1：7 芯航插 pin4=24V、pin5=GND、pin6=CAN_H、pin7=CAN_L，**电源与 CAN 是同一个接头**；§3.5 第 6 步「确认 E 的 AC 头已插好并上电，待电气面板指示灯闪烁绿色」；§5.2 第 1 步「面板指示灯绿色慢闪表示主控就绪」。另外 pin2 是臂本体状态指示灯（另一个灯）。",
+      "impact": "现场把「电源灯亮」当作上电成功，会直接跳过「主控是否 boot 完成」这一判据。若航插未插到底（红点对红点、带纹理处按压），24V 可能导通而 pin6/7 接触不良，现象正是「供电正常、总线一帧没有」",
+      "action": "上电判据一律用「面板指示灯绿色慢闪」+「RX packets 5 s 内涨几千」。因为 CAN 与 24V 共用一个航插，「CAN 线松」和「供电松」是同一件事，不能分开检查"
+    },
+    {
+      "id": "R36",
+      "kind": "现场/环境",
+      "severity": "高",
+      "title": "全总线静默：0x251~0x256 与 0x2A1~0x2A8 同时为 0，且 RX errors=0 → 不是波特率不匹配，是线上没有差分信号",
+      "detail": "16:14 实测 RX 4 packets / 32 bytes / errors 0 / dropped 0，`--phase bus` 0/6。若波特率不匹配或 H/L 反接而对方在发，控制器会解出错误帧并累加 RX errors；errors 恒 0 说明 CAN_H/CAN_L 之间**没有任何有效差分活动**。",
+      "impact": "可以把排查范围一次性收窄到「臂主控没在发」或「CAN 对断/开路」，不必再怀疑软件、SDK、波特率（官方 §3.3：波特率固定 1 Mbps 不可改）",
+      "action": "先做适配器 loopback 自检（排除上位机侧），再拔 XT30 + 完整断电按 A–G 重上电，最后万用表量 CAN_H–CAN_L 应为 ~60 Ω（两端各 120 Ω 终端）"
+    },
+    {
+      "id": "R37",
+      "kind": "官方文档/现场",
+      "severity": "低",
+      "title": "`0x1C0` / `0x1C1` / `0x1C2` 三条主控板帧以 20/40/20 Hz 常驻，CAN 手册与 piper_sdk 均未定义",
+      "detail": "2026-10-19 16:45 六轴档 audit（10 s 分桶）实测：0x1C0 1500 帧/75 s = 20.0 Hz、0x1C1 3000 帧/75 s = 40.0 Hz、0x1C2 1500 帧/75 s = 20.0 Hz。手册 sharedStrings（506 条）与 sdk `can_id.py` 中均查不到这三个 ID。按手册自身的分段规则（『灯光控制 0x1 节点 ID，帧 ID 0x121』『驱动器反馈 节点 ID 0x1~0x6 → 0x251~0x256』），0x1xx 段属于**节点 ID 1（主控板）**。另注：0x155/0x156/0x157 各 6000 帧是**我方指令帧的回显**，不是未知设备。",
+      "impact": "不影响 q（0x2A5~0x2A7）与 τ 采集，但若纳入『未知 ID 占比』会被长期计为异常（75 s 里 6000 帧，约 1.1% 总量）；若误判为『未知设备接入』则会污染现场配置记录",
+      "action": "解析器白名单固定为：0x151~0x157（指令回显）、0x1C0~0x1C2（主控板，20/40/20 Hz）、0x251~0x256、0x261~0x266、0x2A1~0x2A8；白名单外才计入 unk"
+    },
+    {
+      "id": "R38",
+      "kind": "官方文档",
+      "severity": "中",
+      "title": "官方多个渠道的关节限位与夹爪行程互相不一致，且都与固件实测限位不同",
+      "detail": "① 本地《PiPER 标准版官方参数与使用说明》§2.1：J4 -102~102、J5 -75~75；② 官网 agilex.ai/products/piper 标准版：J1 ±154、J2 0~195、J3 -175~0、J4 -100~112、J5 ±75、J6 ±170；③ 《PIPER X 用户手册》PDF：J1 ±154、J2 0~195、J3 -175~0、J4 -90~9x、J5 -90~9x、J6 ±165；④ **固件 0x473 实测**：J1 ±150、J2 0~180、J3 -170~0、J4 ±100、J5 ±70、J6 ±180；⑤ 夹爪开口：本地文档 0~70 mm，X 手册 PDF 0~100 mm。",
+      "impact": "五套数字两两不等。若按官网/手册的限位写死包络，J1 会多放 4°、J2 多放 15°、J5 多放 5°，而 J6 反而少放 10°；按 X 手册的 0~100 mm 去规划夹爪行程会超出标准版实际 70 mm",
+      "action": "**限位一律以固件 0x473 为准，再与 URDF 取交集**（stage1_cmd.py 已如此实现）。官方参数表只用于『结构上是否合理』的旁证，不参与任何数值计算。夹爪行程同理：以 SDK 回读为准，不用文档数字"
+    },
+    {
+      "id": "R39",
+      "kind": "我方判据",
+      "severity": "中",
+      "title": "50 Hz 重采样下的 dq 比被位置量化噪声主导（1.09~2.21），不能当速度跟随指标",
+      "detail": "位置量化 q=0.001 rad ⇒ 差分速度噪声底 ≈0.0204 rad/s；本次指令速度 RMS ≈0.0155 rad/s（A=2°、ω=0.628 rad/s）。两者同量级，故 dq(RMS) 比的理论噪声贡献已 >1，实测 J1~J3 为 1.10~1.21、J4~J6 为 1.94~2.21。",
+      "impact": "若把 dq 比当作『速度跟随好坏』，会得出『J4~J6 速度跟随差一倍』的错误结论，进而在 L1 里错误地给腕部加低通或降增益",
+      "action": "dq 比只在**同一次解析设置内做轴间相对比较**；跨设置比较前必须用 --hz 200 原始重采样复算。速度类判据一律优先用 200 Hz 原始层，不用 50 Hz 重采样层"
+    }
+  ],
+  "api_surface_pinned": {
+    "note": "以下为 piper_sdk==0.6.1 实际存在的接口（解包 wheel 核对），不是按记忆假设",
+    "interface_class": "piper_sdk.C_PiperInterface_V2（C_PiperInterface 为 V1）",
+    "firmware": "GetPiperFirmwareVersion()",
+    "status": "GetArmStatus()  ← 0.6.1 里没有 GetArmStatusMsgs()",
+    "enable": "EnableArm(motor_num=7, enable_flag=0x02)，CAN 0x471",
+    "disable": "DisableArm(motor_num)",
+    "enable_status": "GetArmEnableStatus() -> list[bool]（6 项）",
+    "slave_mode": "MasterSlaveConfig(0xFC, 0, 0, 0)",
+    "high_spd": "GetArmHighSpdInfoMsgs()，字段 motor_speed/current/pos/effort",
+    "joint_angle": "GetArmJointMsgs()，0.001 度，来自 0x2A5~0x2A7",
+    "limits_readback": "ArmParamEnquiryAndConfig(0x01,0,0,joint) → GetCurrentMotorAngleLimitMaxVel()（0x472→0x473）",
+    "mit_ctrl": "JointMitCtrl(motor_num, pos, vel, kp, kd, t_ref)",
+    "implication": "阶段 0 探针脚本已按此签名编写，并在轮子内逐条核对过；换 SDK 版本必须重新核对"
+  },
+  "torque_scale_note": {
+    "sdk_effort_coefficients": {
+      "J1_J3": 1.18125,
+      "J4_J6": 0.95844
+    },
+    "unit": "0.001 N·m（SDK 声明）",
+    "derived_K_nominal_Nm_per_A": {
+      "J1_J3": 1.18125,
+      "J4_J6": 0.95844
+    },
+    "state": "厂家标称，未在本机标定",
+    "prohibition": "阶段 2 之前不得用该 K 报任何 N·m 绝对值；自由空间残差贴零也不能证明它正确"
+  },
+  "gate_status": {
+    "gate_ref": "指南 §3 验收门",
+    "items": [
+      {
+        "item": "固件版本号齐全",
+        "state": "通过",
+        "owner": "用户（现场 1 分钟）",
+        "result": "S-V1.8-8",
+        "evidence": "sdk_probe.json → firmware，via SearchPiperFirmwareVersion → GetPiperFirmwareVersion",
+        "note": "上电后同一段 TX 不再报 SEND_MESSAGE_FAILED，反证 R17 的根因是「臂未上电导致无 ACK」，不是适配器或波特率问题"
+      },
+      {
+        "item": "piper_sdk 版本号齐全",
+        "state": "通过",
+        "evidence": "0.6.1 + wheel sha256"
+      },
+      {
+        "item": "官方实现版本号齐全",
+        "state": "通过",
+        "evidence": "0df02c5b"
+      },
+      {
+        "item": "source_commit.txt 存在",
+        "state": "通过",
+        "evidence": "本目录"
+      },
+      {
+        "item": "控制模式确认（原「从站模式」）",
+        "state": "通过",
+        "when": "2026-10-19T15:12+08:00",
+        "owner": "用户（现场 1 分钟）",
+        "probe": "stage0_probe 1.8-20261019",
+        "cmd": "python scripts/stage0_probe.py --phase sdk --allow-write --to-can-ctrl",
+        "result": "读回 ctrl_mode = CAN_CTRL(0x1)；**且本次为真转移**：before=TEACHING_MODE(0x2) → after=CAN_CTRL(0x1)",
+        "evidence": "env/archive/sdk_probe_20261019T151228.json → can_ctrl.value（before/after/steps/state 全在）；15:19 之后 env/sdk_probe.json 已是 CAN_CTRL + 限位 6/6 的自洽版本",
+        "caveat": null,
+        "why_before_after_same": "两次采样之间用户可能在臂上做了操作（松手柄/按按钮），或固件在示教态空闲后自行回落。无法从现有数据区分，也不重要——臂下次断电重启会复位到示教态，那时跑同一条命令就能观察 TEACHING→CAN 的转移",
+        "method_fix": "probe 1.9 起：before == after 时打印 [NOTE]「指令有效性未验证」，不再让「判据满足」被读成「指令生效」",
+        "next_step": "L0-a 被动录制可直接开始（只读，不需要切模式）；L0-b 运动指令前需再确认一次仍是 CAN_CTRL",
+        "earlier_wrong_turns": [
+          "13:05/13:17 用 0xFC 想切程序控 —— 0xFC 是随动主从的「运动输出臂」，不是程序控开关",
+          "MotionCtrl_1(0x02,0,0) 的 0x02 是急停恢复，不是复位",
+          "MotionCtrl_2 的 ctrl_mode 枚举只有 0x00/0x01/0x03/0x04/0x07，TEACHING_MODE(0x02) 是状态不是设置值"
+        ],
+        "closed": true
+      },
+      {
+        "item": "首帧丢弃逻辑已体现",
+        "state": "通过",
+        "owner": "用户（现场 2 分钟）",
+        "evidence": "sdk_probe.json → guard；同一轮 bus_probe 的 q 非零（q 来自 0x2A5~2A7 真帧）",
+        "result": "opened=True, discarded=10, reasons={baseline:1, accumulate:9}",
+        "note": "R18 说的「守卫在恒定零值上假阳性」这次没有复现：baseline 后还累积了 9 帧才开，且 discard 数 10 ≠ 阈值边界值，说明判据真的在跑。离线 4 例仍 PASS。"
+      },
+      {
+        "item": "机械臂编号 / 铭牌",
+        "state": "通过",
+        "evidence": "evidence/nameplate.json + evidence/nameplate_20261019.jpg（sha256 34c51b67…）",
+        "result": "型号 六轴机械臂 PIPER；S/N MA100101000019006400985（23 位）；制造商 东莞松灵科技有限公司",
+        "owner": "用户",
+        "blocked_by": "无（2026-10-19 12:03 由桌面照片取证，双路交叉核验：印刷体目视 + 二维码解码一致）",
+        "correction": "2026-10-19 11:56 复核：原记 blocked_by=臂未上电，判定有误；12:03 已取证"
+      },
+      {
+        "item": "真实限位回读",
+        "state": "通过",
+        "when": "2026-10-19T13:24+08:00",
+        "owner": "用户（现场 1 分钟）",
+        "probe": "stage0_probe 1.8-20261019（sha256 118ba204…）",
+        "evidence": "env/sdk_probe.json → sdk.hardware_limits（6/6 关节应答）；env/joint_limits.json",
+        "how": "SearchAllMotorMaxAngleSpd() 发 0x472×6 → 0x473 逐关节应答，按 motor_num==i 认身份",
+        "measured_deg": {
+          "joint_1": [
+            -150.0,
+            150.0
+          ],
+          "joint_2": [
+            0.0,
+            180.0
+          ],
+          "joint_3": [
+            -170.0,
+            0.0
+          ],
+          "joint_4": [
+            -100.0,
+            100.0
+          ],
+          "joint_5": [
+            -70.0,
+            70.0
+          ],
+          "joint_6": [
+            -180.0,
+            180.0
+          ]
+        },
+        "measured_max_spd_rad_s": 0.3,
+        "cross_check": "与 experiments/_vendor/urdf/piper_description.urdf 逐关节对照：J1–J5 完全一致（≤0.1° 量化误差，即 0x473 的 0.1° 步长）；**J6 不一致**：固件 ±180° vs URDF ±120°，见 R28",
+        "note": "TEACHING_MODE(0x2) 下 0x473 照常应答 —— 查询帧不依赖控制模式，这点对门 5 有参考价值（但运动指令仍需 CAN_CTRL）",
+        "earlier_failures": [
+          "13:05 接口名不存在（GetCurrentMotorAngleLimitMaxVel）→ 静默跳过（R27）",
+          "13:17/13:25 把聚合对象当列表 → TypeError。真因是 VM 跑的仍是 1.6，1.7 从未上传；1.8 已按源码结构改并在本地用假对象单测四例通过"
+        ]
+      },
+      {
+        "item": "末端配置与总负载",
+        "state": "有条件闭合（构型+官方标称已登记；实测总重待阶段 2 补）",
+        "blocker": null,
+        "owner": "用户（一把厨房秤，不需要电）",
+        "blocked_by": "无（不依赖上电，随时可做）",
+        "correction": "2026-10-19 11:56 复核：原记 blocked_by=臂未上电，判定有误",
+        "required_by": "指南 §2.3 表 → end_effector_and_payload；预算上限 1.5 kg",
+        "how": "2026-10-19 16:56 用户说明现场无秤 → 改用官方文档核验，按指南 §2.3 规则「不得填伪精确默认值」，官方标称单独登记、实测值保持 null",
+        "why_it_matters": "阶段 2 力矩标定的参考力矩要用到末端质量与质心；阶段 5 接触阈值也依赖它",
+        "note": "这一项不在指南 §3 的 4 条验收门里，属于 §2.3 表要求，所以阶段 0 的验收门本身已满足",
+        "followup": "① 若后续要装夹爪，末端配置一变，阶段 2 的力矩标定与阶段 3 的数据必须重做（指南 §2.1「标定与采数据必须在同一末端配置下」）；② 装上夹爪后 0x2A8 才有意义，R25 里「0x212 是否为末端状态」也顺带能定",
+        "result": "构型=标准两指夹爪（法兰安装，官方可选件）；标称 500 g（从动）/ 550 g（主动·示教器）；负载 1.5 kg 为含末端工具总量，装夹爪后剩约 1.0 kg",
+        "evidence": "GATE9_END_EFFECTOR.md（本地 §2.3:74-86 + agilex.ai/products/piper + PIPER X 手册 PDF 三方交叉）+ manifest.gate_status.gate_9_end_effector",
+        "why_not_blocking": "阶段 2 静态差分 I₁−I₀ 中末端重力项被抵消、剩余被 K 增益吸收 ⇒ 末端质量不是标定必需输入，仅用于 K 量级合理性旁证",
+        "plan_to_close": "阶段 2 必须称已知质量砝码时顺手称末端；或用阶段 2 的 K 反推末端质量做交叉验证",
+        "closed_conditionally": true
+      }
+    ],
+    "overall": "9/9：8 项完全通过（固件 / sdk / 官方实现 / commit / 控制模式【含 TEACHING→CAN_CTRL 真转移】 / 首帧守卫 / 铭牌 / 限位）+ 第 9 项「末端配置与总负载」**有条件闭合**（构型与官方标称已登记，实测总重并入阶段 2）",
+    "next_action_doc": "STAGE0_ACTIONS.md §0.8（臂已上电，现跑清单）",
+    "current_blocker": "无（阶段 0 已收口；阶段 2 需备砝码与力臂）",
+    "state": "完成（9/9，门 9 有条件闭合）",
+    "paused_at": "2026-10-19T11:47+08:00",
+    "resumed_at": "2026-10-19T12:12:13+08:00",
+    "resume": {
+      "when": "已满足（臂已上电 2026-10-19 12:03，邻机已拆除）",
+      "one_command": "bash env/poweron_collect.sh",
+      "what_it_does": "先快照上电前的失败证据，再监听 10 s 确认 0x2A1/0x251 出现（不出现就中止，避免又产出默认值），然后跑 sdk 相位取固件/从站/限位/使能位/守卫，最后打印摘要",
+      "not_done_by_script": [
+        "末端总重称重"
+      ],
+      "not_done_by_script_note": "铭牌已于 12:03 取证；邻机已拆除、无需实测间隙；只剩末端称重，不影响今天 L0-a 录制"
+    },
+    "audit_20261019_1156": {
+      "question": "阶段 0 是否完成（除了上电）",
+      "verdict": "没有。分三类：需上电 4 项 / 不需上电但没做 3 项 / 证据未归档 1 项",
+      "needs_power": [
+        "固件版本号（0x472→0x473，搜索帧 TX 失败）",
+        "从站模式（0x470 无回读）",
+        "真实限位（0x472 未取得回读）",
+        "首帧守卫现场证据（当前是零值假阳性，需真反馈重跑）"
+      ],
+      "no_power_needed_but_pending": [
+        "末端总重称重（原误判为 blocked_by 上电，已更正；仍未做）"
+      ],
+      "resolved_after_audit": {
+        "铭牌/序列号": "12:03 已取证 → S/N MA100101000019006400985，第 7 项转通过",
+        "邻机间隙": "12:03 用户确认邻机已拆除 → 无邻机，间隙约束不成立；但工作空间变大，L1 采数据前仍需实测单臂可达半径内的最近障碍",
+        "臂上电": "12:03 用户确认已上电 → 4 项需上电的取证可立即执行，见 STAGE0_ACTIONS §0.8"
+      },
+      "evidence_gap": {
+        "what": "VM 侧 5 个产物已回传（2026-10-19 12:00 用户执行 scp），缺口**已闭合**",
+        "files": [
+          "requirements-lock.txt",
+          "robot_env_lock.json",
+          "env_probe.json",
+          "bus_probe.json",
+          "sdk_probe.json"
+        ],
+        "verified": "requirements-lock.txt 实测 sha256 = 5d174257197b2522f63026a85096ef1649ad7828c3d726c6f2223a05709d57f3，与 robot_env_lock.json 及本文件记录三方一致",
+        "state": "已闭合",
+        "power_needed": false
+      },
+      "record_errors_found_in_returned_jsons": [
+        {
+          "field": "robot_env_lock.json → system_python",
+          "recorded": "3.12.15",
+          "actual": "系统 /usr/bin/python3 = 3.14.4（ROS 2 Lyrical 用的那个）",
+          "cause": "freeze_robot_env.sh 用裸 `python3` 取版本，在已激活的 venv 里解析到 venv 的解释器",
+          "impact": "「A 训练 3.12 / B ROS 3.14」双轨的界线被抹平；后续按这张表重建环境会选错解释器",
+          "fixed": "2026-10-19 12:10 改用 /usr/bin/python3 绝对路径，并新增 system_python_path / python3_on_path 两个字段",
+          "note": "已回传的 robot_env_lock.json 是旧脚本产物，字段值仍错；重跑 freeze 会覆盖"
+        }
+      ]
+    },
+    "poweron_first_collect_20261019_1212": {
+      "when": "2026-10-19T12:12:01+08:00",
+      "cmd": "bash env/poweron_collect.sh",
+      "probe_ver": "stage0_probe/1.3-20261019（先于本次修复）",
+      "bus": {
+        "verdict": "有机器人反馈帧",
+        "link": "UP @1000000 bps, sample_point=0.75, restart_ms=0",
+        "frames": "total=31396, error_frames=0, distinct_ids=25",
+        "high_speed_0x251_0x256": "6/6 命中，每路 n=1999/10 s",
+        "low_speed_0x261_0x266": "6/6 命中，每路 n≈400/10 s",
+        "status_0x2a1_0x2a8": "8/8 命中，每路 n=1999/10 s（注意是 8 个 ID，不止 2A1~2A4）",
+        "cadence": "高速/状态 median 5.00 ms（p95 5.2，max 13.5）→ **200 Hz**；低速 25.0 ms → 40 Hz",
+        "unknown_ids": [
+          "0x1c0",
+          "0x1c1",
+          "0x1c2",
+          "0x1c3",
+          "0x212"
+        ],
+        "unknown_note": "0x1c0~0x1c3 载荷全 0；0x212=04010f02。合计约 1010 帧/10 s（占 3.2%），来源未定"
+      },
+      "sdk": {
+        "firmware": "S-V1.8-8",
+        "ctrl_mode": "TEACHING_MODE(0x2)",
+        "arm_status": "NORMAL(0x0)",
+        "motion_status": "REACH_TARGET_POS_SUCCESSFULLY(0x0)",
+        "teach_status": "STOP_RECORDING(0x2)",
+        "enable": "all=True flags=[True]*6",
+        "guard": "opened=True discarded=10 {baseline:1, accumulate:9}"
+      },
+      "verdict": "软件侧 4 项通过（2/3/4/7）+ 固件与守卫转通过（1/6）；限位因接口名错未查（已修）；从站模式待定；末端总重仍待称"
+    },
+    "record_errors_20261019_1310": {
+      "at": "2026-10-19T13:10+08:00",
+      "title": "产物被自己的下一步覆盖 —— 同一类问题第二次出现",
+      "items": [
+        "1.4 的 --query-limits 与 --set-slave 共用默认输出名 env/sdk_probe.json，后者覆盖前者，限位回读数据丢失。这与 12:00 那次「上电后覆盖上电前的失败证据」是同一根因：默认同名输出。",
+        "13:05 这一次守卫由「已核验」变成「不通过」，但 1.4 摘要只打状态不打原因，无法判断是读数超限、缓存帧还是窗口太短。",
+        "13:17：限位解析 TypeError('... is not subscriptable')，把聚合对象当列表；13:05/13:17 两次 0xFC 都未改变 ctrl_mode，因为 0xFC 不是程序控开关（读源码才确认）"
+      ],
+      "fixes": [
+        "probe 1.5：写盘前把旧文件复制到 env/archive/<name>_<mtime>.json，同秒连跑加 -1/-2 后缀，永不覆盖",
+        "probe 1.5：摘要增打印 模式(含 code) / 守卫拒收直方图 / 守卫人话提示 / 限位逐关节 / 切从站前后模式",
+        "文档：VM 命令一律改成单行以 && 结尾，避免粘贴断行把两条命令粘成一条"
+      ],
+      "note": "「证据被自己的下一步冲掉」只能靠工具兜住，不能靠人记得改名 —— 这次是第二次证明。"
+    },
+    "gate_9_end_effector": {
+      "state": "有条件闭合（配置已登记；总重为官方标称、未实测）",
+      "closed_by": "2026-10-19 16:56 官方文档交叉核验（本地参数表 + agilex.ai 官网 + PIPER X 用户手册 PDF）",
+      "satisfied": [
+        "末端**构型**已确定：标准两指夹爪（官方可选件，法兰安装）",
+        "末端**标称质量**已确定：500 g（从动夹爪）/ 550 g（主动夹爪·示教器）",
+        "负载预算口径已澄清：1.5 kg 是含末端工具的总量，装夹爪后剩余可取物约 1.0 kg"
+      ],
+      "not_satisfied": [
+        "末端**实测**总重（含相机/支架/线缆/转接板，官方无数据）"
+      ],
+      "why_blocking_level_is_low": "阶段 2 的静态差分标定把末端重力项**吸收进 K**，因此末端质量的绝对值不是标定的必需输入；它只用于①判断 K 的量级是否物理合理，②给 L1 的策略提供负载上下文。缺失它不会让 K 标错，只会让「K 是否可信」少一个旁证",
+      "plan_to_close": "阶段 2 开场本来就必须称「已知质量砝码」（指南 §2.1 标定件），届时**顺手把末端一起称**，一次做完；若阶段 2 后已有 K，可用 K 反推末端质量做交叉验证",
+      "evidence_files": [
+        "experiments/20261019_stage0/env/joint_limits.json"
+      ]
+    },
+    "closed_at": "2026-10-19T16:56+08:00"
+  },
+  "evidence": [
+    "source_commit.txt",
+    "env/dev_env_windows.json",
+    "scripts/stage0_probe.py",
+    "STAGE0_REPORT.md",
+    "STAGE0_ACTIONS.md",
+    "env/requirements.in",
+    "env/freeze_robot_env.sh",
+    "WHERE_TO_PUT.md",
+    "scripts/stage0_dump.py",
+    "env/poweron_collect.sh",
+    "evidence/nameplate.json",
+    "evidence/nameplate_20261019.jpg"
+  ],
+  "hardware_from_first_arm": {
+    "source": "C:/Users/asus/ARM/FIRST_ARM（00-总纲.md / README.md / 项目总卷，证据截止 2026-10-16）",
+    "state": "已核验（来自既有工程归档，非本机复核；现场仍需逐项复验）",
+    "robot": "AgileX PiPER 六轴，S/N MA100101000019006400985，型号 六轴机械臂 PIPER（2026-10-19 12:03 铭牌取证）",
+    "os": "Ubuntu（VMware 虚拟机）zzz@192.168.242.128 / zzz-VMware-Virtual-Platform",
+    "ros": "ROS 2 Lyrical (/opt/ros/lyrical) + MoveIt 2",
+    "system_python": "3.14.4",
+    "ros_workspace": "/home/zzz/agx_arm_ws",
+    "ros_driver_repo": "agx_arm_ros@ceda565（分支 ros2），URDF 子模块 6a7f2e2",
+    "existing_sdk": "pyAgxArm 1.0.0（源码 d90e234）——与本复现的 piper_sdk 0.6.1 是两套 SDK",
+    "can": "can0，1 Mbit/s，gs_usb OpenMoko/CandleLight 1d50:606f（USB 直通进虚拟机）",
+    "measured_feedback": "/feedback/joint_states 369.148 Hz（聚合）；中继 204.663 Hz；JTC 200 Hz",
+    "measured_limits_deg": {
+      "J1": "±150",
+      "J2": "0~180",
+      "J3": "-170~0",
+      "J4": "±100",
+      "J5": "±70",
+      "J6": "±170"
+    },
+    "red_lines": [
+      "不发送使能/失能命令（臂上电即自使能，不需要 0x471，但上电就有力矩）",
+      "不调用回零 move_home（绕过 control_enabled）",
+      "不用使能/回零去试探通信",
+      "不把 Ctrl+C 当失能或急停",
+      "不在未确认固定与停止方式时上电"
+    ],
+    "safety_context": "邻机已于 2026-10-19 12:03 拆除（原记「旁边还有其他机械臂」不再成立）→ 单臂工作空间，MoveIt 场景与物理环境现在一致；但「规划成功 ≠ 物理安全」仍成立，可达半径内仍需清空",
+    "unclosed": [
+      "固件版本未查(M10) —— 12:03 已上电，可查",
+      "0.083° 到位静差未解释",
+      "initial_positions 六轴全 0 未加固",
+      "末端总重未称（夹爪+相机+线缆）"
+    ]
+  },
+  "hardware_from_first_arm_note": "与阶段 0 直接相关：M10 固件版本 + 铭牌/序列号。铭牌已于 12:03 取证归档（evidence/nameplate.json）；固件待 §0.8 采集。两项都属只读或人工抄录，不需要运动。",
+  "limit_readback_20261019_1324": {
+    "when": "2026-10-19T13:24:29+08:00",
+    "cmd": "python scripts/stage0_probe.py --phase sdk --allow-write --query-limits",
+    "probe_ver": "stage0_probe/1.8-20261019",
+    "gate": "门 8 通过",
+    "raw_per_joint": {
+      "joint_1": {
+        "min_deg": -150.0,
+        "max_deg": 150.0,
+        "max_spd_rad_s": 0.3,
+        "spd_raw": 300
+      },
+      "joint_2": {
+        "min_deg": 0.0,
+        "max_deg": 180.0,
+        "max_spd_rad_s": 0.3,
+        "spd_raw": 300
+      },
+      "joint_3": {
+        "min_deg": -170.0,
+        "max_deg": 0.0,
+        "max_spd_rad_s": 0.3,
+        "spd_raw": 300
+      },
+      "joint_4": {
+        "min_deg": -100.0,
+        "max_deg": 100.0,
+        "max_spd_rad_s": 0.3,
+        "spd_raw": 300
+      },
+      "joint_5": {
+        "min_deg": -70.0,
+        "max_deg": 70.0,
+        "max_spd_rad_s": 0.3,
+        "spd_raw": 300
+      },
+      "joint_6": {
+        "min_deg": -180.0,
+        "max_deg": 180.0,
+        "max_spd_rad_s": 0.3,
+        "spd_raw": 300
+      }
+    },
+    "spd_unit": {
+      "probe_said": "ambiguous：两种换算都合理，按文档取 0.001（raw=300）",
+      "source_verdict": "piper_sdk 0.6.1 interface/piper_interface.py:3200 原文 「max_joint_spd: Maximum joint speed, unit 0.001 rad/s. Range [0,3000]」→ 单位确定是 0.001 rad/s，量程 0..3.0 rad/s；raw=300 即 0.300 rad/s",
+      "why_still_open": "六轴 raw 全为 300、且 URDF 的 velocity 字段写 5.0 rad/s，两者对不上。按 0.001 档 0.3 rad/s ≈ 17.2°/s，对 6 轴臂偏保守。不影响 L0-a（被动录制）；L0-b 前用实测反推（见 R29）",
+      "safe_side": "下发一律按 0.3 rad/s 设计 —— 若固件其实是 0.01 档，实际能力更强，我们只会更慢，不会超速",
+      "probe_1_10_fix": "1.10 起不再用「算出来像不像关节速度」的区间去猜：改为按 SDK 源码量程硬判。raw>3000 → 只可能是 0.01 档（并与文档冲突，需人工核）；raw>300 → 排除 0.01 档，确定 0.001；raw≤300 → 两档都合法，按文档取 0.001，并把「若实测速度是该值 10 倍则固件走 0.01 档」写进输出。输出文案里不再出现 ambiguous 这个词——它会让后来读证据的人以为读数有问题。"
+    },
+    "verdict": "门 8 关闭。附带产出 env/joint_limits.json，stage1_cmd.py --limits 直接吃（字段 min_deg/max_deg，代码已核对一致）",
+    "clean_evidence_1339": {
+      "when": "2026-10-19T13:39+08:00",
+      "probe_ver": "stage0_probe/1.9-20261019（sha256 f4cf1c71…）",
+      "why": "13:34 那次没带 --query-limits，导致 sdk_probe.json 里限位=未核验，与门 8 已通过的事实不自洽",
+      "result": "模式=CAN_CTRL(0x1) + 限位=已核验 6/6 同时出现在同一份 env/sdk_probe.json 里",
+      "note": "现在这一份是阶段 0 的最终证据版本；更早的都在 env/archive/"
+    }
+  },
+  "can_ctrl_20261019_1334": {
+    "when": "2026-10-19T13:34:15+08:00",
+    "cmd": "python scripts/stage0_probe.py --phase sdk --allow-write --to-can-ctrl",
+    "probe_ver": "stage0_probe/1.8-20261019",
+    "gate": "门 5 通过（判据=状态值 CAN_CTRL(0x1)）",
+    "observed": "完成前=CAN_CTRL 完成后=CAN_CTRL；固件 S-V1.8-8；已使能=True；守卫=已核验",
+    "not_observed": "TEACHING(0x2) → CAN_CTRL(0x1) 的转移（发指令前已是目标态）",
+    "side_effect_note": "本次未带 --query-limits，故 hardware_limits 记为未核验；门 8 证据在 env/archive/sdk_probe_20261019T133415.json 与独立的 env/joint_limits.json，未被覆盖",
+    "reverted_20261019_1508": {
+      "when": "2026-10-19T15:08+08:00",
+      "observed": "ctrl_mode = TEACHING_MODE(0x2)",
+      "how_found": "stage1_cmd.py hold 的模式预检读回并 ABORT",
+      "gap_between": "13:39 为 CAN_CTRL(0x1) → 15:05 can0 掉线（SDK: CAN port can0 is not UP）→ 15:08 为 TEACHING_MODE(0x2)",
+      "inference": "can0 掉线期间 USB 直通重连/VM 恢复，臂侧很可能也断过电，上电复位回示教态。无法从现有数据 100% 区分「掉电复位」与「示教手柄被按/空闲回落」，但不影响下一步",
+      "why_this_is_good": "13:34 那次完成前已是 CAN_CTRL，没证明 MotionCtrl_2(0x01,…) 能完成转移。现在处于 TEACHING_MODE(0x2)，是补验转移的唯一窗口：跑 --to-can-ctrl 应看到 完成前=TEACHING_MODE(0x2) 完成后=CAN_CTRL(0x1)",
+      "guard_worked": "stage1_cmd.py 在 ctrl_mode != CAN_CTRL(0x1) 时直接 ABORT（未加 --force-mode），没有在示教态下发 JointCtrl。这是该守卫第一次在真机上生效",
+      "retry_1512_crashed": {
+        "when": "2026-10-19T15:12+08:00",
+        "probe_ver": "stage0_probe/1.10-20261019（sha256 aab61dd4…）",
+        "cmd": "python scripts/stage0_probe.py --phase sdk --allow-write --to-can-ctrl",
+        "observed_before_switch": "固件=S-V1.8-8 已使能=True 模式=TEACHING_MODE(0x2)（切之前读到的）",
+        "crash": "NameError: name 'query_limits' is not defined @ scripts/stage0_probe.py:1048",
+        "severity": "不影响证据，只影响打印",
+        "why": "probe 的执行顺序是「发指令 → 写 JSON → 打印摘要」。崩在打印阶段，所以 MotionCtrl_1/2 已发出，env/sdk_probe.json 已写盘（含 can_ctrl.before/after）。但「完成后=」那行没打出来，用户看不到判定结果",
+        "root_cause": "1.9 改 [LIMIT] 提示时写成 `not query_limits`，main 里正确写法是 `args.query_limits`；py_compile 查不出",
+        "evidence_still_on_disk": "VM: env/sdk_probe.json → sdk.can_ctrl.value（before/after 都在）；旧版本已归档 env/archive/sdk_probe_20261019T134136.json",
+        "do_not_rerun_blindly": "重跑会把 before 覆盖成当前状态，若已切成功就再也观察不到 TEACHING→CAN 的转移。必须先读 JSON 里的 before/after",
+        "fixed_in": "stage0_probe/1.11-20261019（sha256 81366fe4…）"
+      }
+    },
+    "transfer_observed_20261019_1512": {
+      "when": "2026-10-19T15:12+08:00（指令发出）／15:19 从 JSON 读出结果",
+      "probe_ver": "stage0_probe/1.10-20261019",
+      "evidence": "env/sdk_probe.json → sdk.can_ctrl.value（15:12 那次写盘；15:19 之后被 --query-limits 那次归档到 env/archive/sdk_probe_20261019T151228.json）",
+      "before": "TEACHING_MODE(0x2)",
+      "after": {
+        "name": "CAN_CTRL",
+        "code": 1
+      },
+      "steps": [
+        "MotionCtrl_1(0,0,0) 关闭拖动示教",
+        "MotionCtrl_2(0x01,0x01,100,0)"
+      ],
+      "state": "已核验",
+      "significance": "这是**第一次真正观测到 TEACHING→CAN_CTRL 的转移**。13:34 那次 completed 前已是 CAN_CTRL，只能证明「状态正确」；这次 before 明确是 TEACHING_MODE(0x2)，after 是 CAN_CTRL(0x1)，才证明 MotionCtrl_1(0,0,0)+MotionCtrl_2(0x01,0x01,100,0) 这条指令序列**真能把臂从示教态切出来**。门 5 的尾巴到此消除",
+      "incidental": "这次是 1.10 的 NameError 崩溃顺带留下的证据 —— 崩在打印阶段而非探测阶段，数据已写盘，所以「先读 JSON 别重跑」的判断救了这条证据"
+    }
+  },
+  "l0a_660_20261019_1357": {
+    "when": "2026-10-19T13:57+08:00",
+    "host": "VM ~/stage0/20261019_stage1_l0",
+    "cmd_record": "python stage1_l0.py record --iface can0 --seconds 660 --out runs/l0a_660.jsonl",
+    "cmd_parse": "python stage1_l0.py parse runs/l0a_660.jsonl --hz 50 --pos251-unit mrad --out episodes/l0a_660",
+    "recorder_ver": "stage1_l0/1.2（sha256 4d575509…）",
+    "raw_file": {
+      "bytes": 128294419,
+      "frames": 2073061,
+      "span_s": 660.2,
+      "fps": 3139.6
+    },
+    "raw_counters": {
+      "unknown_id": 66660,
+      "short_dlc": 660,
+      "out_of_order": 0
+    },
+    "per_hs_id_frames": 132000,
+    "per_hs_id_hz": 199.94,
+    "parse_run_1_rad": {
+      "when": "2026-10-19T13:57+08:00",
+      "samples": 33000,
+      "q_complete": 32999,
+      "flagged_core": 1,
+      "ratio_251_over_2a5": 999.893,
+      "result": "单位选错（默认 rad），判为失败；1.3 起这种情况退出码 2"
+    },
+    "disk_after": {
+      "avail": "869M",
+      "used_pct": 96
+    },
+    "verdict": {
+      "status": "通过（三条判据全部签字）",
+      "cycle": {
+        "status": "已测",
+        "value": "200Hz 档，199.94 Hz（5.0 ms），六路帧数完全一致 132000"
+      },
+      "q_rate": {
+        "status": "已测",
+        "value": "32999/33000 = 99.997%",
+        "criterion": "≥99% → 通过"
+      },
+      "gap_gt100ms": {
+        "status": "已测",
+        "value": "0（六路高速 + 六路低速全部 >100ms 计数为 0）",
+        "criterion": "→ 通过"
+      },
+      "not_covered": "「每关节都有明显的位置/速度激励」不在 L0-a 范围（静止录制按设计不含激励），留给 L0-b"
+    },
+    "known_good": {
+      "unknown_id_per_s": 101,
+      "short_dlc_per_s": 1,
+      "why": "12:12 与 13:45 冒烟两次都是这个数，属恒定背景流量（R25），不是故障"
+    },
+    "signed_off": {
+      "when": "2026-10-19T14:14+08:00",
+      "parser_ver": "stage1_l0/1.3-20261019（sha256 beece846…）；报告取整与停顿提示的修正见 1.4",
+      "cmd": "python stage1_l0.py parse runs/l0a_660.jsonl --hz 50 --pos251-unit mrad --out episodes/l0a_660",
+      "exit_code": 0,
+      "evidence": "episodes/l0a_660/sync_report.md + metrics.json",
+      "criteria": {
+        "cycle_5ms": {
+          "measured": "六路 0x251~0x256 各 132000 帧 / 659.999 s；中位数 5.0 ms，p95 5.22~5.38，p99 5.56~6.06",
+          "verdict": "通过（detected_hs_rate=200Hz）"
+        },
+        "no_gap_gt100ms": {
+          "measured": "六路高速 >100ms 全 0；低速 0x261~0x266 也全 0",
+          "verdict": "通过"
+        },
+        "q_rate": "32999/33000 = 99.997% → 通过。注意：1.3 跑出来的报告把这行印成 100.00%（两位小数舍入），1.4 起改三位小数（99.997%），并为「单次停顿」加一行旁证。",
+        "verdict": {
+          "cycle_ok": true,
+          "no_gap_gt100ms": true,
+          "q_rate_ge_99pc": true
+        }
+      },
+      "low_speed_channels": {
+        "ids": "0x261~0x266",
+        "n": 26400,
+        "hz": 40.0,
+        "median_ms": 25.0,
+        "gt40ms": "每路 1~2 次（最大 47.4 ms，约等于漏 1 帧）",
+        "gt100ms": 0
+      },
+      "single_stall": {
+        "when_in_record": "全程仅 1 次",
+        "evidence": "六路高速最大间隔 27.81~28.45 ms，低速最大 40.87~48.09 ms，都挤在同一次",
+        "reading": "同一次事件把六路一起拉长 → 主机/适配器侧调度抖动（VM 未做实时化），不是某一路丢帧",
+        "why_it_matters": "这一个事件同时解释了「带实质标记 1 个样本」（那一刻六路都没新帧，missing:q1..q6 + missing:hs1..hs6 各 1）",
+        "impact": "远低于 100 ms 判据，不影响 L0 验收；但 L1 时序对齐要知道存在 ~30 ms 级抖动。若阶段 3 采集时抖动变频繁，考虑 CPU 亲和/chrt 或挪到裸机"
+      },
+      "ratio_after_fix": 1.0,
+      "ratio_meaning": "--pos251-unit mrad 后 pos251/angle_rad = 1.000，与 R12 结论（0x251 = 0.001 rad）一致，单位口径闭环"
+    }
+  },
+  "probe_1_11_20261019": {
+    "when": "2026-10-19T15:14+08:00",
+    "version": "stage0_probe/1.11-20261019",
+    "sha256": "81366fe45f519841517d9a2a27bb6ecf81d760a6db999971564b78d776648724",
+    "lines": 1184,
+    "fix": "main:1048 `not query_limits` → `not args.query_limits`",
+    "new_selftests": {
+      "G_name_scan": "AST 扫全文件未定义变量（含嵌套函数/类/import 别名/comprehension 目标）。py_compile 只查语法，查不出 NameError；这类 bug 只有真机跑到那一行才炸。**已用同一 bug 注入验证**：把 args.query_limits 改回 query_limits 后 G 报 {'main': ['query_limits']} 并 FAIL",
+      "H_limit_parse": "门 8 连挂两次的两个坑固化成断言：聚合对象不可下标（应走 .motor[1..6]）、未应答关节给 motor_num=0 的全零对象（应返回 {}）。三例：全零→{}、六轴正解（含 0.3 rad/s）、部分只回 J1/J3→只返回两个不补零",
+      "selftest_result": "PASS（A~F 守卫 6 例 + G/H 2 例）"
+    }
+  },
+  "l0b_hold_20261019_1521": {
+    "when": "2026-10-19T15:21+08:00",
+    "host": "VM ~/stage0/20261019_stage1_l0",
+    "cmd": "python stage1_cmd.py hold --iface can0 --duration 10 --limits ~/stage0/20261019_stage0/env/joint_limits.json --out cmd/l0b_hold",
+    "cmd_ver": "stage1_cmd/1.0（当时版本；1.1 只改提示文案与 meta 字段）",
+    "precondition": "stage0_probe 1.11 selftest PASS（A~F 守卫 + G name_scan clean + H limit_parse ok）",
+    "ctrl_mode": "CAN_CTRL(0x1)",
+    "q0_deg": [
+      -24.49,
+      7.29,
+      -25.45,
+      5.21,
+      24.05,
+      50.5
+    ],
+    "q0_all_zero_check": "通过（预检拦全 0，R18）",
+    "limits_loaded": true,
+    "n_sent": 1000,
+    "hz": 100,
+    "duration": 10,
+    "n_skipped": 0,
+    "n_step_clamped": 0,
+    "n_limit_clamped": 0,
+    "verdict": "通过。这是**第一次在 CAN_CTRL 下真的把 1000 帧 JointCtrl 写进总线**，且主机节拍零丢拍（n_skipped=0）、零限幅（说明 q0 在限位内且保持不动）。它证明的是「指令链路通」，不是「臂会跟随」—— 跟随要等 sine",
+    "not_yet_proven": "臂是否真的按 q_cmd 动（R19）—— hold 幅值为 0，无法区分「跟随」与「忽略」",
+    "ui_bug_found": "确认提示印出「幅值 [3.0]*6 deg」，但 hold 一个字节都不动 —— argparse 的默认值被当成实际参数打印。stage1_cmd/1.1 修：hold 分支改写「保持启动时读到的姿态不变」并回显启动姿态；meta 里 amp_deg/freq_hz 写 null"
+  },
+  "l0b_j6_sine_20261019_1526": {
+    "when": "2026-10-19T15:26:46+08:00",
+    "host": "VM ~/stage0/20261019_stage1_l0",
+    "cmd_rec": "python stage1_l0.py record --iface can0 --seconds 90 --out runs/l0b_j6.jsonl（与下发并行，两个终端）",
+    "cmd_send": "python stage1_cmd.py sine --iface can0 --duration 40 --hz 100 --freq-hz 0.1 --amp-deg 0 0 0 0 0 3 --limits ~/stage0/20261019_stage0/env/joint_limits.json --out cmd/l0b_j6_sine3",
+    "ctrl_mode": "CAN_CTRL(0x1)",
+    "track": {
+      "joint_6": {
+        "state": "跟随",
+        "resp_ratio": 0.8672,
+        "delay_ms": 60.0,
+        "q_cmd_p2p_deg": 5.9999,
+        "q_p2p_deg": 5.937,
+        "dq_ratio_peak": 5.4886
+      },
+      "joint_1_5": "未激励（指令幅值 0，按设计不判）"
+    },
+    "gate": "R19 关闭：指令真的驱动了臂",
+    "data_quality": {
+      "record_wall_s": 90.2,
+      "record_frame_span_s": 52.0,
+      "hs_frames_per_id": 10393,
+      "hs_rate_by_span": "199.9 Hz",
+      "interpretation": "按帧跨度算 0x251 是 199.9 Hz —— **一帧没丢**。按墙钟算会得到 115 Hz（丢 42%），那是错的算法：录制后半段根本没帧",
+      "unknown_id": 17114,
+      "short_dlc": 52,
+      "ooo": 0
+    },
+    "samples": {
+      "n": 2600,
+      "q_complete": 2599,
+      "flagged_core": 649,
+      "flagged_core_explained": "649 个几乎全是 `cmd_interrupted`：q_cmd 只覆盖 40 s，样本网格 52 s，指令窗外的 12 s 被算成实质标记。1.6 起改为 `qcmd_out_of_window`（提示性），不再污染实质标记率"
+    },
+    "stderr": "约 80 条 `[ERROR] [PIPER] JointCtrl_Jxx send failed: SendCanMessage(SEND_MESSAGE_FAILED (100017))`，全部集中在 15:26:46 这一秒"
+  },
+  "l0b_tooling_1_6_2_0": {
+    "when": "2026-10-19T15:40+08:00",
+    "stage1_l0": {
+      "version": "stage1_l0/1.7-20261019",
+      "sha256": "67827e027223af0c7f6481f24c69564289deb8a9833857747e5309ead402cd89",
+      "changes": [
+        "SO_RCVBUF（默认 208 KB → 请求 8 MB，打印实际生效值）",
+        "record 打「帧时间跨度 vs 墙钟」+ 断流 WARN",
+        "parse 加 data_covers_window 判据，断流时明确写「下面三条都不作数」",
+        "q_cmd 窗口外改标 qcmd_out_of_window（提示性），不再算实质标记",
+        "track 的 dq 比值改用 RMS（峰值对毛刺敏感，15:26 得到 5.49 与响应比 0.87 矛盾）",
+        "新增 audit 子命令：按分桶打「每段有没有帧」+ >100 ms 空洞清单 + 0x2A8 载荷是否全 0（R30 的定性工具；0x2A8 一项同时用来验证「没装夹爪」这个说法）"
+      ],
+      "selftest": "PASS 8/8"
+    },
+    "stage1_cmd": {
+      "version": "stage1_cmd/2.0-20261019",
+      "sha256": "a580c2ed7f1f5e26222ee27eb29b38e5f48d48a7ac4827f828efa0980a6324a0",
+      "changes": [
+        "自建 socket 发帧，逐帧判定成败（R31）",
+        "失败的拍不写 CSV、不推进 q_prev，连续 30 拍 ABORT",
+        "固件 ∩ URDF 包络（补回 SDK 的夹紧，J6 → ±120°）",
+        "meta 增加 n_send_failed / n_tx_frames_ok / envelope_deg"
+      ]
+    },
+    "local_checks": [
+      "py_compile 通过",
+      "AST 未定义名扫描：两个文件均无可疑项（同 probe 的 G 项思路）",
+      "dry-run 出 200 行、n_send_failed=0、envelope 正确",
+      "截断 raw 复现断流：parse 打 🔴 + 「三条都不作数」，exit 0 但报告明确标红"
+    ]
+  },
+  "gripper_added_20261019_1549": {
+    "when": "2026-10-19 15:49",
+    "fact": "用户在法兰上安装了夹爪",
+    "consequences": [
+      "门 9 的末端配置从「裸法兰」变为「夹爪」，基线重量/惯量全部改变",
+      "指南 §2.1：标定与采数据必须在同一末端配置下。阶段 2/3 尚未开始，因此无需返工；但从现在起末端配置冻结",
+      "阶段 2 的 I0（空载基线）必须是装夹爪之后采的",
+      "增加末端长度与碰撞外形，L0-b 六轴联动档的碰撞预算需重算"
+    ],
+    "tool": "scripts/stage0_gripper_check.py 1.0-20261019",
+    "verdicts_pending": [
+      "C1 帧率",
+      "C2 status bit6 使能",
+      "C3 致动跟随"
+    ],
+    "resolution": {
+      "when": "2026-10-19 16:04",
+      "decision": "本次复现不使用夹爪",
+      "scope": "不驱动、不采集、不参与 L0/L1/L2 任何验收；夹爪识别核验（C1~C4）不再阻塞主线",
+      "caveat": "若夹爪仍留在法兰上，阶段 2 的重力项自然包含它；若要在标定前拆除，现在就是最后窗口（指南 §2.1 末端配置冻结）",
+      "tool_kept": "scripts/stage0_gripper_check.py 1.1（sha256 60f2c57e…）留作备用",
+      "risks_status": "R32/R33 保留但标注「本次不适用」"
+    },
+    "can0_incident_20261019_1608": {
+      "symptom": "0x2A8 零帧（15:56），随后 `ip link set can0 up type can bitrate 1000000` 报 No such device",
+      "root_cause": "can0 的 netdev 处于半提交状态（dmesg 三条 link change request failed），不是 USB 设备丢失",
+      "fix": "三步法 down → type/bitrate → up，16:12 恢复为 state UP / bitrate 1000000 / ERROR-ACTIVE",
+      "note": "qlen 只有 10，六轴下发 600 帧/s 时 TX 队列很容易满 —— 与 15:26 那 80 条 SEND_MESSAGE_FAILED 可能同源，待 ip -s 计数验证",
+      "consequence": "15:56 那次「0x2A8 零帧」的解释：整条总线当时的 netdev 已失效，与夹爪无关"
+    }
+  },
+  "bus_silent_20261019_1614": {
+    "when": "2026-10-19 16:14",
+    "symptom": "RX 4 packets / 0 errors / 0 dropped；--phase bus 0/6；--to-can-ctrl 关节数=0；模式读成 STANDBY(0x0)",
+    "note": "零帧时 CtrlMode/已使能/固件 三项均为结构体默认值，不可作为臂状态判据（同 R18）",
+    "timeline_correlation": "15:26 最后一次成功录制（200 Hz）→ 15:49 装夹爪断电 → 此后总线再未出现任何帧。**断点与装夹爪的动作严格吻合**",
+    "physical_checks_done": "16:20 用户确认第四节（24V 指示灯/急停/底座 CAN 插头/H-L 反接）全部正常",
+    "isolate_tests": [
+      "适配器 loopback 自检",
+      "拔 XT30 + 完整断电按 A–G 重上电",
+      "万用表量 CAN_H–CAN_L ~60 Ω"
+    ]
+  },
+  "bus_baseline_reproduced_20261019_1626": {
+    "when": "2026-10-19 16:26",
+    "method": "按 ID 计数，窗长 3.00 s",
+    "total": "9424 帧 / 3.00 s = 3138 帧/s",
+    "per_id": {
+      "0x251~0x256": "各 199.8 Hz",
+      "0x2A1~0x2A8": "各 199.8 Hz",
+      "0x261~0x266": "各 40.0 Hz",
+      "0x1C1": "40.0 Hz（未文档化，R37）"
+    },
+    "verdict": "与 15:26 基线（2073061 帧 / 660.2 s = 3141 帧/s）吻合到 0.1%，L0-a 的总线基线在这次断电/重接后**完整复现**",
+    "note": "高速反馈 6/6；0x2A8 恒 200 Hz 且载荷全 0，符合『无夹爪』预期"
+  },
+  "to_can_ctrl_attempt_20261019_1631": {
+    "result": "未执行（SDK 未加载：ModuleNotFoundError: piper_sdk）",
+    "evidence": "probe 打印『SDK 未加载：pip 装 piper-sdk 后重试』『模式=未读到』『守卫=None』",
+    "root_cause": "用户新开的终端没有进入名为 `ros` 的虚拟环境（不是 conda，VM 上 `conda` 命令不存在、~/miniconda3 也不存在）",
+    "consequence": "臂**仍处于上电后的默认模式**，六轴正弦若此时下发会被 stage1_cmd.py 的模式守卫拦下（ctrl_mode != CAN_CTRL 直接中止）",
+    "action": "先找到并激活 venv（find ~ -maxdepth 4 -name activate -path '*/bin/*'），再重跑 --to-can-ctrl"
+  },
+  "l0b_six_axis_20261019_1645": {
+    "when": "2026-10-19 16:45",
+    "tool": "run_l0b_six.sh（record 75s + sine 60s，六轴同相 ±2° @0.1Hz）",
+    "mode_transition": {
+      "before": "TEACHING_MODE(0x2)",
+      "after": "CAN_CTRL(0x1)",
+      "state": "已核验",
+      "note": "断电重启后复位到示教态，本次为干净的 TEACHING→CAN_CTRL 闭环（第一次在 16:38 那次 probe 已观察到，16:45 由脚本再确认一次）"
+    },
+    "firmware": "S-V1.8-8（首次核实，R23 关闭）",
+    "enabled": true,
+    "record": {
+      "frames": 253609,
+      "span_s": 75.1,
+      "rate_hz": 3376,
+      "per_joint": [
+        15000,
+        15000,
+        15000,
+        15000,
+        14999,
+        14999
+      ],
+      "expected": 15017,
+      "capture_ratio": 0.9989,
+      "unknown_id": 25611,
+      "short_frames": 75,
+      "out_of_order": 0
+    },
+    "tx": {
+      "csv_rows": 6000,
+      "frames": 18029,
+      "expected": 18000,
+      "errors": 0,
+      "dropped": 0,
+      "note": "6000 拍 × 3 帧/拍，零发送失败；2.0 的逐帧判定这次没有任何 reject"
+    },
+    "rx_counters": {
+      "pre": {
+        "packets": 4232673,
+        "errors": 0,
+        "dropped": 0,
+        "overrun": 0
+      },
+      "post": {
+        "packets": 4508992,
+        "errors": 0,
+        "dropped": 0,
+        "overrun": 0
+      },
+      "delta_packets": 276319,
+      "note": "delta 含 IFF_ECHO 回显的自身 TX 18029 帧 + probe 若干"
+    },
+    "track": {
+      "response_ratio": [
+        0.9391,
+        0.9403,
+        0.9409,
+        0.942,
+        0.9416,
+        0.9407
+      ],
+      "lag_ms": [
+        80,
+        80,
+        80,
+        60,
+        60,
+        60
+      ],
+      "cmd_pp_deg": 4.0,
+      "actual_pp_deg": [
+        4.0,
+        3.944,
+        3.969,
+        3.974,
+        3.938,
+        3.948
+      ],
+      "verdict": "六轴全部『跟随』，R19 在六轴模式下同样关闭"
+    },
+    "r30_conclusion": "本次并发（record 253609 帧 + TX 18029 帧）**接收端零丢包**：RX dropped/overrun/errors 前后均为 0，逐关节捕获率 99.89%（缺口与首尾边界一致）。⇒『双进程必然断流』被证伪；15:26 那次 52 s 断流不是并发采集的固有行为，需另找诱因（当时伴随 80 条 SEND_MESSAGE_FAILED）",
+    "open_items": [
+      "parse 用了默认 --pos251-unit rad，比值 997.743 被判失败；q 取 0x2A5~0x2A7 不受影响，但 metrics 判据须以 mrad 重跑",
+      "VM 上的 stage1_l0.py 是 1.5（无 audit 子命令），本机是 1.7（sha256 67827e02），需重传",
+      "滞后值 60/80 ms 恰好是 50 Hz 重采样的整数倍（20 ms 栅格），分辨率不足，不能直接当 L1 对齐延迟用"
+    ],
+    "parse_clean_20261019_1655": {
+      "cmd": "parse runs/l0b_six.jsonl --out episodes/l0b_six --hz 50 --pos251-unit mrad --qcmd cmd/l0b_six.csv",
+      "ratio_0x251_vs_0x2A5": 0.998,
+      "ratio_meaning": "0x251 位置字段 / 0x2A5 角度字段 = 0.998 ≈ 1（mrad 口径），与 15:26 的 999.893（rad 口径）互为倒数校验 → **R12 双路互证成立，0x251 = 0.001 rad 定案**",
+      "samples": 3750,
+      "six_axis_complete": 3749,
+      "completeness": 0.99973,
+      "frame_span_s": 75.0,
+      "verdict": "通过（退出码 0）"
+    },
+    "audit_20261019_1655": {
+      "span_s": 75.0,
+      "buckets_10s": [
+        {
+          "i": 0,
+          "n": 32229,
+          "hs": 12000,
+          "ang": 6000,
+          "unk": 1829
+        },
+        {
+          "i": 1,
+          "n": 34410,
+          "hs": 12000,
+          "ang": 6000,
+          "unk": 4010
+        },
+        {
+          "i": 2,
+          "n": 34410,
+          "hs": 12000,
+          "ang": 6000,
+          "unk": 4010
+        },
+        {
+          "i": 3,
+          "n": 34410,
+          "hs": 12000,
+          "ang": 6000,
+          "unk": 4010
+        },
+        {
+          "i": 4,
+          "n": 34410,
+          "hs": 12000,
+          "ang": 6000,
+          "unk": 4010
+        },
+        {
+          "i": 5,
+          "n": 34410,
+          "hs": 12000,
+          "ang": 6000,
+          "unk": 4010
+        },
+        {
+          "i": 6,
+          "n": 33627,
+          "hs": 12000,
+          "ang": 6000,
+          "unk": 3227
+        },
+        {
+          "i": 7,
+          "n": 15703,
+          "hs": 5998,
+          "ang": 3000,
+          "unk": 505
+        }
+      ],
+      "hs_expected_per_10s": 12000,
+      "finding": "**8 个桶中有 7 个 hs 严格等于 12000**（6 轴 × 200 Hz × 10 s），末桶 5998 ≈ 5 s × 200 Hz × 6 = 6000。这是「零丢帧」最强的形态：不是平均值达标，而是每个 10 s 窗口一格不差",
+      "gaps_over_100ms": 0,
+      "verdict": "无空洞、无提前结束。**R30 彻底关闭**（15:26 那次 52 s 断流与并发采集无关，属一次性事件）"
+    },
+    "unknown_ids_resolved_20261019_1655": {
+      "0x155/0x156/0x157": "各 6000 帧 = 我方指令帧（6000 拍 × 3 帧/拍 = 18000），经 IFF_ECHO 回显被 RX 计数。**不是未知设备，是我们自己**",
+      "0x1C0": "1500 帧 = 20.0 Hz（75 s）",
+      "0x1C1": "3000 帧 = 40.0 Hz",
+      "0x1C2": "1500 帧 = 20.0 Hz",
+      "note": "0x1xx 段按手册分段规则属节点 ID 1（主控板）。三条常驻帧手册与 SDK 均未定义 → R37 扩写为「0x1C0/0x1C1/0x1C2 三条主控板未文档化帧」"
+    },
+    "dq_rms_ratio_20261019_1655": {
+      "values": {
+        "joint_1": 1.0953,
+        "joint_2": 1.2129,
+        "joint_3": 1.1316,
+        "joint_4": 2.1949,
+        "joint_5": 1.9354,
+        "joint_6": 2.2112
+      },
+      "cmd_vel_rms_rad_s_estimate": 0.0155,
+      "quantization_noise_rad_s_estimate": 0.0204,
+      "why_formula": "位置量化 q=0.001 rad，均匀分布 std=q/√12=2.9e-4 rad；两点差分 std=√2·2.9e-4=4.1e-4 rad，除以 Δt=0.02 s → 0.0204 rad/s。指令速度 RMS = A·ω/√2 = 0.0349×0.628/1.414 = 0.0155 rad/s",
+      "verdict": "半定量吻合：噪声底与信号同量级 ⇒ **dq 比 >1 主要来自 20 ms 差分的量化噪声，不是速度跟随变差**。J4~J6 更高（2.2）说明腕部三轴位置信号更「毛」，需用 200 Hz 原始重采样复算验证",
+      "action": "离线复算：parse --hz 200 后 track，若 dq 比显著下降（趋近 1.1）则确证为量化噪声"
+    }
+  }
+}

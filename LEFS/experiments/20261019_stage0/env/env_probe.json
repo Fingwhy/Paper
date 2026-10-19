@@ -1,0 +1,90 @@
+{
+  "probe": "stage0_probe/1.0",
+  "generated_at": "2026-10-19T11:24:27+0800",
+  "host": "zzz-VMware-Virtual-Platform",
+  "argv": [
+    "scripts/stage0_probe.py",
+    "--phase",
+    "env",
+    "--factr2-repo",
+    "/home/zzz/factr2_next"
+  ],
+  "env": {
+    "os": {
+      "value": "Linux 7.0.0-38-generic",
+      "state": "已核验"
+    },
+    "distro": {
+      "value": "Ubuntu 26.04",
+      "state": "已核验"
+    },
+    "kernel": {
+      "value": "Ubuntu 26.04.1 LTS",
+      "state": "已核验"
+    },
+    "machine": {
+      "value": "x86_64",
+      "state": "已核验"
+    },
+    "python": {
+      "value": "3.12.15",
+      "state": "已核验"
+    },
+    "python_executable": {
+      "value": "/home/zzz/stage0/20261019_stage0/.venv-py3.12/bin/python",
+      "state": "已核验"
+    },
+    "ros_distro": {
+      "value": "lyrical",
+      "state": "已核验",
+      "how": "source /opt/ros/jazzy/setup.bash 后重跑"
+    },
+    "packages": {
+      "value": {
+        "piper-sdk": "0.6.1",
+        "python-can": "4.6.1",
+        "numpy": null,
+        "torch": null,
+        "h5py": null,
+        "pyyaml": null,
+        "scipy": null,
+        "dynamixel-sdk": null,
+        "cffi": null,
+        "setuptools": "79.0.1"
+      },
+      "state": "已核验"
+    },
+    "packages_unverified": {
+      "value": [
+        "numpy",
+        "torch",
+        "h5py",
+        "pyyaml",
+        "scipy",
+        "dynamixel-sdk",
+        "cffi"
+      ],
+      "state": "未核验",
+      "how": "缺包不一定是错，取决于本阶段是否用到（torch 到阶段 4 才必须）"
+    },
+    "uv": {
+      "value": "uv 0.13.1 (x86_64-unknown-linux-gnu)\n",
+      "state": "已核验"
+    }
+  },
+  "ros_packages": {
+    "value": [],
+    "state": "已核验",
+    "missing": [
+      "factr2_next",
+      "piper_control",
+      "teacher_arm",
+      "system_bringup"
+    ]
+  },
+  "official_impl": {
+    "value": "0df02c5b26e33911078152b6c587d6e8a160d279",
+    "state": "已核验",
+    "dirty": false
+  }
+}

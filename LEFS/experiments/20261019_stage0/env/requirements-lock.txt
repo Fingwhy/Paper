@@ -1,0 +1,6 @@
+packaging==26.3
+piper-sdk==0.6.1
+python-can==4.6.1
+setuptools==79.0.1
+typing-extensions==4.16.0
+wrapt==1.17.3

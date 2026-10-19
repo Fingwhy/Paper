@@ -1,0 +1,87 @@
+{
+  "probe": "stage0_probe/1.0",
+  "generated_at": "2026-10-19T10:45:34+0800",
+  "host": "TX3",
+  "argv": [
+    "scripts/stage0_probe.py",
+    "--phase",
+    "env",
+    "--factr2-repo",
+    "../_vendor/factr2_next",
+    "--out",
+    "env/dev_env_windows.json"
+  ],
+  "env": {
+    "os": {
+      "value": "Windows 11",
+      "state": "已核验"
+    },
+    "distro": {
+      "value": null,
+      "state": "未核验",
+      "how": "仅 Linux 有 /etc/os-release"
+    },
+    "machine": {
+      "value": "AMD64",
+      "state": "已核验"
+    },
+    "python": {
+      "value": "3.13.14",
+      "state": "已核验"
+    },
+    "python_executable": {
+      "value": "C:\\Users\\asus\\.workbuddy\\binaries\\python\\versions\\3.13.12\\python.exe",
+      "state": "已核验"
+    },
+    "ros_distro": {
+      "value": null,
+      "state": "未核验",
+      "how": "source /opt/ros/jazzy/setup.bash 后重跑"
+    },
+    "packages": {
+      "value": {
+        "piper-sdk": null,
+        "python-can": null,
+        "numpy": null,
+        "torch": null,
+        "h5py": null,
+        "pyyaml": null,
+        "scipy": null,
+        "dynamixel-sdk": null,
+        "cffi": null,
+        "setuptools": null
+      },
+      "state": "已核验"
+    },
+    "packages_unverified": {
+      "value": [
+        "piper-sdk",
+        "python-can",
+        "numpy",
+        "torch",
+        "h5py",
+        "pyyaml",
+        "scipy",
+        "dynamixel-sdk",
+        "cffi",
+        "setuptools"
+      ],
+      "state": "未核验",
+      "how": "缺包不一定是错，取决于本阶段是否用到（torch 到阶段 4 才必须）"
+    },
+    "uv": {
+      "value": null,
+      "state": "未核验"
+    }
+  },
+  "ros_packages": {
+    "value": null,
+    "state": "未核验",
+    "how": "未 source ROS 或未安装 ros2 CLI"
+  },
+  "official_impl": {
+    "value": "0df02c5b26e33911078152b6c587d6e8a160d279",
+    "state": "已核验",
+    "dirty": false
+  }
+}

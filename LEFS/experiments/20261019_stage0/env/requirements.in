@@ -1,0 +1,42 @@
+# FACTR 2 NEXT × PiPER —— Python 依赖（声明层）
+# 对应指南 §2.2 / 官方 factr2_next README "Install"
+#
+# ⚠️ 本机现实的冲突（FIRST_ARM 归档：Ubuntu + ROS 2 Lyrical + Python 3.14.4）
+#   官方要求 Python 3.12 + numpy<2.0；而 numpy 1.x 没有 cp314 轮子
+#   （实测：1.26.4 仅到 cp312；cp314 轮子从 numpy 2.3.2 才开始有）。
+#   → 因此本复现分两条轨：
+#     A 训练/离线轨（推荐）：uv venv --python 3.12 + numpy==1.26.4 + torch，
+#       与官方口径一致，负责 dataset/train/offline_eval 等纯算法部分。
+#     B ROS 轨（只在需要 rclpy 时）：用系统 Python 3.14 + numpy>=2.3.2，
+#       与官方 <2.0 不符，属于显式偏离，需单独验证数值与 API 兼容性。
+#   两轨不要混装；数据通过 H5/CSV 交换。
+#
+# 用法：env/freeze_robot_env.sh 负责建 A 轨并把实际解析版本写进
+#       env/requirements-lock.txt（那才是冻结依据，本文件只是意图）。
+
+# --- 构建工具（官方 pin） ---
+setuptools==79.0.1
+colcon-core
+colcon-common-extensions
+
+# --- 核心训练/推理依赖 ---
+numpy==1.26.4     # 官方口径 numpy<2.0；1.26.4 是 1.x 末版（cp39–cp312）
+pyyaml
+termcolor
+h5py
+cffi
+scipy
+torch             # 官方有意不 pin：CPU/CUDA 自选；版本由 lock 冻结
+
+# --- PiPER 硬件 demo（本复现需要，官方 pin；均为纯 Python，3.12/3.14 都能装） ---
+python-can
+piper-sdk==0.6.1
+dynamixel-sdk==4.0.5
+pyserial
+
+# --- 注意 ---
+# 1) pinocchio 不走 pip：ROS 环境里用 apt 装 ros-$ROS_DISTRO-pinocchio，
+#    版本随 ROS 源滚动，冻结方式是记录 apt 版本号（脚本已自动采集）。
+# 2) 已有工程 ~/agx_arm_ws 用的是 pyAgxArm 1.0.0（另一套 SDK），与本文件不冲突，
+#    但两者不要装进同一个 venv：import 名不同（piper_sdk vs pyAgxArm），
+#    混装会让"到底谁在发帧"变得不可判。

@@ -26,3 +26,9 @@ LEFS/paper/preview.pdf
 LEFS/paper/repro_preview/
 LEFS/paper/_*
 LEFS/tmp/
+
+# 复现实验：第三方克隆、虚拟环境、原始帧不入库；只入库 manifest / 报告 / 脚本
+LEFS/experiments/_vendor/
+LEFS/experiments/*/.venv/
+LEFS/experiments/*/raw/
+LEFS/experiments/*/episodes/

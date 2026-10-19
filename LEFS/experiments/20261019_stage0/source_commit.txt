@@ -1,0 +1,9 @@
+0df02c5b26e33911078152b6c587d6e8a160d279
+# repo    : https://github.com/philiphan0109/factr2_next
+# branch  : main
+# date    : 2026-09-04T01:15:29-07:00
+# subject : Update README.md
+# tree    : da509522ee75a225698dd89cfb098f563e9b3cbf
+# commits : 3
+# frozen  : 2026-10-19T10:45+08:00 (阶段 0)
+# note    : 首次选定后不再切换 commit；本地克隆不入库（.gitignore: experiments/_vendor/）

@@ -1,0 +1,83 @@
+{
+  "probe": "stage0_probe/1.2-20261019",
+  "generated_at": "2026-10-19T11:39:47+0800",
+  "host": "zzz-VMware-Virtual-Platform",
+  "argv": [
+    "scripts/stage0_probe.py",
+    "--phase",
+    "bus",
+    "--seconds",
+    "10"
+  ],
+  "bus": {
+    "iface": "can0",
+    "backend": "socketcan",
+    "listen_seconds": 10.0,
+    "link": {
+      "value": {
+        "state": "UP",
+        "bitrate_bps": 1000000,
+        "restart_ms": 0,
+        "sample_point": 0.75,
+        "flags_excerpt": "5: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UP mode DEFAULT group default qlen 10"
+      },
+      "state": "已核验",
+      "expect_bitrate_bps": 1000000
+    },
+    "frames": {
+      "value": {
+        "total_frames": 47768,
+        "distinct_ids": 1,
+        "by_group": {
+          "high_speed_0x251_0x256": {
+            "ids_seen": [],
+            "missing_ids": [
+              "0x251",
+              "0x252",
+              "0x253",
+              "0x254",
+              "0x255",
+              "0x256"
+            ],
+            "per_id": {}
+          },
+          "low_speed_0x261_0x266": {
+            "ids_seen": [],
+            "missing_ids": [
+              "0x261",
+              "0x262",
+              "0x263",
+              "0x264",
+              "0x265",
+              "0x266"
+            ],
+            "per_id": {}
+          },
+          "status_0x2A1_0x2A8": {
+            "ids_seen": [],
+            "missing_ids": [
+              "0x2a1",
+              "0x2a2",
+              "0x2a3",
+              "0x2a4",
+              "0x2a5",
+              "0x2a6",
+              "0x2a7",
+              "0x2a8"
+            ],
+            "per_id": {}
+          }
+        },
+        "other_ids": [
+          "0x24"
+        ]
+      },
+      "state": "已核验"
+    },
+    "heartbeat_0x2A1": {
+      "value": false,
+      "state": "已核验",
+      "how": "阶段 0 只要求看到 0x2A1 类心跳反馈；周期指标留给 L0"
+    }
+  }
+}

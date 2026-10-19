@@ -25,16 +25,17 @@ SRC = "paper/piper_repro_report.md"
 DOCX_OUT = "PiPER_FACTR2_复现说明报告.docx"
 PDF_OUT = "PiPER_FACTR2_复现说明报告.pdf"
 
-TITLE = "FACTR 2 · PiPER 标准版复现说明"
-SUBTITLE = "从 10 分钟自由运动数据到接触感知策略：一台无力矩传感器的机械臂怎么把论文做出来"
-HEADER = "FACTR 2 · 在 PiPER 标准版上的复现说明"
+TITLE = "PiPER 标准版 FACTR 2 复现实施报告"
+SUBTITLE = "从信号采集、力矩尺度核验，到 NEXT 训练、接触验证与 FIRST 策略评估"
+HEADER = "PiPER 标准版 · FACTR 2 复现实施报告"
 META = [
     ("论　　文", "FACTR 2: Learning External Force Sensing for Commodity\nRobot Arms Improves Policy Learning"),
     ("作　　者", "S. Oh*, J. J. Liu*, T. Tao*, P. Han, K. Shaw, S. Funabashi,\nR. Salakhutdinov, D. Pathak（*共同第一作者）"),
     ("机　　构", "Carnegie Mellon University · Waseda University"),
     ("来　　源", "arXiv:2606.12406v2 [cs.RO]　项目页 jasonjzliu.com/factr2"),
-    ("复现硬件", "AgileX PiPER 标准版：6 DoF，1.5 kg 负载，626.75 mm 臂展，\n重复精度 ±0.1 mm，无关节力矩传感器，CAN 1 Mbps"),
-    ("报告定位", "面向「动手复现」的施工图：能复现什么、不能复现什么、\n每一步怎么验收、坑在哪里"),
+    ("适用平台", "AgileX PiPER 标准版；固件、末端与控制链需开工前核验"),
+    ("版本日期", "修订版 2.0　2026 年 10 月 19 日"),
+    ("报告定位", "复现实施方案与验收规范；不代表实机实验已经完成"),
 ]
 
 # ============================================================ Markdown 解析
@@ -322,8 +323,7 @@ def cover(doc):
     K._p(doc, space_before=8, space_after=0)
     p = K._p(doc, space_before=0, space_after=0, line=1.35,
              align=WD_ALIGN_PARAGRAPH.LEFT)
-    r = p.add_run("本报告回答三个问题：这台机器能复现到哪一层？每一步怎么验收？"
-                  "论文的数字为什么在你这里不会一模一样？")
+    r = p.add_run(COVER_LEAD)
     K.set_run_font(r, size=9.5, bold=True, color=K.NAVY, cn=K.BODY_CN, en=K.BODY_EN)
 
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
@@ -425,10 +425,11 @@ h1 { font-family: cnb; font-size: 15pt; color: #16365C; margin: 15pt 0 7pt 0;
 h2 { font-family: cnb; font-size: 11.6pt; color: #16365C; margin: 12pt 0 5pt 0; }
 h3 { font-family: cnb; font-size: 10.4pt; color: #2E75B6; margin: 9pt 0 4pt 0; }
 p { margin: 0 0 6pt 0; text-align: justify; text-indent: 19pt; }
+p.url { text-align: left; text-indent: 0; word-break: break-all; }
 li { margin: 0 0 3pt 0; }
 ul, ol { margin: 3pt 0 7pt 0; padding-left: 16pt; }
 table { border-collapse: collapse; width: 100%; margin: 5pt 0 9pt 0; font-size: 8.2pt;
-        table-layout: fixed; }
+        table-layout: fixed; break-inside: avoid; }
 td, th { word-wrap: break-word; }
 th { color: #16365C; font-family: cnb; padding: 3.5pt 3pt;
      border: 0.5pt solid #C9D6E4; border-bottom: 1.1pt solid #16365C; text-align: center; }
@@ -474,12 +475,12 @@ def pdf_cover():
     <p class="h1c">{COVER_TITLE_HTML}</p>
     <p class="sub">{SUBTITLE}</p>
     <p class="sub" style="color:#2E75B6;font-family:cnb;font-size:9.6pt">
-      NEXT 神经外部力矩估计　·　FIRST 力信息驱动重采样　·　自由空间 L1 目标 ≤ 0.05 N·m</p>
+      {COVER_TAGS}</p>
     <div class="rule2"></div>
     {rows}
     <div class="rule2"></div>
     <p style="font-family:cnb;font-size:9.4pt;color:#16365C;text-indent:0">
-      本报告回答三个问题：这台机器能复现到哪一层？每一步怎么验收？论文的数字为什么在你这里不会一模一样？</p>
+      {COVER_LEAD}</p>
     {fig}
     """
 
@@ -492,7 +493,9 @@ def to_html(blocks):
             tag = {"h1": "h1", "h2": "h1", "h3": "h2", "h4": "h3"}[kind]
             out.append(f"<{tag}>{html_inline(b[1])}</{tag}>")
         elif kind == "p":
-            out.append(f"<p>{html_inline(b[1])}</p>")
+            longtok = re.search(r"[A-Za-z0-9_./:-]{25,}", b[1])
+            cls = ' class="url"' if ("http" in b[1] or longtok) else ""
+            out.append(f"<p{cls}>{html_inline(b[1])}</p>")
         elif kind == "ul":
             out.append("<ul>" + "".join(f"<li>{html_inline(x)}</li>" for x in b[1]) + "</ul>")
         elif kind == "ol":
@@ -604,12 +607,37 @@ COVER_TITLE_HTML = "在 PiPER 标准版上<br/>复现 FACTR 2"
 COVER_FIG = "paper/figures/doc/fig01_overview.jpg"
 COVER_CAP = ("论文图 1：NEXT 用 10 分钟自由运动数据在无外力传感器的低成本机械臂上估计外部关节力矩；"
              "FIRST 再用该信号把示教切成自由运动 / 接触前 / 接触三段并重采样。")
+COVER_TAGS = "NEXT 神经外部力矩估计　·　FIRST 力信息驱动重采样　·　自由空间 L1 目标 ≤ 0.05 N·m"
+COVER_LEAD = ("本报告回答三个问题：这台机器能复现到哪一层？每一步怎么验收？"
+              "论文的数字为什么在你这里不会一模一样？")
 
 
 def use_profile(name):
-    """切换生成目标：report（复现报告）或 piper（官方参数与使用说明）。"""
+    """切换生成目标：report（复现报告）、piper（官方参数）或 guide（复现指南）。"""
     global SRC, DOCX_OUT, PDF_OUT, TITLE, SUBTITLE, HEADER, META, COVER_FIG, COVER_CAP
-    global COVER_KICKER, COVER_TITLE_DOCX, COVER_TITLE_HTML
+    global COVER_KICKER, COVER_TITLE_DOCX, COVER_TITLE_HTML, COVER_TAGS, COVER_LEAD
+    if name == "guide":
+        SRC = "paper/repro_guide.md"
+        DOCX_OUT = "PiPER_FACTR2_复现指南.docx"
+        PDF_OUT = "PiPER_FACTR2_复现指南.pdf"
+        TITLE = "PiPER · FACTR 2 复现操作指南"
+        SUBTITLE = "按 L0–L4 逐级推进：每一步做什么、拿什么验收、卡住查哪里"
+        HEADER = "PiPER · FACTR 2 复现操作指南"
+        COVER_FIG, COVER_CAP = None, ""
+        COVER_KICKER = "复 现 操 作 指 南"
+        COVER_TITLE_DOCX = "在 PiPER 上\n把力觉跑通"
+        COVER_TITLE_HTML = "在 PiPER 上<br/>把力觉跑通"
+        COVER_TAGS = "L0 信号链　·　力矩尺度核验　·　NEXT 训练　·　接触验证　·　FIRST 策略"
+        COVER_LEAD = ("这本册子只讲执行：每一阶段做什么、拿什么验收、卡住查哪里；"
+                      "论证与证据边界见《复现实施报告》。")
+        META[:] = [
+            ("配套文档", "《PiPER 标准版 FACTR 2 复现实施报告》修订版 2.0"),
+            ("适用平台", "AgileX PiPER 标准版：6 DoF，1.5 kg 负载，\n无关节力矩传感器，CAN 1 Mbps"),
+            ("文档定位", "执行手册：阶段任务、命令、验收门与故障处理；\n论证与证据边界见实施报告"),
+            ("使用前提", "已通读实施报告第 4 至 9 章；本册只讲怎么做"),
+            ("版本日期", "2026 年 10 月 19 日"),
+        ]
+        return
     if name == "piper":
         SRC = "piper_docs/PiPER_标准版_官方参数与使用说明.md"
         DOCX_OUT = "piper_docs/PiPER_标准版_官方参数与使用说明.docx"
@@ -620,6 +648,9 @@ def use_profile(name):
         COVER_KICKER = "官 方 资 料 · 中 文 整 理"
         COVER_TITLE_DOCX = "PiPER 标准版\n参数与使用说明"
         COVER_TITLE_HTML = "PiPER 标准版<br/>参数与使用说明"
+        COVER_TAGS = "完整规格　·　接口定义　·　上电流程　·　SDK 与 CAN 协议速查"
+        COVER_LEAD = ("官方资料的中文重排：查参数不必翻英文手册，"
+                      "标注「工程建议」处为复现经验补充，非厂家原文。")
         META[:] = [
             ("机　　型", "AgileX Robotics PiPER 标准版（6 自由度轻量机械臂）"),
             ("整理依据", "官方产品页、快速上手手册 V1.0、用户手册中文 V1.1.0、\nCAN 协议 API 手册 v1.5、官方 SDK 与 ROS 仓库"),

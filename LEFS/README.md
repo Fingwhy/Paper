@@ -11,7 +11,8 @@ FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。GitHub 仓库 `Fing
 | 内容 | 主题 | 交付物 |
 | --- | --- | --- |
 | **FACTR 2** 论文解析 | 让无力度传感器的普通机械臂学会「感知」外力 | [DOCX](./FACTR2_论文解析报告.docx) · [PDF](./FACTR2_论文解析报告.pdf) |
-| **FACTR 2 在 PiPER 上的复现说明** | 逐项对照论文设定与 PiPER 标准版，给出 L0–L4 复现路线与验收指标 | [DOCX](./PiPER_FACTR2_复现说明报告.docx) · [PDF](./PiPER_FACTR2_复现说明报告.pdf) |
+| **FACTR 2 × PiPER 复现实施报告** | 逐项对照论文设定与 PiPER 标准版，给出 L0–L4 细分路径、证据边界与验收规范（修订版 2.0） | [DOCX](./PiPER_FACTR2_复现说明报告.docx) · [PDF](./PiPER_FACTR2_复现说明报告.pdf) |
+| **FACTR 2 × PiPER 复现操作指南** | 承接实施报告的执行手册：每阶段做什么、拿什么验收、卡住怎么查 | [DOCX](./PiPER_FACTR2_复现指南.docx) · [PDF](./PiPER_FACTR2_复现指南.pdf) |
 | **PiPER 标准版 官方参数与使用说明** | 完整规格、接口、上电流程、SDK、CAN 协议速查（中文整理） | [DOCX](./piper_docs/PiPER_标准版_官方参数与使用说明.docx) · [PDF](./piper_docs/PiPER_标准版_官方参数与使用说明.pdf) · [MD](./piper_docs/PiPER_标准版_官方参数与使用说明.md) |
 | **汇报幻灯片** | 论文解析 + PiPER 复现路线，20 页 16:9，可直接用于组会 / 复现评审 | [PPTX](./FACTR2_论文解析与Piper复现.pptx) · [大纲源](./slide-outline.md) |
 
@@ -48,25 +49,21 @@ FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。GitHub 仓库 `Fing
 
 ---
 
-# FACTR 2 × PiPER 标准版（复现说明）
+# FACTR 2 × PiPER 标准版（复现实施）
 
-论文的低成本平台就是 AgileX Piper，因此「机型对不上」不是问题；真正的差距在**真值、第二台臂、数据与算力**。报告把这件事拆成可验收的五层：
+论文的低成本平台就是 AgileX Piper，因此「机型对不上」不是问题；真正的差距在**真值、第二台臂、数据与算力**。修订版把复现拆成四道独立的门，每道门要不同的证据：
 
 | 层级 | 目标 | 周期 | 验收指标 |
 | --- | --- | --- | --- |
-| L0 信号链 | CAN → 时间戳 → 落盘 | 1~2 天 | 10 分钟零丢帧，50 Hz ≥ 49 Hz |
-| L1 NEXT（自由空间） | 训练 LSTM 复现表 5 量级 | 2~4 天 | 留出集 L1 **≤ 0.05 N·m**（论文 0.018） |
-| L2 接触检测 + FIRST | 阈值标定、相位切分、加权采样 | 1~2 天 | 检出率 ≥ 90%，误报 ≤ 1 次/分 |
-| L3 力反馈遥操作 | 主从联动 + τ_feedback | 3~5 天 | 主观评分更高、施加关节力矩更低 |
-| L4 策略学习 | FIRST vs Base | 数周 | 单任务进度提升 ≥ 10 pt |
+| L0 信号链 | CAN 原始帧 → 解析 → 同步 → 落盘 | 1~2 天 | 六 ID 周期中位数 ≈20 ms，有效样本率 ≥99%，无 >100 ms 间隔 |
+| L1 NEXT（自由空间） | 训练 LSTM 复现表 5 量级 | 3~5 天 | 独立测试关节平均 **MAE ≤ 0.05 N·m**（工程目标，非论文标准） |
+| L2 接触验证 | 阈值标定、事件级评估 | 3~5 天 | recall ≥90%、误触发 ≤1 次/分、延迟 P95 <100 ms |
+| L3 力反馈遥操作（可选） | 主从联动 + 力矩反馈 | 3~5 天 | 独立分支验收，不阻塞 FIRST |
+| L4 策略学习 | A/B/C/D 四组对照 | 数周 | ≥3 种子、每任务 20 次 rollout，给二项区间 |
 
-三条必须提前接受的结论：
+力矩尺度是独立的一道门：**Piper 没有接触段真值**，自由空间误差贴零不能证明 K 正确，要报绝对 N·m 必须自建标定台（砝码或力传感器）。另外两条硬约束：电流只有 50 Hz（`0x251~0x256`，20 ms 一帧），论文是 100 Hz，管线建议直接跑 50 Hz（`H=25`，约 0.5 秒）；末端 XT30 只允许松灵自有 CAN 设备，外部传感器要走独立总线并计入 1.5 kg 负载预算。
 
-- **Piper 上没有接触段真值**，论文自己也没在 Piper 上给接触误差；想在 Piper 上报接触精度，必须自建标定台。
-- **电流只有 50 Hz**（`0x251~0x256`，20 ms 一帧），与论文 100 Hz 不同，管线建议直接跑 50 Hz（`H=25`）。
-- **末端 XT30 只允许松灵自有 CAN 设备**，外部力传感器必须走独立总线，并计入 1.5 kg 负载预算。
-
-完整版见 [PiPER_FACTR2_复现说明报告.pdf](./PiPER_FACTR2_复现说明报告.pdf)。
+完整论证见 [复现实施报告](./PiPER_FACTR2_复现说明报告.pdf)，动手步骤见 [复现操作指南](./PiPER_FACTR2_复现指南.pdf)。
 
 ---
 
@@ -107,7 +104,8 @@ FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。GitHub 仓库 `Fing
 ```
 LEFS/                                    # 仓库根目录下唯一的文件夹
 ├── FACTR2_论文解析报告.docx / .pdf        # 论文解析报告（19 页）
-├── PiPER_FACTR2_复现说明报告.docx / .pdf  # 复现说明报告（17 页，PiPER 视角）
+├── PiPER_FACTR2_复现说明报告.docx / .pdf  # 复现实施报告 修订版 2.0（17 页）
+├── PiPER_FACTR2_复现指南.docx / .pdf      # 复现操作指南（11 页，按 L0–L4 执行）
 ├── FACTR2_论文解析与Piper复现.pptx        # 汇报幻灯片（20 页）
 ├── slide-outline.md                     # 幻灯片大纲 / 版式与图表分配
 ├── piper_docs/                          # PiPER 官方资料 + 中文整理版
@@ -121,7 +119,8 @@ LEFS/                                    # 仓库根目录下唯一的文件夹
     ├── arxiv_abs.html                   # arXiv 摘要页存档
     ├── paper_fulltext.md                # 全文文本（按页切分）
     ├── paper_cn_summary.md              # 论文中文摘要
-    ├── piper_repro_report.md            # 复现说明报告的 Markdown 源（唯一内容源）
+    ├── piper_repro_report.md            # 复现实施报告的 Markdown 源（修订版 2.0）
+    ├── repro_guide.md                   # 复现操作指南的 Markdown 源
     ├── captions.txt                     # 图表标题抽取
     ├── figures/                         # 13 张论文插图（PNG + 文档用 JPEG）
     ├── pages/ · preview/                # 原文 22 页 / 报告 19 页的整页渲染
@@ -134,15 +133,16 @@ LEFS/                                    # 仓库根目录下唯一的文件夹
 ## 重新生成
 
 ```bash
-# 依赖：Python 3.13 + pymupdf + python-docx + pillow + openpyxl
+# 依赖：Python 3.11+ + pymupdf + python-docx + pillow + openpyxl
 # 在 LEFS/ 目录下执行（即本 README 所在目录），脚本内路径均相对于当前工作目录
 
-python paper/build_piper_report.py          # 复现说明报告（DOCX + PDF）
+python paper/build_piper_report.py          # 复现实施报告（DOCX + PDF）
+python paper/build_piper_report.py guide    # 复现操作指南（DOCX + PDF）
 python paper/build_piper_report.py piper    # PiPER 官方参数与使用说明（DOCX + PDF）
 python paper/build_docx.py                  # 论文解析报告（DOCX）
 ```
 
-文案集中在各自的 Markdown 源里，改完重跑即可；`build_piper_report.py` 用同一份 Markdown 同时产出 DOCX（python-docx）与 PDF（PyMuPDF Story），避免两版内容漂移。
+文案集中在各自的 Markdown 源里，改完重跑即可；`build_piper_report.py` 用同一份 Markdown 同时产出 DOCX（python-docx）与 PDF（PyMuPDF Story），三份文档共用排版组件，避免内容漂移。
 
 若想从头走一遍论文抽取流程：
 
@@ -156,4 +156,5 @@ python paper/prep_figs.py    # 压缩为文档嵌入用的 JPEG
 
 - 原文 PDF 与所有插图版权归论文作者所有；PiPER 手册与协议版权归 AgileX Robotics 所有。此处仅作个人研读存档，引用请以官方版本为准。
 - 报告中的论文数值均取自原文表格；个别仅以柱状图给出的基线数值为估读，已在图表注释中标注。
-- 「复现说明报告」中标注「建议 / 工程经验」的内容为复现补充，非论文或厂家原文。
+- 复现文档于 2026-10-19 升级为修订版 2.0：修正历史窗口口径（H=50 @100 Hz 约 0.5 秒，不是 1 秒）、接触打分改用 L1 范数、MAE 按关节平均；删除无法运行的采集草稿，补充同步、切分、事件级指标与 A/B/C/D 四组对照；另新增按阶段执行的《复现操作指南》。
+- 「复现实施报告 / 操作指南」中标注「建议 / 工程经验」的内容为复现补充，非论文或厂家原文。

@@ -1,6 +1,8 @@
-# 论文解析复现
+# Learning External Force Sensing（LEFS）
 
-个人论文研读与复现记录仓库。每篇论文一份完整存档：原文全文、提取的图表、中文解析报告，以及可重跑的排版脚本；配套机械臂的官方资料与「在这台机器上怎么复现」的施工图单独成册。
+FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。GitHub 仓库 `Fingwhy/Paper` 根目录下只有这一个文件夹，本 README 即它的入口。
+
+每篇论文一份完整存档：原文全文、提取的图表、中文解析报告，以及可重跑的排版脚本；配套机械臂的官方资料与「在这台机器上怎么复现」的施工图单独成册。
 
 ---
 
@@ -103,7 +105,7 @@
 ## 目录结构
 
 ```
-.
+LEFS/                                    # 仓库根目录下唯一的文件夹
 ├── FACTR2_论文解析报告.docx / .pdf        # 论文解析报告（19 页）
 ├── PiPER_FACTR2_复现说明报告.docx / .pdf  # 复现说明报告（17 页，PiPER 视角）
 ├── FACTR2_论文解析与Piper复现.pptx        # 汇报幻灯片（20 页）
@@ -133,7 +135,7 @@
 
 ```bash
 # 依赖：Python 3.13 + pymupdf + python-docx + pillow + openpyxl
-# 在仓库根目录执行，脚本内路径均相对于当前工作目录
+# 在 LEFS/ 目录下执行（即本 README 所在目录），脚本内路径均相对于当前工作目录
 
 python paper/build_piper_report.py          # 复现说明报告（DOCX + PDF）
 python paper/build_piper_report.py piper    # PiPER 官方参数与使用说明（DOCX + PDF）

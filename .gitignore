@@ -12,7 +12,6 @@ venv/
 .DS_Store
 Thumbs.db
 desktop.ini
-desktop.ini
 *.swp
 .idea/
 .vscode/
@@ -21,8 +20,8 @@ desktop.ini
 *.tmp
 ~$*.docx
 ~$*.pdf
-paper/preview.pdf
 
 # 生成过程的临时预览（不随仓库分发）
-paper/repro_preview/
-paper/_*
+LEFS/paper/preview.pdf
+LEFS/paper/repro_preview/
+LEFS/paper/_*

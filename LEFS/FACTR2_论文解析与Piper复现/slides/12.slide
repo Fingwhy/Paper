@@ -1,0 +1,83 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>12 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>两个「为什么」：为什么改采样，为什么不用电流</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>两条独立对照，都在回答"能不能用更简单的方式拿到同样的收益"——答案都是不能。</Text>
+        <Box style={{ flexDirection: 'row', gap: 26, marginTop: 20, flex: 1 }}>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0E3F8C' }}>改采样，优于改损失</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568' }}>LEGO 装配 · ACT · 任务进度</Text>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8 }}>
+                    <Text style={{ width: 150, fontSize: 15, color: '#4A5568' }}>不处理</Text>
+                    <Box style={{ width: 174, height: 20, background: '#B4B2A9', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1A2230' }}>0.453</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 150, fontSize: 15, color: '#4A5568' }}>改损失 · PC</Text>
+                    <Box style={{ width: 132, height: 20, background: '#D9534F', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#D9534F' }}>0.345</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 150, fontSize: 15, color: '#4A5568' }}>改损失 · PC+C</Text>
+                    <Box style={{ width: 184, height: 20, background: '#D9534F', borderRadius: 2, opacity: 0.6 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1A2230' }}>0.478</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 150, fontSize: 15, color: '#4A5568' }}>重采样 · PC</Text>
+                    <Box style={{ width: 220, height: 20, background: '#1E4FA8', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>0.573</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 150, fontSize: 15, color: '#4A5568' }}>重采样 · PC+C</Text>
+                    <Box style={{ width: 192, height: 20, background: '#1E4FA8', borderRadius: 2, opacity: 0.6 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1A2230' }}>0.501</Text>
+                </Box>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5, marginTop: 8 }}>把权重压到损失上，少数接触样本会主导梯度，优化变不稳，甚至比不处理还差。</Text>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0E3F8C' }}>学到的力矩，优于原始电流</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568' }}>ACT · 任务进度 · NIST 插装 / 拧瓶盖</Text>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8', marginTop: 8 }}>NIST 插装</Text>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 118, fontSize: 15, color: '#4A5568' }}>无外力输入</Text>
+                    <Box style={{ width: 85, height: 18, background: '#B4B2A9', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1A2230' }}>0.220</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 118, fontSize: 15, color: '#4A5568' }}>+ 原始电流</Text>
+                    <Box style={{ width: 167, height: 18, background: '#FFC107', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1A2230' }}>0.431</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 118, fontSize: 15, color: '#4A5568' }}>+ τ_ext</Text>
+                    <Box style={{ width: 220, height: 18, background: '#1E4FA8', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>0.567</Text>
+                </Box>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8', marginTop: 6 }}>拧瓶盖</Text>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 118, fontSize: 15, color: '#4A5568' }}>无外力输入</Text>
+                    <Box style={{ width: 171, height: 18, background: '#B4B2A9', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1A2230' }}>0.440</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 118, fontSize: 15, color: '#4A5568' }}>+ 原始电流</Text>
+                    <Box style={{ width: 171, height: 18, background: '#FFC107', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1A2230' }}>0.440</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={{ width: 118, fontSize: 15, color: '#4A5568' }}>+ τ_ext</Text>
+                    <Box style={{ width: 204, height: 18, background: '#1E4FA8', borderRadius: 2 }} />
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>0.525</Text>
+                </Box>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5, marginTop: 6 }}>电流里混着重力与摩擦，τ_ext 把空载分量减掉，接触信号才干净。</Text>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 8 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文表 11（左）、表 10（右）</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

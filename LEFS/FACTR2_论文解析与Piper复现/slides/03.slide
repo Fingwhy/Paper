@@ -1,0 +1,73 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>03 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>力觉很贵，问题从这里开始</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>接触富操作离不开力信息，但"有力"和"用得起"是两件完全不同的事。</Text>
+        <Box style={{ flexDirection: 'row', gap: 24, marginTop: 26, flex: 1 }}>
+            <Box style={{ width: 400, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 24, flexDirection: 'column', gap: 14 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0E3F8C' }}>一次配齐力觉的成本</Text>
+                <Box style={{ flexDirection: 'column', gap: 6, borderBottom: '1px solid #D6DCE5', paddingBottom: 12 }}>
+                    <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#1E4FA8' }}>≈ $2,500</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568' }}>AgileX PiPER 整机</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 6, borderBottom: '1px solid #D6DCE5', paddingBottom: 12 }}>
+                    <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#4A5568' }}>≈ $30,000</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568' }}>Franka Research 3 整机</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#D9534F' }}>另计</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568' }}>末端六维力传感器，常常接近甚至超过一台 PiPER 的价钱</Text>
+                </Box>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 12 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0E3F8C' }}>传统「无力传感器」路线的四道坎</Text>
+                <Box style={{ flexDirection: 'row', gap: 14, alignItems: 'flex-start' }}>
+                    <Box style={{ width: 34, height: 34, background: '#1E4FA8', borderRadius: 4, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>01</Text>
+                    </Box>
+                    <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>参数要逐台标定</Text>
+                        <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.5 }}>质量、质心、摩擦、惯量，换一台臂就要重标一遍。</Text>
+                    </Box>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 14, alignItems: 'flex-start' }}>
+                    <Box style={{ width: 34, height: 34, background: '#1E4FA8', borderRadius: 4, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>02</Text>
+                    </Box>
+                    <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>残差里混着未建模效应</Text>
+                        <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.5 }}>齿隙、滞回、温漂、力矩纹波、死区、饱和，都算不出来。</Text>
+                    </Box>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 14, alignItems: 'flex-start' }}>
+                    <Box style={{ width: 34, height: 34, background: '#1E4FA8', borderRadius: 4, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>03</Text>
+                    </Box>
+                    <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>只能判断"有没有撞"</Text>
+                        <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.5 }}>异常检测给不出方向与大小，没法拿去做力反馈控制。</Text>
+                    </Box>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 14, alignItems: 'flex-start' }}>
+                    <Box style={{ width: 34, height: 34, background: '#1E4FA8', borderRadius: 4, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>04</Text>
+                    </Box>
+                    <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>监督式方法要接触标注</Text>
+                        <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.5 }}>而高质量的接触数据本身就很贵，还得有人工标注。</Text>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '16px 22px', marginTop: 18 }}>
+            <Text style={{ fontSize: 18, color: '#0E3F8C', lineHeight: 1.5 }}>FACTR 2 的选择：不建模、不标定、不加传感器——用 10 分钟自由运动数据，学一个"空载本该出多少力"的预测器。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 14 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文第 1 节；价格为公开渠道量级，仅用于说明差距</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

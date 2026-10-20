@@ -32,3 +32,7 @@ LEFS/experiments/_vendor/
 LEFS/experiments/*/.venv/
 LEFS/experiments/*/raw/
 LEFS/experiments/*/episodes/
+
+# 幻灯片生成过程的中间态
+LEFS/.slidep/
+LEFS/tmp/

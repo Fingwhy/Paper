@@ -1,0 +1,25 @@
+<Slide style={{ width: 1280, height: 720, background: '#0E3F8C', padding: '0px' }}>
+    <Box style={{ position: 'absolute', right: 40, top: 120, width: 380, height: 380, border: '2px solid #1E4FA8', borderRadius: 190, opacity: 0.5 }} />
+    <Box style={{ position: 'absolute', right: 110, top: 200, width: 240, height: 240, border: '1px solid #3D7BD9', borderRadius: 120, opacity: 0.6 }} />
+    <Box style={{ padding: '96px 80px', flexDirection: 'column', height: 720, justifyContent: 'center' }}>
+        <Text style={{ fontSize: 18, color: '#9DB8E8', letterSpacing: 4 }}>P A R T　0 2</Text>
+        <Text style={{ fontSize: 172, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.0, marginTop: 6 }}>06</Text>
+        <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#FFFFFF', marginTop: 10 }}>在你的 PiPER 上跑起来</Text>
+        <Text style={{ fontSize: 20, color: '#C9D8F0', marginTop: 18, lineHeight: 1.6 }}>六个阶段，最小闭环约 3 天；CAN 1 Mbps，电流原生 50 Hz，没有关节力矩传感器。</Text>
+        <Box style={{ flexDirection: 'row', gap: 12, marginTop: 26 }}>
+            <Box style={{ padding: '8px 16px', background: '#1E4FA8', borderRadius: 4 }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>6 个阶段</Text>
+            </Box>
+            <Box style={{ padding: '8px 16px', background: '#1E4FA8', borderRadius: 4 }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>最小闭环约 3 天</Text>
+            </Box>
+            <Box style={{ padding: '8px 16px', background: '#1E4FA8', borderRadius: 4 }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>50 Hz · H = 25</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 0, bottom: 0, width: 1280, height: 56, padding: '0 80px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#9DB8E8' }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 14, color: '#9DB8E8' }}>14 / 19</Text>
+    </Box>
+</Slide>

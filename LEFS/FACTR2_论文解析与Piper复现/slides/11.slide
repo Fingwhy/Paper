@@ -1,0 +1,61 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>11 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>该加权的是接触前，不是接触</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>同一个策略、同一批数据，只改「给哪一段加权」，五个任务的结果就分开了。</Text>
+        <Box style={{ flexDirection: 'row', gap: 26, marginTop: 20, flex: 1 }}>
+            <Box style={{ width: 690 }}>
+                <Table
+                    style={{ width: 690, height: 330 }}
+                    defaultTextStyle={{ fontSize: 16, textAlign: 'center', color: '#1A2230' }}
+                    defaultCellStyle={{ border: { left: { width: 1, color: '#E5E7EB' }, right: { width: 1, color: '#E5E7EB' }, top: { width: 1, color: '#E5E7EB' }, bottom: { width: 1, color: '#E5E7EB' } } }}
+                    cells={[
+                        [
+                            { text: '任务（任务进度）', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '只加接触 C', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '只加接触前 PC', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '两段都加 PC+C', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                        ],
+                        ['LEGO 装配', '0.697', { text: '0.913', textStyle: { bold: true, color: '#1E4FA8' } }, '0.875'],
+                        ['NIST 传送带', '0.494', { text: '0.767', textStyle: { bold: true, color: '#1E4FA8' } }, '0.649'],
+                        ['NIST 插装', '0.800', { text: '0.933', textStyle: { bold: true, color: '#1E4FA8' } }, '0.933'],
+                        ['工具清理', '0.650', { text: '0.805', textStyle: { bold: true, color: '#1E4FA8' } }, '0.775'],
+                        ['拧瓶盖', '0.707', '0.673', { text: '0.825', textStyle: { bold: true, color: '#D9534F' } }],
+                        [
+                            { text: '平均', textStyle: { bold: true }, cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '0.670', textStyle: { bold: true }, cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '0.818', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '0.811', textStyle: { bold: true }, cellStyle: { background: { color: '#E8EFF8' } } },
+                        ],
+                    ]}
+                />
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 8 }}>论文表 2；C = contact，PC = pre-contact。五个任务的平均值只差 0.7 个百分点。</Text>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 14 }}>
+                <Box style={{ flexDirection: 'column', gap: 3 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#D9534F' }}>只加接触，等于没加</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5 }}>0.670。接触已经发生，姿态错了就只能在错的位置上微调。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 3 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>只加接触前，4/5 任务最优</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5 }}>0.818。接触前决定"到没到位、对没对准"，这一步错了后面救不回来。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 3 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#D9534F' }}>例外：拧瓶盖</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5 }}>PC 反而只有 0.673，两段都加到 0.825。它靠持续接触把螺纹拧下去，接触段本身信息量最大。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 3 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>所以比例是分任务定的</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5 }}>四个任务 1:5:1，拧瓶盖 1:3:3；倍率 m≈5（附录 D.4 扫描，再大就饱和）。</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 8 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文表 2、表 8、附录 D.3–D.4</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

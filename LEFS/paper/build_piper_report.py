@@ -638,6 +638,28 @@ def use_profile(name):
             ("版本日期", "2026 年 10 月 19 日"),
         ]
         return
+    if name == "deck":
+        SRC = "paper/deck_guide.md"
+        DOCX_OUT = "FACTR2_幻灯片讲解手册.docx"
+        PDF_OUT = "FACTR2_幻灯片讲解手册.pdf"
+        TITLE = "FACTR 2 · 幻灯片讲解手册"
+        SUBTITLE = "19 页逐页讲稿、名词解释与数字溯源：每一页讲什么、每个词什么意思、每个数从哪来"
+        HEADER = "FACTR 2 · 幻灯片讲解手册"
+        COVER_FIG, COVER_CAP = None, ""
+        COVER_KICKER = "讲 解 手 册"
+        COVER_TITLE_DOCX = "把 19 页\n讲清楚"
+        COVER_TITLE_HTML = "把 19 页<br/>讲清楚"
+        COVER_TAGS = "逐页讲稿　·　名词表　·　数字溯源　·　口径提醒"
+        COVER_LEAD = ("配套《FACTR 2 论文解析与 PiPER 复现》使用：先看附录 C 的三条口径提醒，"
+                      "再按页翻讲稿；被追问数据出处时直接查附录 B。")
+        META[:] = [
+            ("配套幻灯片", "《FACTR 2 论文解析与 PiPER 复现》19 页 16:9"),
+            ("文　　档", "逐页讲稿 + 名词表 + 数字表；附录含全局名词表与数字溯源总表"),
+            ("使用场景", "组会汇报、复现前评审、答辩答疑"),
+            ("数据口径", "论文数值取自原文表格；柱状图估读与计算值均单独标注"),
+            ("版本日期", "2026 年 10 月 20 日"),
+        ]
+        return
     if name == "piper":
         SRC = "piper_docs/PiPER_标准版_官方参数与使用说明.md"
         DOCX_OUT = "piper_docs/PiPER_标准版_官方参数与使用说明.docx"

@@ -1,0 +1,41 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '60px 64px 88px 64px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 10, height: 632, background: '#1E4FA8' }} />
+    <Box style={{ position: 'absolute', left: 0, bottom: 0, width: 1280, height: 72, background: '#0E3F8C', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0' }}>S. Oh, J. J. Liu, T. Tao, P. Han, K. Shaw, S. Funabashi, R. Salakhutdinov, D. Pathak</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>汇报材料 · 共 19 页</Text>
+    </Box>
+    <Box style={{ flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+        <Box style={{ flexDirection: 'column', gap: 16 }}>
+            <Text style={{ fontSize: 16, color: '#3D7BD9', letterSpacing: 3 }}>论 文 解 析 · 复 现 评 估 · 2026.10</Text>
+            <Text style={{ fontSize: 96, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.05 }}>FACTR 2</Text>
+            <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1A2230', lineHeight: 1.3 }}>让商品级机械臂学会感知外力，并让策略学得更好</Text>
+            <Text style={{ fontSize: 21, color: '#4A5568', lineHeight: 1.55 }}>Learning External Force Sensing for Commodity Robot Arms Improves Policy Learning</Text>
+            <Text style={{ fontSize: 16, color: '#8B97A8' }}>arXiv:2606.12406v2　·　Carnegie Mellon University × Waseda University</Text>
+            <Box style={{ flexDirection: 'row', gap: 56, marginTop: 14, borderTop: '1px solid #D6DCE5', paddingTop: 20 }}>
+                <Box style={{ flexDirection: 'column', gap: 2 }}>
+                    <Text style={{ fontSize: 46, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1.1 }}>0.547 N·m</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568' }}>Franka 接触段平均 L1 误差</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 2 }}>
+                    <Text style={{ fontSize: 46, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1.1 }}>0.018 N·m</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568' }}>PiPER 自由空间平均 L1 误差</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 2 }}>
+                    <Text style={{ fontSize: 46, fontWeight: 'bold', color: '#D9534F', lineHeight: 1.1 }}>≥ 17%</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568' }}>五任务进度相对力感知基线</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', gap: 14 }}>
+            <Box style={{ padding: '9px 16px', background: '#E8EFF8', borderRadius: 4 }}>
+                <Text style={{ fontSize: 16, color: '#1E4FA8' }}>NEXT　神经外部力矩估计</Text>
+            </Box>
+            <Box style={{ padding: '9px 16px', background: '#E8EFF8', borderRadius: 4 }}>
+                <Text style={{ fontSize: 16, color: '#1E4FA8' }}>FIRST　力信息驱动重采样</Text>
+            </Box>
+            <Box style={{ padding: '9px 16px', background: '#E8EFF8', borderRadius: 4 }}>
+                <Text style={{ fontSize: 16, color: '#1E4FA8' }}>PiPER　标准版复现路线</Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

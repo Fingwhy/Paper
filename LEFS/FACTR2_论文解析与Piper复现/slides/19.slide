@@ -1,0 +1,28 @@
+<Slide style={{ width: 1280, height: 720, background: '#0E3F8C', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 10, height: 720, background: '#3D7BD9' }} />
+    <Box style={{ padding: '104px 80px', flexDirection: 'column', height: 720, justifyContent: 'space-between' }}>
+        <Box style={{ flexDirection: 'column', gap: 22 }}>
+            <Text style={{ fontSize: 18, color: '#9DB8E8', letterSpacing: 4 }}>F A C T R　2</Text>
+            <Text style={{ fontSize: 52, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.3 }}>力的感知，从「买传感器」<br />变成「跑一次训练」</Text>
+            <Text style={{ fontSize: 22, color: '#C9D8F0', lineHeight: 1.6 }}>PiPER + 10 分钟自由运动数据 + 1 分钟训练 + 一块 3090。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', gap: 40, borderTop: '1px solid #1E4FA8', paddingTop: 24 }}>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 14, color: '#9DB8E8' }}>论文</Text>
+                <Text style={{ fontSize: 17, color: '#FFFFFF' }}>arXiv:2606.12406v2</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 14, color: '#9DB8E8' }}>项目页</Text>
+                <Text style={{ fontSize: 17, color: '#FFFFFF' }}>jasonjzliu.com/factr2</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 14, color: '#9DB8E8' }}>配套文档</Text>
+                <Text style={{ fontSize: 17, color: '#FFFFFF' }}>论文解析报告 · 复现说明报告 · 复现指南</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 14, color: '#9DB8E8' }}>页码</Text>
+                <Text style={{ fontSize: 17, color: '#FFFFFF' }}>19 / 19</Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

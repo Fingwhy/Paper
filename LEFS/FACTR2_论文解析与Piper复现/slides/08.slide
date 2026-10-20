@@ -1,0 +1,86 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>08 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>两套真值，三种误差</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>有传感器的机器人和没传感器的机器人，能报的指标根本不是同一个，不能混着引用。</Text>
+        <Box style={{ flexDirection: 'row', gap: 26, marginTop: 22, flex: 1 }}>
+            <Box style={{ width: 720 }}>
+                <Table
+                    style={{ width: 720, height: 430 }}
+                    defaultTextStyle={{ fontSize: 16, textAlign: 'center', color: '#1A2230' }}
+                    defaultCellStyle={{ border: { left: { width: 1, color: '#E5E7EB' }, right: { width: 1, color: '#E5E7EB' }, top: { width: 1, color: '#E5E7EB' }, bottom: { width: 1, color: '#E5E7EB' } } }}
+                    cells={[
+                        [
+                            { text: '运动状态', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '真值来源', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '方法', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '平均 L1 误差 (N·m)', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                        ],
+                        [
+                            { text: 'Franka · 接触段', textStyle: { bold: true }, cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: '外力矩估计', cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: 'FILIC', cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: '4.395 ± 1.531', cellStyle: { background: { color: '#F7F9FC' } } },
+                        ],
+                        ['', '', '扰动观测器', '1.471 ± 0.761'],
+                        [
+                            { text: '', cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '', cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: 'NEXT', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '0.547 ± 0.348', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#E8EFF8' } } },
+                        ],
+                        [
+                            { text: 'Franka · 自由空间', textStyle: { bold: true }, cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: '恒为 0', cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: 'FILIC', cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: '2.460 ± 1.358', cellStyle: { background: { color: '#F7F9FC' } } },
+                        ],
+                        ['', '', '扰动观测器', '2.429 ± 1.298'],
+                        ['', '', '外力传感器', '0.449 ± 0.208'],
+                        [
+                            { text: '', cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '', cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: 'NEXT', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '0.414 ± 0.278', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#E8EFF8' } } },
+                        ],
+                        [
+                            { text: 'PiPER · 自由空间', textStyle: { bold: true }, cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: '恒为 0', cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: 'FILIC', cellStyle: { background: { color: '#F7F9FC' } } },
+                            { text: '0.435 ± 0.225', cellStyle: { background: { color: '#F7F9FC' } } },
+                        ],
+                        ['', '', '扰动观测器', '0.248 ± 0.132'],
+                        [
+                            { text: '', cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '', cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: 'NEXT', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#E8EFF8' } } },
+                            { text: '0.018 ± 0.012', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#E8EFF8' } } },
+                        ],
+                    ]}
+                />
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 16, paddingTop: 4 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0E3F8C' }}>怎么读这张表</Text>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>接触段看绝对值</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.55 }}>0.547 比扰动观测器低 62.8%，比 FILIC 低 87.6%。这是唯一有"真外力"可比的一栏。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>自由空间看贴零</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.55 }}>0.414 甚至低于 Franka 自带传感器（0.449），说明网络学到的硬件特性比传感器噪声还稳。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#D9534F' }}>PiPER 那一栏要打折扣</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.55 }}>没有力传感器就没有接触段真值。0.018 只证明"没人碰时不乱报"，不能当作接触精度来宣传。</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 8 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文 Table 1（Franka）、Table 5（PiPER）</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

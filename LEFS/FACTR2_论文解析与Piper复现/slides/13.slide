@@ -1,0 +1,63 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>13 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>五条可迁移的洞见，五条作者承认的边界</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>左边是能带走的方法论，右边是别拿去过度承诺的地方。</Text>
+        <Box style={{ flexDirection: 'row', gap: 24, marginTop: 22, flex: 1 }}>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 10 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1E4FA8' }}>可以带走的五条洞见</Text>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9', width: 24 }}>01</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>残差法的瓶颈是未建模效应，而这部分可以整块交给网络，不必逐项建模。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9', width: 24 }}>02</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>历史窗口比单帧重要：消融里 LSTM 明显优于 MLP，历史长度 50 步最好。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9', width: 24 }}>03</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>「估计」与「使用」解耦：先验收力矩，再谈策略，出错时能定位在哪一层。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9', width: 24 }}>04</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>同样的强调，改采样分布比改损失权重更稳，后者容易让少数样本主导梯度。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9', width: 24 }}>05</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>数据成本可以压到极低：10 分钟自由运动 + 1 分钟训练，不依赖力传感器。</Text>
+                </Box>
+            </Box>
+            <Box style={{ width: 1, background: '#D6DCE5' }} />
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 10 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#D9534F' }}>作者承认的五条边界</Text>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#D9534F', width: 24 }}>01</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>绝对尺度依赖力矩常数 K：K 不准，估计整体缩放，需外部力传感器标定一次。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#D9534F', width: 24 }}>02</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>机型专属：换一台机械臂要重新采数据、重新训练，不能直接迁移权重。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#D9534F', width: 24 }}>03</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>接触检测靠双阈值，必须按机型与噪声水平重新标定，不能照抄数字。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#D9534F', width: 24 }}>04</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>输出是关节空间力矩，不是末端六维力；做阻抗控制还要雅可比映射。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#D9534F', width: 24 }}>05</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>任务进度靠人工划分阶段，跨任务、跨标注人不完全可比。</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 8 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文第 8 节、附录 A.2 与 D.1</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

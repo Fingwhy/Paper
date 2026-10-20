@@ -1,0 +1,52 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>05 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>三个公式：减法、记忆、无标签监督</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>第二式决定网络看什么，第三式决定参数怎么定，第一式在参数定下来之后做减法。</Text>
+        <Box style={{ flexDirection: 'column', gap: 14, marginTop: 24, flex: 1 }}>
+            <Box style={{ flexDirection: 'row', gap: 20, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: '18px 22px', alignItems: 'center' }}>
+                <Box style={{ width: 96 }}>
+                    <Text style={{ fontSize: 15, color: '#3D7BD9' }}>部署</Text>
+                </Box>
+                <Box style={{ width: 360 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>τ_ext = τ_m − f_θ(x)</Text>
+                </Box>
+                <Box style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>实测总力矩减去"空载本该出的力矩"，剩下的是外力。网络看不到 τ_m，否则会直接抄答案。</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 20, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: '18px 22px', alignItems: 'center' }}>
+                <Box style={{ width: 96 }}>
+                    <Text style={{ fontSize: 15, color: '#3D7BD9' }}>输入</Text>
+                </Box>
+                <Box style={{ width: 360 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>x_i = [ q, q̇, Δq_d ] i−H:i</Text>
+                </Box>
+                <Box style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>三个量各取最近 H 帧：位置、速度、指令与实际的差。H=50 在 100 Hz 下约 0.5 秒。</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 20, background: '#F0F5FC', border: '1px solid #3D7BD9', borderRadius: 6, padding: '18px 22px', alignItems: 'center' }}>
+                <Box style={{ width: 96 }}>
+                    <Text style={{ fontSize: 15, color: '#3D7BD9' }}>训练</Text>
+                </Box>
+                <Box style={{ width: 360 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>L(θ) = 1/N Σ ‖f_θ(x_i) − τ_m,i‖²</Text>
+                </Box>
+                <Box style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>平方 L2，六关节求和后对样本平均。标签就是电流换算的 τ_m，因为采集时没人碰。</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '14px 22px', marginTop: 16 }}>
+            <Text style={{ fontSize: 17, color: '#0E3F8C', lineHeight: 1.5 }}>关键约束：x 里一旦放进 τ_m，网络的最优解就是原样输出它，损失归零但残差恒为 0。输入只能含本体感知量。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 14 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文式 (2)–(4)</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

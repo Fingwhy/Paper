@@ -1,0 +1,32 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>10 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>五个接触密集任务，FIRST 全面领先</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>250 条示教、双臂 PiPER、4 路 RGB、每策略 20 次 rollout；纵轴是任务进度，不是成功率。</Text>
+        <Box style={{ flexDirection: 'column', gap: 8, marginTop: 22 }}>
+            <Image src="assets/fig06_task_progress.jpg" style={{ width: 1000, height: 245, objectFit: 'contain' }} />
+            <Text style={{ fontSize: 15, color: '#8B97A8' }}>论文图 6：五个任务的任务进度对比，紫色为 FIRST。五个任务：LEGO 装配、NIST 传送带、NIST 插装、工具清理、拧瓶盖。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', gap: 18, marginTop: 22, flex: 1 }}>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 18 }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E4FA8', marginBottom: 6 }}>长时序任务收益最大</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>NIST 传送带这类多阶段任务，需要在自由、接触前、接触之间反复切换，FIRST 的优势最明显。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 18 }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E4FA8', marginBottom: 6 }}>柱高是估读，不是表值</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>论文没有给逐任务数字表。44% → 85% 这类说法来自柱高估读，精度只到 5 个百分点量级。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 18 }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E4FA8', marginBottom: 6 }}>进度是人工划段的</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>每个任务的进度由人工定义阶段并打分，跨任务、跨标注人都不完全可比。</Text>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 8 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文图 6、第 6 节实验设置、附录 C.2 评分标准</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

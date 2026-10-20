@@ -1,0 +1,57 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>17 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>把论文参数换成 50 Hz 的</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>论文是 100 Hz、H = 50；PiPER 电流原生 50 Hz，H 取 25 才是同一个 0.5 秒的窗口。</Text>
+        <Box style={{ flexDirection: 'row', gap: 26, marginTop: 24, flex: 1 }}>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 10 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0E3F8C' }}>参数卡</Text>
+                <Box style={{ flexDirection: 'row', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                    <Text style={{ width: 130, fontSize: 16, color: '#4A5568' }}>采样率</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230' }}>50 Hz（整条管线对齐电流原生频率）</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                    <Text style={{ width: 130, fontSize: 16, color: '#4A5568' }}>历史窗口</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230' }}>H = 25 帧（0.5 秒），不是照抄 50</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                    <Text style={{ width: 130, fontSize: 16, color: '#4A5568' }}>网络</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230' }}>LSTM 128 × 2 + MLP 256 × 2</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                    <Text style={{ width: 130, fontSize: 16, color: '#4A5568' }}>数据量</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230' }}>10 分钟 ≈ 3 万帧（100 Hz 时约 6 万）</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                    <Text style={{ width: 130, fontSize: 16, color: '#4A5568' }}>损失</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230' }}>平方 L2，六关节求和后对样本平均</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row' }}>
+                    <Text style={{ width: 130, fontSize: 16, color: '#4A5568' }}>切分</Text>
+                    <Text style={{ flex: 1, fontSize: 16, color: '#1A2230' }}>按轨迹切，不按帧随机切（相邻窗口重叠 24/25）</Text>
+                </Box>
+            </Box>
+            <Box style={{ width: 470, flexDirection: 'column', gap: 12 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0E3F8C' }}>P3 的 Go / No-Go</Text>
+                <Box style={{ background: '#E8EFF8', borderRadius: 6, padding: 14, flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#1E4FA8' }}>L1 ≤ 0.05 N·m</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568' }}>自由空间留出集；论文 PiPER 上是 0.018</Text>
+                </Box>
+                <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.55 }}>另外三条同时满足才算过：</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>· 六个关节在任意静态姿态都贴近零，而不只是某一个姿态</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>· 单次推理 &lt; 10 ms（模型本身约 1.76 ms）</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>· 静置时 τ_ext 稳定在 0 附近，没有缓慢漂移</Text>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '14px 22px', marginTop: 16 }}>
+            <Text style={{ fontSize: 17, color: '#0E3F8C', lineHeight: 1.5 }}>没有接触段真值，就只能验"贴零"。想在 PiPER 上报接触精度，必须自建标定台（已知质量块 / 弹簧拉力计）。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 12 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文表 3、表 5；复现指南阶段 3–4</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

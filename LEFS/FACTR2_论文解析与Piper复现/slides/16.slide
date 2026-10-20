@@ -1,0 +1,68 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>16 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>先看清楚这台机器能吐出什么</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>CAN 1 Mbps，六个关节各自是独立节点；能拿到的只有位置、速度、电流，没有力矩。</Text>
+        <Box style={{ flexDirection: 'row', gap: 26, marginTop: 22, flex: 1 }}>
+            <Box style={{ width: 700, flexDirection: 'column', gap: 10 }}>
+                <Table
+                    style={{ width: 700, height: 300 }}
+                    defaultTextStyle={{ fontSize: 15, textAlign: 'center', color: '#1A2230' }}
+                    defaultCellStyle={{ border: { left: { width: 1, color: '#E5E7EB' }, right: { width: 1, color: '#E5E7EB' }, top: { width: 1, color: '#E5E7EB' }, bottom: { width: 1, color: '#E5E7EB' } } }}
+                    cells={[
+                        [
+                            { text: '报文', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '周期', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '内容', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                            { text: '在这套方法里的用途', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                        ],
+                        [
+                            { text: '0x251–0x256', textStyle: { bold: true, color: '#1E4FA8' } },
+                            '20 ms（50 Hz）',
+                            '转速 · 电流 · 位置',
+                            '构造 x 与 τ_m',
+                        ],
+                        [
+                            { text: '0x2A1–0x2A8', textStyle: { bold: true, color: '#1E4FA8' } },
+                            '约 5 ms（200 Hz）',
+                            '关节角与状态',
+                            '交叉校验',
+                        ],
+                        [
+                            { text: '0x261–0x266', textStyle: { bold: true, color: '#8B97A8' } },
+                            '低速档 40 Hz',
+                            '母线电流',
+                            '本机型恒为 0，不可用',
+                        ],
+                    ]}
+                />
+                <Text style={{ fontSize: 14, color: '#8B97A8' }}>字节序为 Motorola（MSB 在前）；电流字段协议标 unsigned，符号需实测确认。</Text>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 12 }}>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#D9534F' }}>三个会静默出错的坑</Text>
+                <Box style={{ flexDirection: 'column', gap: 3 }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1A2230' }}>调用频率 ≠ 数据频率</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5 }}>以 200 Hz 轮询只说明你问得勤，不说明数据是新的。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 3 }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1A2230' }}>电流符号未定</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5 }}>协议写 unsigned，注释与实现不一致，要用正反方向运动实测。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 3 }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1A2230' }}>母线电流不是关节电流</Text>
+                    <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.5 }}>拿它当 τ_m 会得到一条全零曲线，最常见的"读不出来"误判。</Text>
+                </Box>
+                <Box style={{ background: '#E8EFF8', borderRadius: 6, padding: '12px 16px', marginTop: 4 }}>
+                    <Text style={{ fontSize: 15, color: '#0E3F8C', lineHeight: 1.5 }}>首帧是默认值（全 0），必须按"该 ID 是否收到过报文"丢弃，不能按序号丢一帧。</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 10 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：PiPER CAN 协议手册 v1.5、复现指南阶段 1</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

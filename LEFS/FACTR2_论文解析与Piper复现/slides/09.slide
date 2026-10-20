@@ -1,0 +1,41 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>09 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>没有力传感器，也有「手感」</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>20 名被试、5 种反馈条件、1–5 分易用性评分；PiPER 上重复了同样的对照。</Text>
+        <Box style={{ flexDirection: 'row', gap: 30, marginTop: 24, flex: 1 }}>
+            <Box style={{ width: 470, flexDirection: 'column', gap: 8 }}>
+                <Image src="assets/fig09_user_study_piper.jpg" style={{ width: 470, height: 330, objectFit: 'contain' }} />
+                <Text style={{ fontSize: 15, color: '#8B97A8', lineHeight: 1.5 }}>论文图 9：PiPER 上的力反馈遥操作用户研究结果。</Text>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 12 }}>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E4FA8' }}>力反馈怎么加进去</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.55 }}>τ_feedback = K_f,p · τ_ext，把估计出的关节力矩按增益反馈到主臂上。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E4FA8' }}>五种条件</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.55 }}>无力反馈 / 扰动观测器 / 位置-位置 / FACTR Teleop（真传感器）/ FACTR 2（NEXT）。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E4FA8' }}>结论</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.55 }}>NEXT 的易用性评分接近"带真传感器"的方案，明显好于无力反馈；完成同样任务所需施加的力更小。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E4FA8' }}>PiPER 上的意义</Text>
+                    <Text style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.55 }}>这台机器买不到关节力矩传感器，所以这是"能不能做力反馈"本身的门槛，不是精度之争。</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '14px 22px', marginTop: 14 }}>
+            <Text style={{ fontSize: 17, color: '#0E3F8C', lineHeight: 1.5 }}>收益来自信号质量，而不是传感器是否存在——这是整篇论文最想证明的一句话。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 12 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文图 4、图 9、第 7 节用户研究</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

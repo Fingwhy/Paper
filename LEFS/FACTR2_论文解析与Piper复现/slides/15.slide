@@ -1,0 +1,55 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>15 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>六个阶段，前三段就能出结论</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>P0 到 P3 是"这台机器到底行不行"的最小闭环，约 3 天；P4、P5 才涉及策略。</Text>
+        <Box style={{ flexDirection: 'row', gap: 14, marginTop: 30, flex: 1 }}>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 16, flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9' }}>P0</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', lineHeight: 1.35 }}>信号链自检</Text>
+                <Text style={{ fontSize: 15, color: '#1E4FA8' }}>0.5 天</Text>
+                <Text style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.5 }}>CAN 拉起来，六个 ID 都有数据，产出采集脚本。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 16, flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9' }}>P1</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', lineHeight: 1.35 }}>采集 10 分钟</Text>
+                <Text style={{ fontSize: 15, color: '#1E4FA8' }}>1 天</Text>
+                <Text style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.5 }}>三类轨迹覆盖工作空间，全程无接触。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 16, flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9' }}>P2</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', lineHeight: 1.35 }}>训练 NEXT</Text>
+                <Text style={{ fontSize: 15, color: '#1E4FA8' }}>0.5 天</Text>
+                <Text style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.5 }}>LSTM + MLP，分钟级训练，产出 τ_f 模型。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#E8EFF8', border: '1px solid #3D7BD9', borderRadius: 6, padding: 16, flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>P3</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', lineHeight: 1.35 }}>自由空间验收</Text>
+                <Text style={{ fontSize: 15, color: '#1E4FA8' }}>0.5 天</Text>
+                <Text style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.5 }}>空载残差 ≤ 0.05 N·m，六个关节都贴零。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 16, flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9' }}>P4</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', lineHeight: 1.35 }}>相位标注</Text>
+                <Text style={{ fontSize: 15, color: '#1E4FA8' }}>1 天</Text>
+                <Text style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.5 }}>双阈值切三段，按 1:5:1 加权，产出标签。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 16, flexDirection: 'column', gap: 8 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#3D7BD9' }}>P5</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', lineHeight: 1.35 }}>策略对照</Text>
+                <Text style={{ fontSize: 15, color: '#1E4FA8' }}>2–4 天</Text>
+                <Text style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.5 }}>Base / +Torque / FIRST 三组，同批 demo。</Text>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '14px 22px', marginTop: 18 }}>
+            <Text style={{ fontSize: 17, color: '#0E3F8C', lineHeight: 1.5 }}>每一段都有独立的验收门。P3 不过就先别做 P4——信号不对，后面的对照组全都没有意义。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 12 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：《PiPER · FACTR 2 复现操作指南》阶段 0–6</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

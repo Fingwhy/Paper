@@ -1,0 +1,34 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>04 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>方法其实只有两句话</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>NEXT 把外力矩估出来；FIRST 用这个力矩去改变训练数据的采样分布。两者可以分开用。</Text>
+        <Box style={{ flexDirection: 'row', gap: 32, marginTop: 30, flex: 1 }}>
+            <Box style={{ width: 464, flexDirection: 'column', gap: 18 }}>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1E4FA8' }}>01　NEXT：估计，不建模</Text>
+                    <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.55 }}>τ_ext = τ_m − f_θ(x)。网络只学"空载时该出多少力"，减去就剩外力。重力、惯性、摩擦、齿隙一次学掉。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1E4FA8' }}>02　FIRST：用分布改采样</Text>
+                    <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.55 }}>用 τ_ext 把示教切成自由运动 / 接触前 / 接触三段，再把接触前多喂几遍。只动采样器，不动策略结构。</Text>
+                </Box>
+                <Box style={{ flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1E4FA8' }}>03　解耦：各自可替换</Text>
+                    <Text style={{ fontSize: 17, color: '#4A5568', lineHeight: 1.55 }}>NEXT 只要 10 分钟无接触数据，不需要力传感器；FIRST 换掉也不影响估计器。复现时可以分段验收。</Text>
+                </Box>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 10 }}>
+                <Image src="assets/fig01_overview.jpg" style={{ width: 620, height: 226, objectFit: 'contain' }} />
+                <Text style={{ fontSize: 15, color: '#8B97A8', lineHeight: 1.5 }}>论文图 1：NEXT 从电流换算的力矩里减去"空载预测"，得到外部力矩；FIRST 再用它做相位切分与重采样。</Text>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 16 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文图 1、第 4–5 节</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

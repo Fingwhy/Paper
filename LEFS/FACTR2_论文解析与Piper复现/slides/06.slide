@@ -1,0 +1,41 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>06 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 24px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>部署链路：一次前向 1.76 毫秒</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>电流换算成力矩，减去网络预测的空载力矩，剩下的就是外力矩。整条链路没有任何力传感器。</Text>
+        <Box style={{ flexDirection: 'row', gap: 28, marginTop: 18, flex: 1 }}>
+            <Box style={{ flex: 1, flexDirection: 'column', gap: 12 }}>
+                <Image src="assets/fig02_deployment.jpg" style={{ width: 620, height: 178, objectFit: 'contain' }} />
+                <Text style={{ fontSize: 15, color: '#8B97A8', lineHeight: 1.5 }}>论文图 2：τ_m = K·I_m，减去 LSTM 预测的 τ_f，得到 τ_ext。</Text>
+                <Box style={{ flexDirection: 'column', gap: 8, marginTop: 6 }}>
+                    <Box style={{ flexDirection: 'row', gap: 12, borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                        <Text style={{ width: 76, fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>网络</Text>
+                        <Text style={{ flex: 1, fontSize: 17, color: '#1A2230' }}>2 层 LSTM（隐藏 128）+ 2 层 MLP（256），逐帧输入、无跨轨迹隐状态</Text>
+                    </Box>
+                    <Box style={{ flexDirection: 'row', gap: 12, borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                        <Text style={{ width: 76, fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>输入</Text>
+                        <Text style={{ flex: 1, fontSize: 17, color: '#1A2230' }}>q、q̇、Δq_d，历史 H = 50 帧（100 Hz 下约 0.5 秒）</Text>
+                    </Box>
+                    <Box style={{ flexDirection: 'row', gap: 12, borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                        <Text style={{ width: 76, fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>数据与训练</Text>
+                        <Text style={{ flex: 1, fontSize: 17, color: '#1A2230' }}>10 分钟自由运动约 6 万帧；RTX 3090 上训练约 1 分钟</Text>
+                    </Box>
+                    <Box style={{ flexDirection: 'row', gap: 12 }}>
+                        <Text style={{ width: 76, fontSize: 17, fontWeight: 'bold', color: '#1E4FA8' }}>推理</Text>
+                        <Text style={{ flex: 1, fontSize: 17, color: '#1A2230' }}>单次前向 1.76 ms ≈ 568 Hz，实际按 100 Hz 部署，余量充足</Text>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '14px 22px', marginTop: 14 }}>
+            <Text style={{ fontSize: 17, color: '#0E3F8C', lineHeight: 1.5 }}>代价很低：10 分钟数据 + 1 分钟训练，就能替换掉"系统辨识 + 负载标定"这一整段工作。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 14 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文图 2、附录 A.1 表 3</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

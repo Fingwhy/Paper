@@ -1,0 +1,37 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>02 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>三个数字，三种口径</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>这三个数经常被并排引用，但它们量的根本不是一回事，混着讲就会自相矛盾。</Text>
+        <Box style={{ flexDirection: 'row', gap: 20, marginTop: 28, flex: 1 }}>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 26, flexDirection: 'column', gap: 10 }}>
+                <Text style={{ fontSize: 16, color: '#3D7BD9', letterSpacing: 1 }}>01　估计得准不准</Text>
+                <Text style={{ fontSize: 54, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1.1 }}>0.547 N·m</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.55 }}>Franka 接触段的平均 L1 关节力矩误差，真值取自带外力矩估计。</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>同表对照：扰动观测器 1.471、FILIC 4.395。这是"和传感器比"的数。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F7F9FC', border: '1px solid #D6DCE5', borderRadius: 6, padding: 26, flexDirection: 'column', gap: 10 }}>
+                <Text style={{ fontSize: 16, color: '#3D7BD9', letterSpacing: 1 }}>02　空载贴不贴零</Text>
+                <Text style={{ fontSize: 54, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1.1 }}>0.018 N·m</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.55 }}>PiPER 自由空间的平均 L1 误差，真值按 0 计，不是和传感器比。</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>同表对照：FILIC 0.435、扰动观测器 0.248。它只说明"没人碰时不乱报"。</Text>
+            </Box>
+            <Box style={{ flex: 1, background: '#F0F5FC', border: '1px solid #3D7BD9', borderRadius: 6, padding: 26, flexDirection: 'column', gap: 10 }}>
+                <Text style={{ fontSize: 16, color: '#3D7BD9', letterSpacing: 1 }}>03　用起来有没有涨</Text>
+                <Text style={{ fontSize: 54, fontWeight: 'bold', color: '#D9534F', lineHeight: 1.1 }}>≥ 17%</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.55 }}>五个任务的平均进度相对先前力感知策略的提升，原文用词是 over 17%。</Text>
+                <Text style={{ fontSize: 15, color: '#4A5568', lineHeight: 1.55 }}>它不是相对 Base 的涨幅：Base 44% → FIRST 85% 是从柱状图估读的，口径不同。</Text>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '16px 22px', marginTop: 20 }}>
+            <Text style={{ fontSize: 18, color: '#0E3F8C', lineHeight: 1.5 }}>三个数回答三个问题：估得准不准、空载贴不贴零、用起来有没有涨。任何一个都不能替另外两个背书。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 16 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：论文 Table 1、Table 5、摘要</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

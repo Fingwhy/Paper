@@ -1,0 +1,56 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '0px' }}>
+    <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 72, background: '#1E4FA8', padding: '0 64px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 15, color: '#C9D8F0', letterSpacing: 1 }}>FACTR 2 · 论文解析与 PiPER 复现</Text>
+        <Text style={{ fontSize: 15, color: '#FFFFFF' }}>18 / 19</Text>
+    </Box>
+    <Box style={{ padding: '96px 64px 32px 64px', flexDirection: 'column', height: 720 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C', lineHeight: 1.25 }}>五个最容易踩的坑</Text>
+        <Text style={{ fontSize: 19, color: '#4A5568', marginTop: 10, lineHeight: 1.5 }}>这些错误不会让程序崩溃，只会让最后的数字难看——然后你会从最后一个环节开始修。</Text>
+        <Box style={{ marginTop: 20 }}>
+            <Table
+                style={{ width: 1152, height: 380 }}
+                defaultTextStyle={{ fontSize: 16, textAlign: 'left', color: '#1A2230' }}
+                defaultCellStyle={{ border: { left: { width: 1, color: '#E5E7EB' }, right: { width: 1, color: '#E5E7EB' }, top: { width: 1, color: '#E5E7EB' }, bottom: { width: 1, color: '#E5E7EB' } } }}
+                cells={[
+                    [
+                        { text: '坑', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                        { text: '现象', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                        { text: '对策', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#0E3F8C' } } },
+                    ],
+                    [
+                        { text: '01　力矩常数 K 未标定', textStyle: { bold: true } },
+                        '外力矩整体缩放，接触阈值全部失效',
+                        '已知质量块做整体尺度标定；不要用 MIT 的 T_ref 当基准',
+                    ],
+                    [
+                        { text: '02　自由空间混入接触', textStyle: { bold: true } },
+                        '训练标签被污染，残差出现系统性偏置',
+                        '采集前清空桌面；抽检自由段残差曲线是否贴零',
+                    ],
+                    [
+                        { text: '03　阈值照抄论文', textStyle: { bold: true } },
+                        '误报与漏报同时出现，相位切分错乱',
+                        '按本机噪声 P99 重标 T_low，T_high 取 2 倍',
+                    ],
+                    [
+                        { text: '04　把关节力矩当末端力', textStyle: { bold: true } },
+                        '阻抗控制的方向与量纲都会错',
+                        '用雅可比映射到末端，或只做关节力矩级控制',
+                    ],
+                    [
+                        { text: '05　任务进度靠人工划段', textStyle: { bold: true } },
+                        '跨任务、跨标注人不可比',
+                        '固定阶段定义与评分表，先对齐口径再比较',
+                    ],
+                ]}
+            />
+        </Box>
+        <Box style={{ flexDirection: 'row', background: '#E8EFF8', borderRadius: 6, padding: '14px 22px', marginTop: 18 }}>
+            <Text style={{ fontSize: 17, color: '#0E3F8C', lineHeight: 1.5 }}>前三个坑决定信号能不能用，后两个决定结论能不能信。</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #D6DCE5', paddingTop: 10, marginTop: 12 }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>来源：复现指南阶段 2–6、故障速查表</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>FACTR 2 · 2026.10</Text>
+        </Box>
+    </Box>
+</Slide>

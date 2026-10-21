@@ -37,9 +37,13 @@ LEFS/experiments/*/episodes/
 # （episodes/ 本身不入库，权重因此不可由仓库重建，需要时按 *_REPORT.md 的命令重跑训练）
 LEFS/experiments/*/data/*.npz
 LEFS/experiments/*/runs/*/model.pt
+LEFS/experiments/*/runs/**/model.pt
 LEFS/experiments/*/*/samples.jsonl
 
 # 幻灯片生成过程的中间态
 LEFS/.slidep/
 LEFS/tmp/
 LEFS/experiments/*/*_stale/
+
+# 论文解包临时目录中的原始 PDF 与 LEFS/paper/2606.12406v2.pdf 完全相同，不重复入库
+paper_2606.12406/2606.12406v2_original.pdf

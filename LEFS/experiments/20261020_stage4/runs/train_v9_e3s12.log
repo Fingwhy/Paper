@@ -1,0 +1,12 @@
+数据 data/step_h75.npz  H=75
+窗口数：train 83915  val 12028
+  （train 39 段 / val 5 段；测试集 3 段不进训练）
+[残差] 线性重力基线拟合完成，残差 y 的 std = [0.15299999713897705, 0.4032999873161316, 0.46369999647140503, 0.03189999982714653, 0.08420000225305557, 0.03849999979138374]
+模型：{'type': 'lstm', 'hidden_size': 128, 'num_layers': 2, 'head_hidden': 256, 'head_layers': 2, 'dropout': 0.1, 'bidirectional': False, 'state_mode': 'stateless'}  参数 242.4k
+优化器：AdamW lr=0.001 wd=1e-06 clip=1.0 early-stop patience=20 warmup=10
+epoch 001  train 0.55733  val 1.20042  MAE 0.1524 N·m  [ 70.8s] *
+epoch 002  train 0.35449  val 1.16132  MAE 0.1454 N·m  [160.1s] *
+epoch 003  train 0.33319  val 1.15516  MAE 0.1420 N·m  [230.6s] *
+
+保存 → runs\next_v9_e3s12\model.pt（best epoch 3, val_mae 0.14202）
+总耗时 230.6 s

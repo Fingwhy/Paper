@@ -111,6 +111,11 @@ def main():
     ap.add_argument("--splits", default=str(SPLITS), help="切分清单，默认阶段 3 的 splits.json；"
                                                          "分层重切后用 splits_v2.json")
     ap.add_argument("--verbose", action="store_true", help="逐段打印")
+    ap.add_argument("--history", type=int, default=HISTORY,
+                    help=f"历史窗口步数，默认 {HISTORY}（50 Hz × 0.5 s）。"
+                         "论文 H=50 是 100 Hz 下的 0.5 s；我们 50 Hz 下要等时长应是 25，"
+                         "但论文 A.2 消融显示 H 越大越好（10→25→50 单调改善），"
+                         "所以另设 H=50（1.0 s）、H=75（1.5 s）做对照")
     args = ap.parse_args()
 
     sp = json.load(open(args.splits, encoding="utf-8"))
@@ -184,7 +189,7 @@ def main():
     out.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(
         out,
-        history=HISTORY,
+        history=args.history,
         K=K, K_state=np.array(K_STATE), joint=np.array(JN),
         **{f"{s}_{k}": v for s, dd in store.items() for k, v in dd.items()
            if k in ("X", "Y", "T", "ep_start", "ep_name", "ep_used", "ep_raw")},

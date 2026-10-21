@@ -1,0 +1,34 @@
+总段数 49，分层 5 折
+
+===== fold 0: train 35 / val 5 / test 9 =====
+  test: ['H2_hold_B', 'M2_J2J3J5', 'M7_J2J6', 'S1_3_hi', 'S1_3_lo', 'S1_4_mid', 'S1_5_hi', 'V1_J2J3', 'V2_J5J6']
+  q2_med: test [26, 30, 30, 56, 60, 60, 60, 80, 80]
+  → 窗口加权 0.1458 / 段等权 0.1455（best epoch 6）
+
+===== fold 1: train 34 / val 5 / test 10 =====
+  test: ['E1_J2high', 'M3_J1J4', 'M5_J1J2J6', 'P2_J2mid', 'S1_1_mid', 'S1_2_hi', 'S1_3_mid', 'S1_4_lo', 'S1_5_lo', 'T2_J1J6']
+  q2_med: test [27, 30, 30, 36, 60, 60, 60, 79, 80, 120]
+  → 窗口加权 0.1508 / 段等权 0.1486（best epoch 8）
+
+===== fold 2: train 34 / val 5 / test 10 =====
+  test: ['H3_hold_C', 'M1_J2J3', 'M4_J4J5J6', 'P3_J2hi', 'P6_J2wide', 'R4_rep', 'S1_1_lo', 'S1_2_mid', 'S1_4_hi', 'S1_5_mid']
+  q2_med: test [30, 30, 33, 33, 60, 60, 60, 79, 80, 91]
+  → 窗口加权 0.1333 / 段等权 0.1379（best epoch 4）
+
+===== fold 3: train 34 / val 5 / test 10 =====
+  test: ['E2_J3deep', 'E3_wrist', 'M6_J1J5', 'P5_J2J5', 'R2_rep', 'R5_rep', 'S1_1_hi', 'S1_6_hi', 'T1_J2J3J5', 'V3_J1']
+  q2_med: test [30, 30, 33, 33, 60, 60, 60, 75, 84, 90]
+  → 窗口加权 0.2653 / 段等权 0.2581（best epoch 6）
+
+===== fold 4: train 34 / val 5 / test 10 =====
+  test: ['H1_hold_A', 'P1_J2lo', 'P4_J2J3', 'P7_J2slow', 'R1_rep', 'R3_rep', 'S1_2_lo', 'S1_6_lo', 'S1_6_mid', 'T3_J4']
+  q2_med: test [30, 30, 33, 33, 60, 60, 60, 68, 85, 88]
+  → 窗口加权 0.1482 / 段等权 0.1477（best epoch 5）
+
+============================================================
+5 折 OOF MAE（49 段，段等权）= 0.1680 N·m
+各折段等权 MAE: [0.1455, 0.1486, 0.1379, 0.2581, 0.1477]
+  折间 std 0.0454 / 范围 0.1379~0.2581
+逐轴: J1 0.134  J2 0.305  J3 0.433  J4 0.030  J5 0.072  J6 0.035
+
+总耗时 49.5 min → C:\Users\asus\WorkBuddy\论文解析复现\LEFS\experiments\20261020_stage4\runs\kfold\kfold_summary.json

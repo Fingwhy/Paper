@@ -60,9 +60,9 @@ import stage2_design as S  # noqa: E402  提供 END_LINK
 CFG = dict(
     open_mm=70.0,        # 张开行程（mm）。机械上限约 68.5 mm，给 70 就是全开
     open_effort=400,     # 张开时的力限（0.001 N·m）。太大没必要，400 足够
-    close_effort=1200,   # 夹持力限（0.001 N·m）= 1.2 N·m。要更紧改成 2000
+    close_effort=2000,   # 夹持力限（0.001 N·m）= 2.0 N·m（这是上限）。要温柔改成 600~1200
     hold_seconds=5.0,    # grasp 时张开后等你放物体的秒数
-    squeeze_mm=0.6,      # 夹到接触后再压进多少 mm（形成稳定夹持力）
+    squeeze_mm=1.0,      # 碰到物体后再往里压多少 mm（把「轻碰」变成「夹紧」）
     hold_s=12,           # measure 每个姿态静止保持秒数（越长噪声越低）
     rec_s=30,            # measure 每个姿态录制秒数（必须 > 到达时间 + hold_s）
 )
@@ -167,18 +167,122 @@ def cmd_open(a):
           f"{'  ← 已到机械上限' if ang < tgt - 2000 else ''}")
 
 
+def close_by_force(p, target_effort=None, step_mm=1.0, hold_frames=2,
+                   stall_steps=5, stop_ratio=0.85, verbose=False):
+    """边走边读夹持力，力到就停 —— 不按预定行程硬走。
+
+    为什么换掉旧做法「开度差 > 3 mm 判接触」
+    ------------------------------------
+    * 物体薄/软：一步 1.5 mm 直接压过去，开度差来不及显出来 → 程序以为没夹到，继续顶；
+    * 物体硬：一步顶到位，把东西推走 → 现场表现就是「合不上 / 夹不住」。
+
+    三个必须注意的实测细节（2026-10-21 现场踩到，全是夹爪开环特性）
+    ------------------------------------------------------------
+    1. **夹爪不响应单帧指令**。只发 2 帧（40 ms）就换下一个目标，实测开度**一动不动**
+       （指令 39.2 → 实测 39.5 恒定）。⇒ 每步必须**持续重发同一目标**若干帧，
+       给夹爪时间真的走过去。这也是 `grip.py hold` 每 0.1 s 重发的原因。
+    2. **单步延迟 ≠ 被物体挡住**。所以「没进展」要**连续 stall_steps 步**才算接触。
+    3. **effort 会随开合方向变号**（张开读到负值）。⇒ 判力用 `abs(eff)`。
+
+    返回 (开度, 力, 是否夹到东西)。
+    """
+    tgt = int(target_effort if target_effort is not None else CFG["close_effort"])
+    cur, eff = _grip(p)
+    if verbose:
+        print(f"  起始开度 {cur/1000:.1f} mm，力限 {tgt}")
+    stall = 0
+    while cur > 0:
+        nxt = max(0, cur - int(step_mm * 1000))
+        # 持续重发同一目标：夹爪需要连续指令才会真正移动
+        for _ in range(hold_frames):
+            _send(p, nxt, tgt, n=2)
+            meas, eff = _grip(p)
+            if abs(eff) >= tgt * stop_ratio:      # ① 力到了 ⇒ 已经接触
+                if verbose:
+                    print(f"    指令 {nxt/1000:5.1f}  实测 {meas/1000:5.1f} mm  "
+                          f"力 {eff:5d}  ← 接触，准备补压")
+                # 「碰到」不等于「夹稳」：只轻轻接触时摩擦力不够，重物会滑落
+                # （2026-10-21 用户放偏重物体，夹爪停在 48.3 mm、力随后掉回 −39，
+                #   就是碰到了但没夹住）。这里再往里压 squeeze_mm，
+                # 力由 tgt 限住所以不会夹坏；压完才认为夹稳。
+                extra = int(CFG.get("squeeze_mm", 1.0) * 1000)
+                tgt_ang = max(0, meas - extra)
+                for _ in range(8):
+                    _send(p, tgt_ang, tgt, n=2)
+                meas2, eff2 = _grip(p)
+                if verbose:
+                    print(f"    补压 {extra/1000:.1f} mm → 实测 {meas2/1000:.1f} mm  "
+                          f"力 {eff2:5d}")
+                elif True:
+                    print()
+                return meas2, eff2, True
+        if verbose:
+            print(f"    指令 {nxt/1000:5.1f}  实测 {meas/1000:5.1f} mm  "
+                  f"力 {eff:5d}  停滞 {stall}")
+        else:
+            # 单行刷新：用户能看到夹爪在动、力在涨，而不是「毫无反应」
+            print(f"\r  闭合中… {meas/1000:5.1f} mm   力 {eff:6d}", end="", flush=True)
+        # ② 连续多步没有进展 ⇒ 被挡住
+        if meas <= cur - 100:                 # 真的往里走了（0.1 mm）
+            stall = 0
+            cur = meas
+        else:
+            stall += 1
+            if stall >= stall_steps:
+                if not verbose:
+                    print()
+                return meas, eff, True
+            cur = meas                         # 卡住就别再往下压指令
+    if not verbose:
+        print()
+    return cur, eff, False
+
+
+def start_hold(angle, effort):
+    """夹住之后必须有人**持续**发夹爪指令，否则会松掉。
+
+    这里有两个坑，2026-10-21 用户报「夹以后没有继续施加力」时全中：
+      1. **`GripperCtrl` 是「设定目标」而不是「一直施力」**。若保持目标 == 实测开度，
+         夹爪认为已经到位、不再出力，实测 effort 立刻从 1.0 N·m 掉回 −0.03 N·m，
+         重物就滑了。⇒ 保持目标必须**压进 squeeze_mm**（小于实测开度）。
+      2. **进程退出后没人发帧**，夹爪回到松弛状态。⇒ 起一个后台进程每 0.1 s 重发。
+         这个进程在菜单后续操作里会一直活着；要松开就张开夹爪（会自动把它清掉）。
+
+    返回后台进程 pid。
+    """
+    _kill_stale()
+    cmd = [sys.executable, str(HERE / "grip.py"), "hold",
+           "--angle", str(int(angle)), "--effort", str(int(effort)), "--secs", "0"]
+    p = subprocess.Popen(cmd, stdout=subprocess.DEVNULL,
+                         stderr=subprocess.DEVNULL, start_new_session=True)
+    time.sleep(0.4)          # 等它把 CAN 连上并开始发帧
+    return p.pid
+
+
+def _hold_angle(measured_ang):
+    """保持目标 = 实测 - squeeze，保证夹爪持续出力。"""
+    return max(0, int(measured_ang) - int(CFG["squeeze_mm"] * 1000))
+
+
 def cmd_close(a):
     _kill_stale()
     p = _piper(a.iface)
     cur, _ = _grip(p)
-    print(f"闭合：{cur/1000:.1f} mm → 0（力限 {a.effort}，碰到即停）")
-    hit, hitflag = _ramp(p, 0, a.effort, stop_on_contact=True)
-    hold = max(0, hit - int(CFG["squeeze_mm"] * 1000))
-    for _ in range(12):
-        _send(p, hold, a.effort)
-    ang, eff = _grip(p)
-    print(f"完成：开度 {ang/1000:.1f} mm"
-          f"{'（夹到物体）' if hitflag else '（空夹，到底了）'}  effort {eff}")
+    print(f"闭合：{cur/1000:.1f} mm 起，边合边读夹持力，"
+          f"到力限 {a.effort} 的 85% 就停")
+    ang, eff, hit = close_by_force(p, a.effort, verbose=getattr(a, "verbose", False))
+    if hit and ang >= 1000:
+        hold_ang = _hold_angle(ang)
+        pid = start_hold(hold_ang, a.effort)
+        print(f"完成：已夹住，实测开度 {ang/1000:.1f} mm"
+              f"（≈物体宽度 {ang/1000:.1f} mm）")
+        print(f"  保持目标 {hold_ang/1000:.1f} mm，力限 {a.effort/1000:.1f} N·m，"
+              f"后台保持 pid {pid}")
+        print("  夹持力会一直保持。要松开：菜单按 2 张开；"
+              "或手动 pkill -f 'grip.py hold'")
+    else:
+        print(f"完成：夹爪合到底（{ang/1000:.1f} mm），里面没有东西")
+        print("  如果确实放了物体：它可能没在两指之间，或比夹爪行程还宽")
 
 
 def cmd_grasp(a):
@@ -195,14 +299,15 @@ def cmd_grasp(a):
     for s in range(n, 0, -1):
         print(f"   {s} …", flush=True)
         time.sleep(1)
-    print(f"3) 轻力闭合（力限 {a.effort}）")
-    hit, hitflag = _ramp(p, 0, a.effort, stop_on_contact=True)
-    hold = max(0, hit - int(CFG["squeeze_mm"] * 1000))
-    for _ in range(12):
-        _send(p, hold, a.effort)
-    ang, eff = _grip(p)
-    print(f"4) 夹持开度 {ang/1000:.1f} mm，effort {eff}"
-          f"{'' if hitflag else '  ← 没夹到东西，请重试'}")
+    print(f"3) 边合边读夹持力（力限 {a.effort}）")
+    ang, eff, hit = close_by_force(p, a.effort, verbose=getattr(a, "verbose", False))
+    if hit and ang >= 1000:
+        hold_ang = _hold_angle(ang)
+        pid = start_hold(hold_ang, a.effort)
+        print(f"4) 已夹住：实测开度 {ang/1000:.1f} mm，保持力 {a.effort/1000:.1f} N·m，"
+              f"后台保持 pid {pid}")
+    else:
+        print(f"4) 空夹（合到底没阻力）：开度 {ang/1000:.1f} mm  ← 没夹到东西，请重试")
 
 
 # ---------------------------------------------------------------------------
@@ -330,8 +435,9 @@ def main():
     o.add_argument("--mm", type=float, default=CFG["open_mm"])
     o.add_argument("--effort", type=int, default=CFG["open_effort"])
 
-    c = sub.add_parser("close", help="闭合（碰到即停）")
+    c = sub.add_parser("close", help="闭合（边合边读力，力到即停）")
     c.add_argument("--effort", type=int, default=CFG["close_effort"])
+    c.add_argument("--verbose", action="store_true", help="逐步打印指令/实测/力")
 
     g = sub.add_parser("grasp", help="张开→等N秒→轻力闭合")
     g.add_argument("--hold-s", type=float, default=CFG["hold_seconds"])

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>FACTR 2 中文译文</title>
+<style>
+@page { size: A4; margin: 20mm 18mm 18mm 18mm; }
+html { -webkit-print-color-adjust: exact; }
+body { font-family: "Noto Serif SC","Source Han Serif SC","SimSun",serif; font-size: 10.4pt; line-height: 1.82; color:#111; margin:0; text-align: justify; }
+h1 { font-family:"Noto Sans SC","Microsoft YaHei",sans-serif; font-size: 19pt; line-height:1.4; text-align:center; margin: 0 0 6mm 0; font-weight:700; }
+h2 { font-family:"Noto Sans SC","Microsoft YaHei",sans-serif; font-size: 13.2pt; margin: 7mm 0 2.4mm 0; font-weight:700; page-break-after: avoid; border-left: 3.5px solid #2b5c8a; padding-left: 6px; }
+h3 { font-family:"Noto Sans SC","Microsoft YaHei",sans-serif; font-size: 11.2pt; margin: 4.5mm 0 1.6mm 0; font-weight:700; page-break-after: avoid; }
+p { margin: 0 0 2.2mm 0; text-indent: 2em; }
+p.noindent { text-indent: 0; }
+.meta { text-align:center; font-size:9.6pt; line-height:1.6; color:#222; margin-bottom:5mm; }
+.meta .au { font-size:10pt; }
+.meta .aff { font-size:9pt; color:#333; }
+.note { border:1px solid #c9d6e2; background:#f4f8fc; padding:3mm 4mm; font-size:8.8pt; line-height:1.6; margin:0 0 6mm 0; color:#24405c; text-indent:0; }
+.note b { color:#12324e; }
+.abs { font-size:9.8pt; line-height:1.75; background:#fafafa; border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:3mm 0; }
+.abs p { text-indent:0; }
+.abs .lab { font-family:"Noto Sans SC",sans-serif; font-weight:700; }
+figure { margin: 4mm 0 4.5mm 0; text-align:center; page-break-inside: avoid; }
+figure img { display:block; margin:0 auto; }
+figcaption { font-size:8.8pt; line-height:1.6; text-align:justify; color:#222; margin-top:2mm; text-indent:0; }
+figcaption b { font-family:"Noto Sans SC",sans-serif; }
+.eq { text-align:center; margin: 3mm 0 3.5mm 0; page-break-inside: avoid; }
+.eq img { display:block; margin:0 auto; }
+table { border-collapse: collapse; margin: 1.5mm auto 2mm auto; font-size: 8.6pt; page-break-inside: auto; }
+tr { page-break-inside: avoid; }
+thead { display: table-header-group; }
+table caption { caption-side: top; font-size:8.8pt; text-align:justify; line-height:1.6; margin-bottom:1.5mm; color:#222; }
+th, td { border-top: 0.6px solid #666; border-bottom: 0.6px solid #666; padding: 1.1mm 2.2mm; text-align:center; vertical-align:middle; }
+thead th { border-bottom: 1.2px solid #333; }
+td.l, th.l { text-align:left; }
+.tcap { font-size:8.8pt; line-height:1.6; text-align:justify; margin: 4mm 0 0 0; color:#222; text-indent:0; page-break-after: avoid; }
+ul, ol { margin: 1mm 0 2.4mm 0; padding-left: 7mm; }
+li { margin-bottom: 1.4mm; text-align: justify; }
+.refs p { text-indent:-1.6em; padding-left:1.6em; font-size:8.4pt; line-height:1.55; margin-bottom:1.1mm; text-align:left; }
+.small { font-size:9.2pt; }
+.kw { font-family:"Noto Sans SC",sans-serif; font-weight:700; }
+.pb { page-break-before: always; }
+.avoid { page-break-inside: avoid; }
+hr.foot { border:0; border-top:1px solid #ddd; margin:6mm 0 3mm 0; }
+.tiny { font-size:8pt; color:#555; text-align:center; text-indent:0; }
+</style>
+</head>
+<body>
+
+<h1>FACTR 2：为商品级机械臂学习外部力感知<br>可提升策略学习</h1>
+
+<div class="meta">
+<div class="au">Steven Oh<sup>*1,2</sup>&nbsp;&nbsp; Jason Jingzhou Liu<sup>*&dagger;1</sup>&nbsp;&nbsp; Tony Tao<sup>*1</sup>&nbsp;&nbsp; Philip Han<sup>1</sup>&nbsp;&nbsp; Kenneth Shaw<sup>1</sup><br>Satoshi Funabashi<sup>2</sup>&nbsp;&nbsp; Ruslan Salakhutdinov<sup>1</sup>&nbsp;&nbsp; Deepak Pathak<sup>1</sup></div>
+<div class="aff" style="margin-top:2mm"><sup>1</sup>卡内基梅隆大学（Carnegie Mellon University）&nbsp;&nbsp;&nbsp;<sup>2</sup>早稻田大学（Waseda University）<br><sup>*</sup>同等贡献&nbsp;&nbsp;&nbsp;<sup>&dagger;</sup>通讯作者：Jason Jingzhou Liu，liujason@cmu.edu</div>
+</div>
+
+<div class="note">
+<b>译者说明</b>：本文件是 arXiv:2606.12406v2（FACTR 2，2026 年 8 月 12 日）的中文译文，供阅读与复现参考。正文、图注与表头已译为中文；<b>插图、公式、表格数值均为原文原样截取/转录</b>，未做改动；参考文献保留英文原貌以便检索。学术引用请以英文原文为准。
+</div>
+
+<div class="abs">
+<p><span class="lab">摘要：</span>富接触操作需要力感知能力，但许多机械臂由于成本高昂而没有配备专用力传感器。我们提出<b>神经外力矩估计</b>（Neural External Torque Estimation，<b>NEXT</b>）：一种无需任何专用力传感器即可估计外部关节力矩的数据驱动方法。NEXT 仅用 10 分钟的自由运动数据、训练 1 分钟，就能达到与专用关节力矩传感器相当的估计质量。NEXT 使低成本机械臂具备力反馈遥操作能力，并通过<b>力引导重采样训练</b>（Force-Informed Re-Sampling Training，<b>FIRST</b>）提升策略学习——该方法在行为克隆过程中对接触前段与接触段样本进行上采样。在五个长时程任务上，FIRST 在任务进度上比此前的力感知策略高出 17% 以上。NEXT 与 FIRST 共同把力感知遥操作和力感知策略学习带到了无需额外传感硬件的现货机械臂上。视频与代码见 https://jasonjzliu.com/factr2 。</p>
+</div>
+
+<figure>
+<img src="figs/fig01.png" style="width:14.3cm">
+<figcaption><b>图 1：</b>方法总览。(a) 神经外力矩估计（NEXT）仅使用 10 分钟数据、无需专用力传感器、也无需显式系统辨识，即可产生高质量的关节力矩估计，从而在 Piper、YAM、Nero 等低成本机械臂上实现力反馈遥操作。(b) 力引导重采样训练（FIRST）利用学到的外部力矩估计把示教分割为自由空间、接触前与接触三个阶段，并在训练时对与接触相关的片段上采样，以提升策略性能。</figcaption>
+</figure>
+
+<h2>1&nbsp;&nbsp;引言</h2>
+
+<p>日常生活中的许多操作任务——插入、拧紧、可变形物体处理——都需要精确的力感知控制，而这种能力是人类天然依赖的。在机器人领域，这类细微的接触交互很难仅凭视觉可靠地推断出来，因此力感知是一项不可或缺的能力。专用力/力矩（force-torque，FT）传感器通常只出现在 Franka、Flexiv 或 KUKA 等昂贵平台上。许多低成本机械臂没有内置力感知，这既限制了它们在数据采集过程中提供力反馈的能力，也使策略无法利用实现鲁棒、接触感知操作所必需的力信息。为平台加装末端力传感器仍然困难且昂贵，有时甚至比机械臂本体还贵。</p>
+
+<p>安装在机械臂与末端执行器之间的传统压阻式 FT 传感器依赖粘贴在精密加工结构上的多个应变片，因而既昂贵又笨重 [1, 2]。近期的电容式传感器（如 CoinFT [3]）和磁性触觉传感器（如 ReSkin [4]）提供了更低成本的替代方案，但其柔性敏感材料并非为承受末端执行器处常见的大力量级而设计 [5]。</p>
+
+<p>作为替代，我们提出<b>神经外力矩估计</b>（Neural External Torque estimation，NEXT）——一种即使在低成本机械臂上也能给出高质量估计的数据驱动外部关节力矩估计方法。NEXT 只需要 10 分钟的无接触轨迹和 1 分钟训练，就能学到一个预测自由空间运动所需力矩的神经网络。在部署阶段，NEXT 把外部力矩估计为实测电机力矩（由电机电流推断）与预测自由空间力矩之间的残差。值得强调的是，NEXT 在数据采集和部署两个阶段都不需要专用力/力矩传感器。我们证明，NEXT 产生的信号与高端机械臂上专用关节力矩传感器的测量值高度吻合，同时优于已有的估计方法。</p>
+
+<p>学到的外力信号带来两项能力：(1) 在无传感、低成本的机械臂（如 AgileX Piper、YAM）上实现力反馈遥操作，性能与有传感系统相当 [6, 7]；(2) <b>力引导重采样训练</b>（Force Informed Re-Sampling Training，FIRST）——一种行为克隆方法，利用外力估计把示教分割为自由空间、接触前和接触三个阶段，并对后两个阶段上采样，以提高策略成功率。</p>
+
+<p>FIRST 的动机来自一个观察：策略的失败并不集中在自由空间运动上，而是集中在需要精确对准的短暂接触前区间，以及需要受控交互与精细修正的接触阶段。我们在五个长时程、富接触任务上评估 FIRST，其成功率稳定优于此前的基线，在对准、恢复和接触阶段的表现上均有提升。</p>
+
+<p>把 NEXT 与 FIRST 合在一起，我们把这一系统称为 <b>FACTR 2</b>。它把 FACTR [6] 从"具备专用力传感器的机械臂"推广到商品级机械臂，使力反馈遥操作与力感知策略学习同时成为可能。我们在从 Piper（2,500 美元）这类低成本机械臂到 Franka（30,000 美元）这类高端机械臂的平台上都验证了这一能力，因此我们相信 FACTR 2 让力感知对任何机械臂都变得可得。我们的贡献概括如下：</p>
+
+<ul>
+<li><span class="kw">无需传感器的数据驱动外力矩估计。</span>我们提出 NEXT——一种无需专用 FT 传感器、也无需针对具体机器人做系统辨识的神经外力矩估计方法。NEXT 仅用 10 分钟自由运动数据训练一个循环（recurrent）模型，其估计质量优于既有方法。</li>
+<li><span class="kw">低成本机械臂上的力反馈遥操作。</span>我们利用估计出的力信号，在 Piper 与 YAM 等无传感的低成本机械臂上实现双边遥操作，反馈质量与有传感系统相当。</li>
+<li><span class="kw">力引导重采样训练。</span>我们提出 FIRST——一种行为克隆方法，用外部力矩估计识别示教中的接触前与接触阶段，然后在训练时对这些阶段上采样，从而提升策略性能。</li>
+</ul>
+
+<h2>2&nbsp;&nbsp;相关工作</h2>
+
+<h3>2.1&nbsp;&nbsp;无传感器外力估计</h3>
+<p>在没有专用传感器的情况下估计外力，通常的做法是对机器人动力学建模，并把预测信号与观测信号之间的残差解释为外部接触。基于解析建模与系统辨识的传统方法 [8, 9, 10] 可以是有效的，但需要大量人工工程投入，而且往往难以处理死区 [11]、力矩脉动 [12] 等执行器非线性。为克服这些局限，出现了基于学习的方法。有监督方法从成对的"本体感觉—真实世界"接触数据 [13] 或仿真数据 [14] 中学习，但需要专门的数据采集与标注。自编码器异常检测 [15] 之类的无监督方法可以识别偏离机械臂自由运动的情形，但主要适用于接触检测，而非连续力估计。逆动力学学习已被用于单个执行器 [12] 以及 da Vinci 系统 [16] 等复杂高端平台，但尚未在低成本机器人上得到广泛验证。</p>
+
+<h3>2.2&nbsp;&nbsp;带力信息的模仿学习</h3>
+<p>近期的模仿学习方法以几种不同方式引入力或力矩信息。一类工作把与力相关的信号作为策略的额外输入：例如 TA-VLA [17] 使用关节力（joint effort）信息，BiACT [8] 使用关节力矩，CompACT [18] 以末端力为条件，ForceVLA [19] 进一步引入混合专家（MoE）结构，在不同模态专家之间做上下文感知的路由。另一些方法（如 TA-VLA [17] 与 FoAR [20]）使用辅助目标来促使策略学到接触感知的表征。第二类工作把行为克隆与推理时的混合力—位控制或阻抗控制结合起来 [21, 22, 23]：这类方法同时预测运动目标与力目标，再由底层控制器跟踪，以强制执行期望的交互行为。最后，FACTR [6] 在训练阶段使用力信息，以改善策略对未见物体的泛化。我们的方法 FIRST 不仅把外部力矩作为策略输入，还用其推断接触阶段并据此重塑训练分布。我们的消融实验进一步表明，接触前的样本往往比接触中的样本更有价值，这为力感知的数据重加权给出了一个经验性的指导原则。</p>
+
+<h3>2.3&nbsp;&nbsp;基于数据集重加权的策略学习</h3>
+<p>策略训练的动力学在很大程度上取决于优化过程中如何使用数据。在强化学习中，此前的工作用价值与优势加权来强调能带来更高回报的动作：AWR [24] 以指数化的优势对动作加权，CRR [25] 用学到的 critic 过滤或加权动作，AWAC [26] 用优势加权更新来衔接离线数据与在线微调。在模仿学习中，数据重加权也已被探索：Re-Mix 把 DoReMi 式 [27] 的 Group DRO 适配到机器人领域 [28]；DataMIL 用数据模型（datamodel）估计器 [29] 做目标感知的数据选择 [30]；DemInf 对状态—动作互信息打分，以偏好多样且可预测的动作 [31]；SCIZOR 结合进度预测与嵌入聚类来剪除转移样本 [32]。还有一类方法借助学到的价值函数做过滤：GVL 用视觉语言模型做价值估计 [33]，SARM 训练一个阶段感知的奖励模型 [34]。最后，基于 rollout 的方法直接优化闭环性能：Demo-SCORE 用基于 rollout 训练的成功分类器过滤数据 [35]，CUPID 用影响函数估计单条示教对期望回报的影响 [36]。</p>
+
+<h2>3&nbsp;&nbsp;背景</h2>
+
+<p>外部关节力矩 <i>&tau;</i><sub>ext</sub> 是指由与环境物理交互所诱发的关节空间力矩，它不包括在自由空间中运动机器人所需的力矩。对于配备专用力/力矩传感的机械臂，该信号可直接获得，但许多机械臂并没有这类传感器。</p>
+
+<p>在没有专用力感知的情况下，外部关节力矩可以由电机电流测量与机器人动力学模型来估计。多数机械臂都能直接提供电机电流，它通过 <i>&tau;</i><sub>m</sub> = <b>K</b><i>I</i><sub>m</sub> 近似地与电机力矩相关，其中 <i>I</i><sub>m</sub> 是实测电机电流，<b>K</b> 是力矩常数。给定实测电机力矩 <i>&tau;</i><sub>m</sub> 与已知的机器人动力学模型，外部关节力矩可写为</p>
+
+<div class="eq"><img src="eqs/eq1.png" style="width:12.1cm"></div>
+
+<p>这里 <i>&tau;</i><sub>f</sub> 表示在自由空间（即无外部接触）中实现所观测运动所需的力矩。因此计算 <i>&tau;</i><sub>f</sub> 需要机器人质量矩阵 <b>M</b>、科氏力与离心力项 <b>C</b>、重力项 <b>g</b> 以及其他贡献项 <i>&tau;</i><sub>other</sub> 的准确模型。</p>
+
+<p>然而，基于模型的外部力矩估计对 <i>&tau;</i><sub>f</sub> 的估计误差极为敏感。实践中，准确辨识机器人的惯性、重力与摩擦参数是困难的，尤其当只有电机侧测量可用时 [37, 38]。此外，残差 <i>&tau;</i><sub>m</sub> &minus; <i>&tau;</i><sub>f</sub> 不仅包含接触诱发的力矩，还包含未建模的执行器与传动效应，例如非线性摩擦、静摩擦（stiction）、齿隙、迟滞、随温度变化的驱动行为、传感噪声、力矩脉动、死区与饱和 [39, 40, 41]。由于这些效应中许多依赖历史、且只能从瞬时关节状态中部分观测，自由空间建模误差会限制纯模型式的无传感器力估计。</p>
+
+<h2>4&nbsp;&nbsp;学习外力估计</h2>
+
+<p>我们提出 NEXT（Neural External Torque Estimation），一种估计外部关节力矩 <i>&tau;</i><sub>ext</sub> 的数据驱动方法。需要强调的是，NEXT 在数据采集与部署阶段都不需要专用力/力矩传感器。我们没有用基于模型的逆动力学去计算自由空间力矩 <i>&tau;</i><sub>f</sub>，而是直接从关节状态学习一个自由空间逆动力学神经网络，用来预测在没有外部接触时将会观测到的电机力矩：</p>
+
+<div class="eq"><img src="eqs/eq2.png" style="width:9.7cm"></div>
+
+<p>其中 <i>f</i><sub>&theta;</sub> 是由 &theta; 参数化的神经网络，<b>x</b> 是本体感觉观测的历史序列。部署时，我们从实测电机力矩 <i>&tau;</i><sub>m</sub> = <b>K</b><i>I</i><sub>m</sub> 中减去预测的自由空间力矩 <i>&tau;&#770;</i><sub>f</sub>，从而估计外部关节力矩 <i>&tau;&#770;</i><sub>ext</sub>，如图 2 所示。第 7 节与附录 A.2 表明，NEXT 给出的外部力矩估计质量高于此前的方​法。</p>
+
+<p>为训练该自由空间逆动力学模型，我们采集一个在无外部接触条件下执行的机械臂轨迹数据集 <i>D</i><sub>free</sub> = {(<b>x</b><sub>i</sub>, <i>&tau;</i><sub>m,i</sub>)}<sup>N</sup><sub>i=1</sub>，其中 <i>&tau;</i><sub>m,i</sub> 是第 <i>i</i> 个时间步的实测电机力矩。输入 <b>x</b><sub>i</sub> 由本体感觉量的时序历史构成：</p>
+
+<div class="eq"><img src="eqs/eq3.png" style="width:9.9cm"></div>
+
+<p>其中 <i>H</i> 是历史长度，<b>q</b> 表示关节位置，<b>q&#775;</b> 表示关节速度，&Delta;<b>q</b><sub>d,i</sub> 是下发的关节位置目标 <b>q</b><sub>d,i</sub> 与当前关节位置 <b>q</b><sub>i</sub> 之差。</p>
+
+<p>由于 <i>D</i><sub>free</sub> 中的所有轨迹都是在无外部接触的情况下采集的，实测电机力矩就等于自由空间力矩。因此我们把 <i>&tau;</i><sub>m,i</sub> 作为学习 <i>&tau;</i><sub>f</sub> 的监督目标。实践中，该数据集可由约 10 分钟的自由空间机器人运动得到，这些运动既可以由遥操作产生，也可以由运动规划生成，或重放已知的自由空间轨迹。因此这一流程很容易迁移到新的机器人平台：它不需要力/力矩传感，不需要负载标定，也不需要人工系统辨识。</p>
+
+<figure>
+<img src="figs/fig02.png" style="width:8.6cm">
+<figcaption><b>图 2：</b>外力估计的部署流程。部署时，我们首先把每个关节的实测电流乘以该关节的力矩常数 <b>K</b> 得到实测关节力矩；然后用一个在自由空间数据上训练过的 LSTM 估计自由空间力矩，并将其从实测关节力矩中减去，得到外部关节力矩。</figcaption>
+</figure>
+
+<p>我们把 <i>f</i><sub>&theta;</sub> 实例化为基于 LSTM 的序列模型，它把本体感觉历史 <b>x</b><sub>i</sub> 映射为预测的自由空间力矩 <i>&tau;&#770;</i><sub>f,i</sub>。使用时序历史可以让模型捕捉那些难以用瞬时刚体动力学模型表达的效果，例如迟滞、执行器动力学、摩擦记忆以及依赖控制器的跟踪行为。模型以 L2 回归损失训练：</p>
+
+<div class="eq"><img src="eqs/eq4.png" style="width:6.0cm"></div>
+
+<p>训练完成后，模型预测自由空间力矩 <i>&tau;&#770;</i><sub>f</sub>，于是外部力矩可作为残差 <i>&tau;</i><sub>m</sub> &minus; <i>&tau;&#770;</i><sub>f</sub> 估计出来。训练非常轻量，在单张 NVIDIA RTX 3090 上仅需 1 分钟。模型结构与超参数的细节见附录 A。</p>
+
+<h2>5&nbsp;&nbsp;力引导重采样训练（FIRST）</h2>
+
+<p>为了利用外部关节力矩改进行为克隆，我们提出 FIRST（Force-Informed Re-Sampling Training）。FIRST 的动机来自一个观察：富接触任务中的失败往往发生在接触附近——接触前阶段需要精确对准，接触阶段则需要受控交互与精细的修正动作。因此 FIRST 重新调整训练数据混合比例，使接触前与接触片段被更频繁地采样，从而把学习集中到轨迹中最易失败的部分。在第 7 节我们将看到，与标准行为克隆相比，FIRST 把任务成功率提高了 17% 以上，并降低了接触前与接触阶段的验证损失，这解释了它的下游性能增益。</p>
+
+<figure>
+<img src="figs/fig03.png" style="width:14.3cm">
+<figcaption><b>图 3：</b>FIRST 在五个长时程、富接触任务上进行评估。每个任务包含多个阶段，其中许多阶段需要精确对准或细致的、对力敏感的调整。这些任务的视频见 https://jasonjzliu.com/factr2 。</figcaption>
+</figure>
+
+<p class="noindent"><span class="kw">问题设定。</span>我们考虑一个策略：在第 <i>t</i> 步，它以观测 <b>o</b><sub>t</sub> = (<b>I</b><sup>1:M</sup><sub>t</sub>, <b>q</b><sub>t</sub>, <i>&tau;&#770;</i><sub>ext,t</sub>) 为条件，其中包含 <i>M</i> 路相机图像、关节位置 <b>q</b><sub>t</sub> 以及第 4 节得到的估计外部关节力矩 <i>&tau;&#770;</i><sub>ext,t</sub>。策略预测一段未来的关节位置目标 <b>a&#770;</b><sub>t:t+k</sub> ~ &pi;<sub>&theta;</sub>(&middot; | <b>o</b><sub>t</sub>)，其中 <b>a</b><sub>t:t+k</sub> 表示对应的动作块（action chunk）。</p>
+
+<p>我们在专家示教 <i>D</i> = {(<b>o</b><sub>t</sub>, <b>a</b><sub>t:t+k</sub>)} 上以行为克隆方式训练策略。我们把 &pi;<sub>&theta;</sub> 实例化为一个由条件速度场 <i>v</i><sub>&theta;</sub> 参数化的流匹配（flow matching）策略。令 <b>x</b><sub>1</sub> = <b>a</b><sub>t:t+k</sub> 为专家动作块，<b>x</b><sub>0</sub> ~ <i>N</i>(0, <b>I</b>) 为噪声，<b>x</b><sub>&alpha;</sub> = (1 &minus; &alpha;)<b>x</b><sub>0</sub> + &alpha;<b>x</b><sub>1</sub>，其中 &alpha; ~ <i>U</i>(0, 1)。策略以速度预测目标 [42] 训练，<i>v</i><sub>&theta;</sub> 预测从噪声 <b>x</b><sub>0</sub> 到专家动作块 <b>x</b><sub>1</sub> 的流：</p>
+
+<div class="eq"><img src="eqs/eq5.png" style="width:10.8cm"></div>
+
+<p class="noindent"><span class="kw">把轨迹切分为接触阶段。</span>首先，FIRST 把示教数据集中的每个数据点标注为自由运动、接触前或接触三类。接触对应机器人正在与环境发生物理交互的时间步；接触前对应接触起始之前的一秒窗口；其余所有时间步都标为自由运动。</p>
+
+<p>我们根据估计的外部关节力矩 <i>&tau;&#770;</i><sub>ext,t</sub>，用标量接触分数 <i>f</i><sub>t</sub> = ||<i>&tau;&#770;</i><sub>ext,t</sub>||<sub>1</sub> 来判定接触。为避免噪声造成的频繁切换，我们采用带迟滞的阈值判定：二值接触指示 <i>c</i><sub>t</sub> 在 <i>f</i><sub>t</sub> &ge; <i>T</i><sub>high</sub> 时置为 1，在 <i>f</i><sub>t</sub> &le; <i>T</i><sub>low</sub> 时置为 0，其余情况保持先前的取值。接触起始发生的时间步，即标签 <i>c</i><sub>t</sub> 由非接触切换到接触的时间步，构成</p>
+
+<div class="eq"><img src="eqs/eq6.png" style="width:9.7cm"></div>
+
+<p>给定控制频率 <i>F</i>，我们按下式赋予阶段标签 <i>s</i><sub>t</sub>：把接触时间步标为 Contact，把每个接触起始之前的 <i>F</i> 个时间步标为 Pre-Contact，其余所有时间步标为 Free Space：</p>
+
+<div class="eq"><img src="eqs/eq7.png" style="width:12.8cm"></div>
+
+<p class="noindent"><span class="kw">在训练中对接触前与接触阶段上采样。</span>在为每个数据点赋予阶段标签 <i>s</i><sub>t</sub> &isin; {Free Space, Pre-Contact, Contact} 之后，FIRST 只修改用于构造 batch 的采样分布。我们为自由空间、接触前与接触数据点分别赋予与阶段相关的采样权重 <i>w</i><sub>F</sub>、<i>w</i><sub>PC</sub>、<i>w</i><sub>C</sub>，且 <i>w</i><sub>PC</sub>, <i>w</i><sub>C</sub> &gt; <i>w</i><sub>F</sub>。训练时，数据点按概率 <i>p</i><sub>t</sub> = <i>w</i>(<i>s</i><sub>t</sub>) / &sum;<sup>N</sup><sub>j=1</sub> <i>w</i>(<i>s</i><sub>j</sub>) 被采样，其中 <i>w</i>(<i>s</i><sub>t</sub>) 表示数据点 <i>t</i> 所属阶段标签对应的权重。这种加权随机采样提高了每个 minibatch 中接触前与接触样本的比例，从而强调那些精确对准与力敏感修正最为关键的轨迹片段。</p>
+
+<h2>6&nbsp;&nbsp;实验</h2>
+
+<h3>6.1&nbsp;&nbsp;外力估计与力反馈遥操作</h3>
+
+<p>我们在 Franka 机械臂上分别于接触与自由空间两种设置下评估外部力矩估计。选择 Franka 是因为它内置关节力矩传感器，并给出经出厂标定的外部力矩估计，这为我们提供了一个高质量参考，并在接触场景下用作真值。接触场景下，我们采集 5 分钟留出数据（训练时未见），期间由人向机器人施加外力，并报告真值传感器信号与 NEXT（本文方法）、FILIC [22] 以及扰动观测器（disturbance observer，DO）[43] 的估计之间跨关节平均的 L1 误差。自由空间场景下，真实外部力矩应为零，我们采集 5 分钟无接触的留出数据，以零力矩为真值，并把 Franka 的传感器信号也作为一种基线。基线细节见附录 A.4。我们在 AgileX Piper（一种无力传感器的低成本机械臂）上重复自由空间评估，同样以零力矩为真值。由于 Piper 不具备外部力矩传感，我们无法在它上面重复接触评估，转而通过力反馈遥操作的用户研究来评估其接触表现。</p>
+
+<p class="noindent"><span class="kw">力反馈遥操作用户研究。</span>我们评估学到的外部力矩估计是否能提供有用的遥操作反馈。在一项有 20 名参与者参加的用户研究中，用户在图 4 所示的 Franka 机械臂上执行擦拭任务，共有 5 种反馈条件：无反馈、基于扰动观测器的反馈（DO）、主从位置—位置反馈 [44]（PP）、使用 Franka 内置力矩传感器的 FACTR Teleop，以及使用 NEXT 外部力矩估计的 FACTR Teleop。</p>
+
+<figure>
+<img src="figs/fig04.png" style="width:8.8cm">
+<figcaption><b>图 4：</b>用户研究。我们的外力估计（基于 NEXT）在遥操作上优于各基线，并与依赖专用外力传感器的 FACTR Teleop 相当。施加的关节力矩越低，意味着越少的不必要用力。</figcaption>
+</figure>
+
+<p>需要注意，两种 FACTR Teleop 变体都实现如下的力反馈控制律 [6]：</p>
+
+<div class="eq"><img src="eqs/eq8.png" style="width:6.8cm"></div>
+
+<p>其中 <i>&tau;</i><sub>feedback</sub> 是施加到主臂上的关节力矩，<i>K</i><sub>f,p</sub> 是对从臂感知到的外部关节力矩 <i>&tau;</i><sub>ext</sub> 的缩放系数。在本研究中，<i>&tau;</i><sub>ext</sub> 或来自 Franka 出厂的外部力矩估计，或来自 NEXT。我们收集 1–5 分的易用性评分，并测量所施加的关节力矩。我们在 Piper 机械臂上重复了该研究。基线细节见附录 A.5。</p>
+
+<h3>6.2&nbsp;&nbsp;带力输入的模仿学习</h3>
+
+<p class="noindent"><span class="kw">实验设置。</span>我们在五个长时程、富接触的操作任务上把 FIRST 与各基线对比，任务如图 3 所示，详细的任务描述见附录 C.1。对每个任务，我们在双臂 Piper 平台上采集 250 条示教，使用四路 RGB 相机：两路腕部相机与两路俯视相机。每个策略在每个任务上评估 20 次 rollout。我们报告任务进度，评分标准见附录 C.2。</p>
+
+<p class="noindent"><span class="kw">策略细节与基线。</span>在保持策略结构与行为克隆目标不变的前提下，我们把 FIRST 与四个基线比较。所有方法都使用训练 20 个 epoch 的流匹配策略，结构改编自多模态扩散 Transformer [45]，动作块大小为 30。我们还用动作分块 Transformer（Action Chunking Transformer，ACT）[46] 重复了实验。每个策略的动作头都随机初始化并从头训练。两者的实现细节见附录 B。比较的变体如下：</p>
+
+<ul>
+<li><b>Base Policy</b>：策略以图像和机器人关节位置为输入，不含任何力信息。</li>
+<li><b>Base Policy + Torque</b>：在基础策略上增加学到的外部力矩估计作为额外输入。</li>
+<li><b>FACTR</b> [6]：使用外部力矩，并按噪声调度在训练中模糊输入图像。</li>
+<li><b>TA-VLA</b> [17]：使用一个辅助目标来重建输入的外部力矩。</li>
+<li><b>FIRST（本文）</b>：把学到的外部力矩作为输入，并在训练中对接触前与接触数据上采样。上采样比例的消融见附录 D.4。</li>
+</ul>
+
+<figure>
+<img src="figs/fig05.png" style="width:9.6cm">
+<figcaption><b>图 5：</b>左：在自由空间中，外部关节力矩应保持为零。我们的方法产生的估计比外力传感器噪声更小，并保持在零附近，而 FILIC 与扰动观测器会漂移。右：在接触过程中，我们的估计紧贴外力传感器，而 FILIC 与扰动观测器的偏差很大。</figcaption>
+</figure>
+
+<p class="tcap"><b>表 1：</b>Franka 在自由空间与接触设置下跨关节平均的 L1 力矩误差。自由空间误差以零外部力矩为基准，接触误差以 Franka 内置的外部力矩估计为基准。NEXT 在两种设置下都取得最低误差。</p>
+<table>
+<thead>
+<tr><th>运动类型</th><th>外力矩方法</th><th>L1 误差 (N·m)</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="4">接触</td><td>外力传感器（真值）</td><td>0.000 &plusmn; 0.000</td></tr>
+<tr><td>FILIC [22]</td><td>4.395 &plusmn; 1.531</td></tr>
+<tr><td>扰动观测器 [43]</td><td>1.471 &plusmn; 0.761</td></tr>
+<tr><td><b>NEXT（本文）</b></td><td><b>0.547 &plusmn; 0.348</b></td></tr>
+<tr><td rowspan="5">自由空间</td><td>自由空间（真值）</td><td>0.000 &plusmn; 0.000</td></tr>
+<tr><td>FILIC [22]</td><td>2.460 &plusmn; 1.358</td></tr>
+<tr><td>扰动观测器 [43]</td><td>2.429 &plusmn; 1.298</td></tr>
+<tr><td>外力传感器</td><td>0.449 &plusmn; 0.208</td></tr>
+<tr><td><b>NEXT（本文）</b></td><td><b>0.414 &plusmn; 0.278</b></td></tr>
+</tbody>
+</table>
+
+<h2>7&nbsp;&nbsp;结果</h2>
+
+<p>在外力估计实验中，我们要回答：(i) NEXT 的外部关节力矩估计与真值传感器测量、与各基线相比如何？(ii) 与其它反馈方式相比，NEXT 用于力反馈遥操作的效果如何？</p>
+
+<p>在模仿学习实验中，我们要回答：(i) FIRST 与其它利用力的基线的比较如何？(ii) 为了让性能最好，FIRST 应该对哪些接触阶段上采样？</p>
+
+<p class="noindent"><span class="kw">NEXT 预测的外部关节力矩可与专用传感器相比。</span>表 1 给出了 NEXT 在 Franka 系统上的定量结果。在外部接触下，NEXT 与 Franka 的外部关节力矩传感器高度吻合，平均 L1 误差仅 0.547 N·m，比 FILIC 低 87.6%，比扰动观测器低 62.8%。图 5 右侧也从定性上显示了这一趋势：NEXT 紧贴传感器信号，而各基线偏差明显，尤其在接触切换时。</p>
+
+<p>在自由空间中，真实外部力矩应为零，我们把 Franka 的外部力矩传感器信号作为一种额外基线；NEXT 取得最低误差，甚至优于这一专用传感器。如图 5 左侧所示，它的估计噪声更小，也更贴近零。这可以归因于 NEXT 直接从该硬件上采集的数据中学习硬件特有的效应，从而给出高质量的力估计。</p>
+
+<p>我们在 AgileX Piper 机械臂上观察到类似结果：NEXT 的平均关节 L1 误差仅 0.018 N·m，显著低于各基线；完整结果见附录 A.6 的表 5。我们还在附录 A.2 中对 NEXT 的模型结构做了消融，表明 LSTM 优于 GRU 与 MLP 变体。</p>
+
+<p class="noindent"><span class="kw">NEXT 使低成本机械臂具备高质量的力反馈遥操作能力。</span>在 Franka 用户研究中，参与者认为基于 NEXT 的力反馈比各基线更易使用，见图 4(a)。NEXT 还降低了完成任务所需的用力，表现与使用专用关节力矩传感器的 FACTR Teleop 相当，见图 4(b)。施加的力越小，说明力感知越好、无用发力越少。在缺乏专用力传感器的 Piper 机械臂上，NEXT 同样优于各基线，详见附录 A.6。总体而言，这些结果表明 NEXT 无需力传感器即可提供高质量的力反馈，与基于传感器的方法相当。</p>
+
+<p class="noindent"><span class="kw">FIRST 提升了策略性能。</span>图 6 给出了流匹配策略下 FIRST 与各基线的主要定性结果，ACT 的结果见附录 D.2。FIRST 在全部五个真实任务上都取得最高的任务进度。这一提升在长时程、多阶段的任务上尤为明显，例如 NIST Belt——成功执行需要自由运动、接触前对准与富接触操作之间可靠的切换。从定性上看，我们观察到 FIRST 在关键接触事件之前产生了更稳健的恢复行为，例如在插入、缠绕或拧紧之前做出细粒度的重新对准动作。</p>
+
+<figure>
+<img src="figs/fig06.png" style="width:14.5cm">
+<figcaption><b>图 6：</b>使用流匹配策略时，五个富接触操作任务上的任务进度。</figcaption>
+</figure>
+
+<figure>
+<img src="figs/fig07.png" style="width:8.6cm">
+<figcaption><b>图 7：</b>默认采样在接触前与接触阶段带来更高的验证损失。通过在训练中对这些阶段上采样，FIRST 降低了它们的验证损失。</figcaption>
+</figure>
+
+<p>图 7 进一步通过 NIST Belt 任务的分阶段验证损失解释了这一改进。对 Base Policy + Torque 基线而言，接触前与接触样本上的损失高于自由运动样本，说明这些阶段更难建模。通过对接触前与接触数据上采样，FIRST 降低了它们的验证损失，使之更接近自由运动的损失，从而把训练集中到富接触操作中最关键的阶段。</p>
+
+<p class="noindent"><span class="kw">FIRST 的上采样消融。</span>我们消融了应对哪些阶段上采样才能获得最佳策略性能。如表 2 所示，对接触前样本上采样取得最高的平均任务进度，说明接触之前的时刻尤其重要，因为它们决定了能否到达正确的位姿与对准。同时对接触前与接触阶段上采样也很有竞争力，并在 Cap Screwing 上表现最好——该任务中持续的接触至关重要。相比之下，只对接触样本上采样并不能改善性能。总体而言，这些结果表明强调与接触相关的阶段（尤其是接触前）可以改善长时程操作。各任务最高性能上采样比例的额外结果见附录 D.4。</p>
+
+<p class="tcap"><b>表 2：</b>上采样消融。C：接触（contact），PC：接触前（pre-contact），PC+C：接触前 + 接触。</p>
+<table>
+<thead>
+<tr><th class="l">任务</th><th>C</th><th>PC</th><th>PC+C</th></tr>
+</thead>
+<tbody>
+<tr><td class="l">LEGO 装配</td><td>0.697</td><td><b>0.913</b></td><td>0.875</td></tr>
+<tr><td class="l">NIST 皮带</td><td>0.494</td><td><b>0.767</b></td><td>0.649</td></tr>
+<tr><td class="l">NIST 插入</td><td>0.800</td><td><b>0.933</b></td><td><b>0.933</b></td></tr>
+<tr><td class="l">工具清理</td><td>0.650</td><td><b>0.805</b></td><td>0.775</td></tr>
+<tr><td class="l">瓶盖拧紧</td><td>0.707</td><td>0.673</td><td><b>0.825</b></td></tr>
+<tr><td class="l">平均</td><td>0.670</td><td><b>0.818</b></td><td>0.811</td></tr>
+</tbody>
+</table>
+
+<p class="noindent"><span class="kw">为什么不直接把原始关节电流作为输入？</span>由于低成本机械臂通常能提供电机电流，我们比较了以原始电流为条件的策略与以 NEXT 估计的外部力矩为条件的策略。如表 10 所示，原始电流改善了 NIST 插入但未改善瓶盖拧紧，而 NEXT 估计的外部力矩在两个任务上都最好。这说明减去学到的自由空间动力学可以得到比原始电流更干净的接触表征，进一步凸显了 NEXT 的用处。完整结果与注意力分析见附录 D.6。</p>
+
+<h2>8&nbsp;&nbsp;结论</h2>
+
+<p>我们提出 NEXT——一种无需专用力传感器即可估计外部关节力矩的数据驱动方法。仅用 10 分钟自由空间数据和 1 分钟训练，NEXT 就能给出与专用传感器测量相当的估计，并使低成本机械臂具备力反馈遥操作能力。我们进一步提出 FIRST，它利用 NEXT 的力矩估计在行为克隆中对接触前与接触片段上采样，通过强调对准与交互最关键的阶段来提升富接触任务上的性能。</p>
+
+<h2>9&nbsp;&nbsp;局限性</h2>
+
+<p>NEXT 有两个主要局限。第一，其绝对力矩尺度依赖于电机力矩常数 <b>K</b>，该常数通常由厂商提供或由电流—力矩曲线得到。若 <b>K</b> 不准确，绝对尺度需要借助外部力传感器标定。实践中，这对力反馈遥操作的限制较小（力通常会被缩放到舒适范围 [6]），对策略学习也影响有限（输入本来就会被归一化）。第二，NEXT 是机器人特定的，可能因硬件差异而需要在不同机械臂之间重新训练。</p>
+
+<h2>致谢</h2>
+
+<p>作者感谢 Andrew Wang、Yulong Li、Koki Yamane、Yangcen Liu、Yongliang Wang、Ritvik Singh、Zheyuan Hu、Adam Kan 与 Arthur Allshire 对本文的有益讨论与反馈，也感谢 Zheyuan Hu 与 AIRe Lab 成员慷慨提供 YAM 机械臂用于本项目。本工作部分受 AFOSR FA9550-23-1-0747、ONR MURI N00014-22-1-2773 与 ONR MURI N00014-24-1-2748 资助。</p>
+
+<h2>参考文献</h2>
+<div class="refs">
+<p>[1] ATI Industrial Automation. Gamma Force/Torque sensor. https://www.ati-ia.com/products/ft/ft_models.aspx?id=gamma, 2026. Accessed: April 28, 2026.</p>
+<p>[2] Bota Systems. 6-Axis Force Torque Sensors for Robotics. https://www.botasys.com/force-torque-sensors, 2024. Accessed: April 28, 2026.</p>
+<p>[3] H. Choi, J. E. Low, T. M. Huh, S. Hong, G. A. Uribe, K. A. Hoffmann, J. Di, T. G. Chen, A. A. Stanley, and M. R. Cutkosky. Coinft: A coin-sized, capacitive 6-axis force torque sensor for robotic applications. arXiv preprint arXiv:2503.19225, 2025.</p>
+<p>[4] R. Bhirangi, T. Hellebrekers, C. Majidi, and A. Gupta. Reskin: versatile, replaceable, lasting tactile skins. In CoRL, 2021.</p>
+<p>[5] M. Y. Cao, S. Laws, and F. R. y Baena. Six-axis force/torque sensors for robotics applications: A review. IEEE Sensors Journal, 21(24):27238–27251, 2021.</p>
+<p>[6] J. J. Liu, Y. Li, K. Shaw, T. Tao, R. Salakhutdinov, and D. Pathak. FACTR: Force-Attending Curriculum Training for Contact-Rich Policy Learning. In Proceedings of Robotics: Science and Systems, Los Angeles, CA, USA, June 2025. doi:10.15607/RSS.2025.XXI.079.</p>
+<p>[7] S. Oh, T. Takahashi, C. C. Beltran-Hernandez, Y. Kuroda, and M. Hamaya. A soft wrist with anisotropic and selectable stiffness for robust robot learning in contact-rich manipulation, 2026. URL https://arxiv.org/abs/2602.14434.</p>
+<p>[8] T. Buamanee, M. Kobayashi, Y. Uranishi, and H. Takemura. Bi-act: Bilateral control-based imitation learning via action chunking with transformer. In 2024 IEEE International Conference on Advanced Intelligent Mechatronics (AIM), pages 410–415, 2024. doi:10.1109/AIM55361.2024.10637173.</p>
+<p>[9] K. Yamane, Y. Li, M. Konosu, K. Inami, J. Oaki, T. Tsuji, and S. Sakaino. Design and experimental validation of sensorless 4-channel bilateral teleoperation for low-cost manipulators, 2026. URL https://arxiv.org/abs/2507.06174.</p>
+<p>[10] H. Shi, S. Hu, Y. Hou, W. Wang, K. Liu, and S. Song. Minimalist compliance control, 2026. URL https://arxiv.org/abs/2603.00913.</p>
+<p>[11] K. Inami, K. Yamane, and S. Sakaino. Loss function considering dead zone for neural networks, 2024. URL https://arxiv.org/abs/2402.00393.</p>
+<p>[12] A. Zhu, Y. Tanaka, F. Rafeedi, and D. Hong. Cycloidal quasi-direct drive actuator designs with learning-based torque estimation for legged robotics. In 2025 IEEE International Conference on Robotics and Automation (ICRA), pages 1–8. IEEE, 2025.</p>
+<p>[13] K. M. Park, J. Kim, J. Park, and F. C. Park. Learning-based real-time detection of robot collisions without joint torque sensors. IEEE Robotics and Automation Letters, 6(1):103–110, 2021. doi:10.1109/LRA.2020.3033269.</p>
+<p>[14] J. Liang and O. Kroemer. Contact localization for robot arms in motion without torque sensing. In 2021 IEEE International Conference on Robotics and Automation (ICRA), pages 6322–6328. IEEE, 2021.</p>
+<p>[15] K. M. Park, Y. Park, S. Yoon, and F. C. Park. Collision detection for robot manipulators using unsupervised anomaly detection algorithms. IEEE/ASME Transactions on Mechatronics, 27(5):2841–2851, 2022. doi:10.1109/TMECH.2021.3119057.</p>
+<p>[16] N. Yilmaz, J. Y. Wu, P. Kazanzides, and U. Tumerdem. Neural network based inverse dynamics identification and external force estimation on the da vinci research kit. In 2020 IEEE International Conference on Robotics and Automation (ICRA), pages 1387–1393. IEEE, 2020.</p>
+<p>[17] Z. Zhang, H. Xu, Z. Yang, C. Yue, Z. Lin, H.-a. Gao, Z. Wang, and H. Zhao. Elucidating the design space of torque-aware vision-language-action models. In J. Lim, S. Song, and H.-W. Park, editors, Proceedings of The 9th Conference on Robot Learning, volume 305 of Proceedings of Machine Learning Research, pages 4019–4037. PMLR, 27–30 Sep 2025. URL https://proceedings.mlr.press/v305/zhang25k.html.</p>
+<p>[18] T. Kamijo, C. C. Beltran-Hernandez, and M. Hamaya. Learning variable compliance control from a few demonstrations for bimanual robot with haptic feedback teleoperation system. In IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2024.</p>
+<p>[19] J. Yu, H. Liu, Q. Yu, J. Ren, C. Hao, H. Ding, G. Huang, G. Huang, Y. Song, P. Cai, W. Zhang, and C. Lu. ForceVLA: Enhancing VLA models with a force-aware moe for contact-rich manipulation. In The Thirty-ninth Annual Conference on Neural Information Processing Systems, 2026. URL https://openreview.net/forum?id=2845H8Ua5D.</p>
+<p>[20] Z. He, H. Fang, J. Chen, H.-S. Fang, and C. Lu. Foar: Force-aware reactive policy for contact-rich robotic manipulation. IEEE Robotics and Automation Letters, 10(6):5625–5632, 2025. doi:10.1109/LRA.2025.3560871.</p>
+<p>[21] W. Liu, J. Wang, Y. Wang, W. Wang, and C. Lu. Forcemimic: Force-centric imitation learning with force-motion capture system for contact-rich manipulation. In 2025 IEEE International Conference on Robotics and Automation (ICRA), 2025.</p>
+<p>[22] H. Ge, Y. Jia, Z. Li, Y. Li, Z. Chen, R. Huang, and G. Zhou. Filic: Dual-loop force-guided imitation learning with impedance torque control for contact-rich manipulation tasks, 2025. URL https://arxiv.org/abs/2509.17053.</p>
+<p>[23] H. Xue, J. Ren, W. Chen, G. Zhang, Y. Fang, G. Gu, H. Xu, and C. Lu. Reactive diffusion policy: Slow-fast visual-tactile policy learning for contact-rich manipulation. In Proceedings of Robotics: Science and Systems (RSS), 2025.</p>
+<p>[24] X. B. Peng, A. Kumar, G. Zhang, and S. Levine. Advantage-weighted regression: Simple and scalable off-policy reinforcement learning. arXiv preprint arXiv:1910.00177, 2019.</p>
+<p>[25] Z. Wang, A. Novikov, K. Zolna, J. T. Springenberg, S. Reed, B. Shahriari, N. Siegel, J. Merel, C. Gulcehre, N. Heess, and N. de Freitas. Critic regularized regression. Advances in Neural Information Processing Systems, 33:7768–7778, 2020.</p>
+<p>[26] A. Nair, A. Gupta, M. Dalal, and S. Levine. Awac: Accelerating online reinforcement learning with offline datasets. arXiv preprint arXiv:2006.09359, 2020.</p>
+<p>[27] S. M. Xie, H. Pham, X. Dong, N. Du, H. Liu, Y. Lu, P. S. Liang, Q. V. Le, T. Ma, and A. W. Yu. Doremi: Optimizing data mixtures speeds up language model pretraining. Advances in Neural Information Processing Systems, 36:69798–69818, 2023.</p>
+<p>[28] J. Hejna, C. A. Bhateja, Y. Jiang, K. Pertsch, and D. Sadigh. Remix: Optimizing data mixtures for large scale imitation learning. In P. Agrawal, O. Kroemer, and W. Burgard, editors, Proceedings of The 8th Conference on Robot Learning, volume 270 of Proceedings of Machine Learning Research, pages 145–164. PMLR, 06–09 Nov 2025. URL https://proceedings.mlr.press/v270/hejna25a.html.</p>
+<p>[29] A. Ilyas, S. M. Park, L. Engstrom, G. Leclerc, and A. Madry. Datamodels: Understanding predictions with data and data with predictions. In ICML, 2022.</p>
+<p>[30] S. Dass, A. Khaddaj, L. Engstrom, A. Madry, A. Ilyas, and R. Martín-Martín. DataMIL: Selecting data for robot imitation learning with datamodels. In The Fourteenth International Conference on Learning Representations, 2026. URL https://openreview.net/forum?id=AcTsKglDdh.</p>
+<p>[31] J. Hejna, S. Mirchandani, A. Balakrishna, A. Xie, A. Wahid, J. Tompson, P. Sanketi, D. Shah, C. Devin, and D. Sadigh. Robot data curation with mutual information estimators. In Robotics: Science and Systems (RSS), 2025.</p>
+<p>[32] Y. Zhang, Y. Xie, H. Liu, R. Shah, M. Wan, L. Fan, and Y. Zhu. Scizor: Self-supervised data curation for large-scale imitation learning. In IEEE International Conference on Robotics and Automation (ICRA), 2026.</p>
+<p>[33] Y. J. Ma, J. Hejna, C. Fu, D. Shah, J. Liang, Z. Xu, S. Kirmani, P. Xu, D. Driess, T. Xiao, et al. Vision language models are in-context value learners. In The Thirteenth International Conference on Learning Representations, 2024.</p>
+<p>[34] Q. Chen, J. Yu, M. Schwager, P. Abbeel, F. Shentu, and P. Wu. SARM: Stage-aware reward modeling for long horizon robot manipulation. In The Fourteenth International Conference on Learning Representations, 2026. URL https://openreview.net/forum?id=aemqAxScl9.</p>
+<p>[35] A. S. Chen, A. M. Lessing, Y. Liu, and C. Finn. Curating demonstrations using online experience. In Proceedings of Robotics: Science and Systems, 2025. doi:10.15607/RSS.2025.XXI.071.</p>
+<p>[36] C. Agia, R. Sinha, J. Yang, R. Antonova, M. Pavone, H. Nishimura, M. Itkina, and J. Bohg. Cupid: Curating data your robot loves with influence functions. In J. Lim, S. Song, and H.-W. Park, editors, Proceedings of The 9th Conference on Robot Learning, volume 305 of Proceedings of Machine Learning Research, pages 2907–2932. PMLR, 27–30 Sep 2025. URL https://proceedings.mlr.press/v305/agia25a.html.</p>
+<p>[37] A. Jubien, M. Gautier, and A. Janot. Dynamic identification of the kuka lwr robot using motor torques and joint torque sensors data. In 19th IFAC World Congress, 2014.</p>
+<p>[38] S. Haddadin, A. De Luca, and A. Albu-Schäffer. Robot collisions: A survey on detection, isolation, and identification. IEEE Transactions on Robotics, 33(6):1292–1312, 2017.</p>
+<p>[39] M. Linderoth, A. Stolt, A. Robertsson, and R. Johansson. Robotic force estimation using motor torques and modeling of low velocity friction disturbances. In 2013 IEEE/RSJ International Conference on Intelligent Robots and Systems, pages 3550–3556, 2013.</p>
+<p>[40] N. M. Kircanski and A. A. Goldenberg. An experimental study of nonlinear stiffness, hysteresis, and friction effects in robot joints with harmonic drives and torque sensors. The International Journal of Robotics Research, 16(2):214–239, 1997.</p>
+<p>[41] M. Reuss, N. van Duijkeren, R. Krug, P. Becker, V. Shaj, and G. Neumann. End-to-end learning of hybrid inverse dynamics models for precise and compliant impedance control. In Robotics: Science and Systems, 2022.</p>
+<p>[42] X. Liu, C. Gong, and Q. Liu. Flow straight and fast: Learning to generate and transfer data with rectified flow. In The Eleventh International Conference on Learning Representations, 2023. URL https://openreview.net/forum?id=XVjTT1nw5z.</p>
+<p>[43] S. Mamedov and S. Mikhel. Practical aspects of model-based collision detection. Frontiers in Robotics and AI, 7:571574, 2020.</p>
+<p>[44] P. F. Hokayem and M. W. Spong. Bilateral teleoperation: An historical survey. Automatica, 42(12):2035–2057, 2006. ISSN 0005-1098. doi:https://doi.org/10.1016/j.automatica.2006.06.027.</p>
+<p>[45] M. Reuss, Ö. E. Yağmurlu, F. Wenzel, and R. Lioutikov. Multimodal diffusion transformer: Learning versatile behavior from multimodal goals. In Proceedings of Robotics: Science and Systems, Delft, Netherlands, July 2024. doi:10.15607/RSS.2024.XX.121.</p>
+<p>[46] T. Z. Zhao, V. Kumar, S. Levine, and C. Finn. Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware. In Proceedings of Robotics: Science and Systems, Daegu, Republic of Korea, July 2023. doi:10.15607/RSS.2023.XIX.016.</p>
+<p>[47] C. Gaz, M. Cognetti, A. Oliva, P. Robuffo Giordano, and A. De Luca. Dynamic identification of the franka emika panda robot with retrieval of feasible parameters using penalty-based optimization. IEEE Robotics and Automation Letters, 4(4):4147–4154, 2019. doi:10.1109/LRA.2019.2931248.</p>
+<p>[48] AgileX Robotics. agx arm urdf: Agilex robot arm urdf models. https://github.com/agilexrobotics/agx_arm_urdf, 2026. Accessed: 2026-05-11.</p>
+<p>[49] P. Wu, Y. Shentu, Z. Yi, X. Lin, and P. Abbeel. GELLO: A general, low-cost, and intuitive teleoperation framework for robot manipulators. In 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), pages 12156–12163. IEEE, 2024. doi:10.1109/IROS58592.2024.10801581.</p>
+<p>[50] O. Siméoni, H. V. Vo, M. Seitzer, F. Baldassarre, M. Oquab, C. Jose, V. Khalidov, M. Szafraniec, S. Yi, M. Ramamonjisoa, et al. Dinov3. arXiv preprint arXiv:2508.10104, 2025.</p>
+<p>[51] K. Shaw and D. Pathak. Leap hand v2: Dexterous, low-cost anthropomorphic hybrid rigid soft hand for robot learning. In 2nd Workshop on Dexterous Manipulation: Design, Perception and Control (RSS).</p>
+</div>
+
+<h2 class="pb">附录</h2>
+
+<h3>A&nbsp;&nbsp;NEXT 实现细节</h3>
+
+<h3 style="margin-top:3mm">A.1&nbsp;&nbsp;自由空间逆动力学模型结构</h3>
+
+<p>我们使用基于 LSTM 的序列模型做自由空间逆动力学预测。我们没有在整条轨迹上维护持久的隐状态，而是采用无状态的滑动窗口形式：网络因此隐式地对回看窗口内的时间动力学建模，而隐状态对每个序列都重置。这种形式既提供了近期运动上下文，又不会在长轨迹上累积隐状态漂移。局部历史让模型能够捕捉速度相关、执行器相关以及未建模的摩擦效应，而无需显式估计加速度。部署时，估计器可用最近 <i>N</i> 个观测组成的滚动缓冲区来运行。随后，外部关节力矩由实测关节力矩与预测自由空间力矩之间的残差给出。网络结构与训练超参数列于表 3。</p>
+
+<p>在 Intel Core i9-10920X CPU 的单线程上，该自由空间逆动力学模型每次前向约需 1.76 ms，对应约 568 Hz 的有效更新率，这使高频率的力反馈遥操作成为可能。实践中我们以 100 Hz 运行该模型。</p>
+
+<p class="tcap"><b>表 3：</b>NEXT 所用自由空间逆动力学神经网络的网络结构与训练超参数。</p>
+<table>
+<thead><tr><th class="l">超参数</th><th class="l">取值</th></tr></thead>
+<tbody>
+<tr><td class="l">循环骨干</td><td class="l">2 层 LSTM，隐藏维度 128</td></tr>
+<tr><td class="l">预测头</td><td class="l">2 层 MLP，隐藏维度 256</td></tr>
+<tr><td class="l">Dropout</td><td class="l">0.1</td></tr>
+<tr><td class="l">损失函数</td><td class="l">均方误差（MSE）</td></tr>
+<tr><td class="l">优化器</td><td class="l">AdamW</td></tr>
+<tr><td class="l">基础学习率</td><td class="l">1 &times; 10<sup>&minus;3</sup></td></tr>
+<tr><td class="l">权重衰减</td><td class="l">1 &times; 10<sup>&minus;6</sup></td></tr>
+<tr><td class="l">梯度裁剪</td><td class="l">1.0</td></tr>
+<tr><td class="l">早停</td><td class="l">开启；依据验证损失，patience 20，warmup 10，最小 &Delta; = 10<sup>&minus;5</sup></td></tr>
+<tr><td class="l">硬件</td><td class="l">NVIDIA RTX 3090, 24 GB</td></tr>
+<tr><td class="l">训练时间</td><td class="l">含早停约 1 分钟</td></tr>
+<tr><td class="l">数据频率</td><td class="l">100 Hz</td></tr>
+</tbody>
+</table>
+
+<h3>A.2&nbsp;&nbsp;自由空间逆动力学网络消融</h3>
+
+<p>为了选定 NEXT 所采用的自由空间逆动力学模型，我们在自由空间与接触两种设置下，以外部力矩估计误差为指标，对模型结构、输入模态与历史长度做消融。此前的工作在专用 da Vinci 系统上使用 MLP 做力矩估计 [16]，在单执行器外部力矩估计中使用 GRU [12]。因此我们比较 MLP、GRU 与 LSTM 三种结构。</p>
+
+<p>表 4 报告了结构消融结果，数值为留出集上预测自由空间力矩与真值自由空间力矩之间跨关节平均的 L1 验证误差。MLP 不如循环模型，说明时序历史对自由空间力矩估计很重要。GRU 在自由空间表现良好，但在接触时变差。LSTM 在自由空间与接触两方面都取得最佳性能，因为更长时程的执行器、摩擦与控制相关效应可能起更大作用。</p>
+
+<p>我们进一步消融输入模态与历史长度。具体地，我们比较关节位置 <b>q</b>、关节位置与速度 (<b>q</b>, <b>q&#775;</b>)，以及关节位置、速度与跟踪误差 (<b>q</b>, <b>q&#775;</b>, &Delta;<b>q</b><sub>d</sub>) 三种输入，历史长度取 10、25、50 步。使用 (<b>q</b>, <b>q&#775;</b>, &Delta;<b>q</b><sub>d</sub>) 始终优于其它输入，说明跟踪误差提供了关于控制器出力与执行器响应的有用信息。10 步的短历史通常误差更高，而把历史增加到 50 步可改善性能，对 LSTM 尤为明显。基于这些结果，我们最终选用历史长度 <i>H</i> = 50、输入为 (<b>q</b>, <b>q&#775;</b>, &Delta;<b>q</b><sub>d</sub>) 的 LSTM 作为 NEXT 的自由空间逆动力学模型。</p>
+
+<p class="tcap"><b>表 4：</b>外部力矩估计在模型族、输入模态与时间历史长度上的消融。数值为留出集上预测自由空间力矩与真值自由空间力矩之间跨关节平均的 L1 验证误差，单位为 N·m。</p>
+<table>
+<thead>
+<tr>
+  <th rowspan="2">输入</th><th rowspan="2"><i>H</i></th>
+  <th colspan="2">MLP</th><th colspan="2">GRU</th><th colspan="2">LSTM（本文）</th>
+</tr>
+<tr>
+  <th>自由运动 &darr;</th><th>接触 &darr;</th><th>自由运动 &darr;</th><th>接触 &darr;</th><th>自由运动 &darr;</th><th>接触 &darr;</th>
+</tr>
+</thead>
+<tbody>
+<tr><td rowspan="3"><i>q</i></td><td>10</td><td>2.35&plusmn;2.34</td><td>1.78&plusmn;1.64</td><td>2.25&plusmn;1.79</td><td>1.12&plusmn;1.09</td><td>2.53&plusmn;2.52</td><td>2.61&plusmn;2.29</td></tr>
+<tr><td>25</td><td>2.02&plusmn;2.01</td><td>1.34&plusmn;1.32</td><td>1.68&plusmn;1.30</td><td>0.665&plusmn;0.478</td><td>2.21&plusmn;2.20</td><td>1.45&plusmn;1.39</td></tr>
+<tr><td>50</td><td>1.76&plusmn;1.76</td><td>1.13&plusmn;1.06</td><td>1.62&plusmn;1.24</td><td>0.843&plusmn;0.835</td><td>2.15&plusmn;2.15</td><td>1.09&plusmn;0.908</td></tr>
+<tr><td rowspan="3"><i>q</i>, <i>q&#775;</i></td><td>10</td><td>1.04&plusmn;1.03</td><td>0.681&plusmn;0.647</td><td>0.863&plusmn;0.862</td><td>0.580&plusmn;0.535</td><td>1.15&plusmn;1.15</td><td>0.715&plusmn;0.553</td></tr>
+<tr><td>25</td><td>0.980&plusmn;0.976</td><td>0.908&plusmn;0.802</td><td>0.814&plusmn;0.814</td><td>0.596&plusmn;0.506</td><td>1.11&plusmn;1.11</td><td>0.551&plusmn;0.511</td></tr>
+<tr><td>50</td><td>1.02&plusmn;1.02</td><td>0.905&plusmn;0.892</td><td>0.795&plusmn;0.794</td><td>0.653&plusmn;0.549</td><td>1.12&plusmn;1.12</td><td>0.578&plusmn;0.526</td></tr>
+<tr><td rowspan="3"><i>q</i>, <i>q&#775;</i>, &Delta;<i>q</i><sub>d</sub></td><td>10</td><td>0.706&plusmn;0.702</td><td>1.89&plusmn;1.71</td><td>0.423&plusmn;0.422</td><td>1.94&plusmn;1.75</td><td>0.504&plusmn;0.503</td><td>0.876&plusmn;0.244</td></tr>
+<tr><td>25</td><td>0.755&plusmn;0.747</td><td>1.56&plusmn;1.45</td><td>0.473&plusmn;0.472</td><td>1.47&plusmn;1.29</td><td>0.490&plusmn;0.489</td><td>0.789&plusmn;0.453</td></tr>
+<tr><td>50</td><td>0.813&plusmn;0.811</td><td>1.47&plusmn;1.33</td><td>0.429&plusmn;0.429</td><td>1.62&plusmn;1.45</td><td><b>0.414&plusmn;0.278</b></td><td><b>0.547&plusmn;0.348</b></td></tr>
+</tbody>
+</table>
+
+<h3>A.3&nbsp;&nbsp;NEXT 的自由空间数据采集指南</h3>
+
+<p>图 8 展示了为训练 NEXT 的自由空间逆动力学 LSTM，在 Piper 机械臂上采集的 10 分钟自由运动数据集的分布。采集过程中我们遵循一个简单的、面向覆盖率的流程：首先让每个关节在其运动范围内单独运动；接着让末端执行器做涉及多个关节的类笛卡尔运动；最后重复慢速与快速运动，以捕捉速度相关的动力学。虽然这些轨迹可以通过运动规划自动生成，但实践中也可以一次录制、然后在新的机器人装置上重放，从而快速采集训练数据。</p>
+
+<figure>
+<img src="figs/fig08.png" style="width:13.0cm">
+<figcaption><b>图 8：</b>在 Piper 机械臂上用于训练 NEXT 的 10 分钟自由运动数据集的分布。图中给出了全部六个关节上关节位置误差 &Delta;<b>q</b>、关节位置 <b>q</b>、关节速度 <b>q&#775;</b> 与自由空间力矩 <i>&tau;</i><sub>f</sub> 的覆盖情况。</figcaption>
+</figure>
+
+<h3>A.4&nbsp;&nbsp;外部关节力矩估计基线的实现</h3>
+
+<p>我们为 NEXT 实现了两个基于模型的外部关节力矩估计基线：FILIC [22] 与扰动观测器 [43]。两者均在 Franka Panda 与 AgileX Piper 机械臂上评估。对 Franka，我们使用 [47] 的动力学模型，其参数由基于优化的系统辨识得到；对 AgileX Piper，我们使用厂商提供的 URDF [48] 导出的动力学模型。</p>
+
+<p class="noindent"><span class="kw">FILIC [22]。</span>对 FILIC，我们使用第 3 节给出的标准残差式估计。给定实测电机力矩 <i>&tau;</i><sub>m</sub>，外部力矩由减去用 MuJoCo 逆动力学计算的标称自由空间力矩得到：</p>
+
+<div class="eq"><img src="eqs/eq9.png" style="width:11.6cm"></div>
+
+<p>该方法把实测电机力矩与建模自由空间动力学之间的残差直接归因于外部交互。</p>
+
+<p class="noindent"><span class="kw">扰动观测器 [43]。</span>作为第二个基线，我们实现一个基于动量的扰动观测器。它不直接计算依赖加速度的逆动力学，而是从广义动量的残差中估计外部力矩：</p>
+
+<div class="eq"><img src="eqs/eq10.png" style="width:8.4cm"></div>
+
+<p>它维护一个内部动量估计 <b>p&#770;</b>，其动力学为</p>
+
+<div class="eq"><img src="eqs/eq11.png" style="width:12.8cm"></div>
+
+<p>由于避免了直接计算 <b>q&#776;</b>，动量观测器对编码器噪声不那么敏感，估计也比 FILIC 更平滑。如图 5 所示，它比 FILIC 噪声更小，但精度仍不如 NEXT。</p>
+
+<h3>A.5&nbsp;&nbsp;力反馈遥操作基线的实现</h3>
+
+<p>在力反馈遥操作的用户研究中，我们在 Franka Panda 上实现五种反馈条件：</p>
+
+<ul>
+<li><b>无反馈（No Feedback）</b>：不带力反馈的 GELLO 主从系统 [49]。</li>
+<li><b>扰动观测器（DO）</b>：在从臂上用附录 A.4 描述的扰动观测器估计外部关节力矩，再传回主臂作为力反馈。</li>
+<li><b>位置—位置反馈（PP）</b>：按 [44] 的做法，把主臂与从臂之间的关节位置差缩放后作为反馈力矩。</li>
+<li><b>FACTR Teleop</b>：FACTR 遥操作系统 [6]，反馈来自专用关节力矩传感器的外部关节力矩，并附带重力补偿、摩擦补偿与零空间调节。</li>
+<li><b>本文（Ours）</b>：与 FACTR Teleop 相同的遥操作框架，但使用 NEXT 预测的外部关节力矩，而非专用关节力矩传感器的测量。</li>
+</ul>
+
+<p>我们在 AgileX Piper 机械臂上重复了同样的研究，但排除了 FACTR Teleop，因为 Piper 不提供专用关节力矩传感。</p>
+
+<h3>A.6&nbsp;&nbsp;AgileX Piper 上的 NEXT 评估</h3>
+
+<p>由于 AgileX Piper 不提供专用外部关节力矩传感，我们只在自由空间设置下评估力矩估计，此处真值外部力矩已知为零。如表 5 所示，NEXT 取得最低误差，平均 L1 误差仅 0.018 N·m，优于 FILIC 与扰动观测器。这些结果表明，即使在没有专用力传感器的低成本机械臂上，NEXT 也能给出准确的外部力矩估计。</p>
+
+<p>为在接触场景下评估 NEXT，我们开展力反馈遥操作用户研究。如图 9 所示，参与者认为基于 NEXT 力反馈的遥操作比各基线反馈方式更易使用。</p>
+
+<p class="tcap"><b>表 5：</b>AgileX Piper 在自由空间设置下跨关节平均的 L1 力矩误差。自由空间误差以零外部力矩为基准。NEXT 取得最低误差。</p>
+<table>
+<thead><tr><th class="l">外力矩方法</th><th>误差 (N·m) &darr;</th></tr></thead>
+<tbody>
+<tr><td class="l">自由运动（真值）</td><td>0.000 &plusmn; 0.000</td></tr>
+<tr><td class="l">FILIC</td><td>0.435 &plusmn; 0.225</td></tr>
+<tr><td class="l">扰动观测器</td><td>0.248 &plusmn; 0.132</td></tr>
+<tr><td class="l"><b>本文</b></td><td><b>0.018 &plusmn; 0.012</b></td></tr>
+</tbody>
+</table>
+
+<figure>
+<img src="figs/fig09.png" style="width:8.4cm">
+<figcaption><b>图 9：</b>在 Piper 上比较各外力矩反馈方式的用户研究结果。</figcaption>
+</figure>
+
+<h3>B&nbsp;&nbsp;行为克隆策略结构与训练超参数</h3>
+
+<p>我们的行为克隆策略以 RGB 图像、本体感觉输入与力估计为输入。每种模态先被 token 化，再送入 ACT 或流匹配 DiT 策略结构。图像用 DINOv3-Base 编码器 [50] 编码，本体感觉与力输入则通过 MLP 层投影为 token。</p>
+
+<p>本体感觉输入包括关节位置与夹爪开度，力输入对应估计的外部关节力矩。我们只使用当前时间步最近的一次观测。动作空间由绝对关节角与夹爪开度组成，动作预测时域为 30。需要说明的是，每个策略的动作头都是随机初始化并从头训练的。ACT 与流匹配策略的训练细节见表 6。</p>
+
+<p class="tcap"><b>表 6：</b>策略结构与训练超参数。</p>
+<table>
+<thead><tr><th class="l">超参数</th><th class="l">取值</th></tr></thead>
+<tbody>
+<tr><td class="l" colspan="2" style="text-align:center;font-weight:700;border-bottom:none">行为策略训练</td></tr>
+<tr><td class="l">优化器</td><td class="l">AdamW</td></tr>
+<tr><td class="l">基础学习率</td><td class="l">3 &times; 10<sup>&minus;4</sup></td></tr>
+<tr><td class="l">权重衰减</td><td class="l">0.05</td></tr>
+<tr><td class="l">优化器动量</td><td class="l">&beta;<sub>1</sub>, &beta;<sub>2</sub> = 0.9, 0.95</td></tr>
+<tr><td class="l">Batch size</td><td class="l">128</td></tr>
+<tr><td class="l">学习率调度</td><td class="l">余弦退火</td></tr>
+<tr><td class="l">总 epoch 数</td><td class="l">15–20</td></tr>
+<tr><td class="l">Warmup 步数</td><td class="l">500</td></tr>
+<tr><td class="l">数据增强</td><td class="l">RandomResizeCrop</td></tr>
+<tr><td class="l">GPU</td><td class="l">A6000 (48 GB)</td></tr>
+<tr><td class="l">实际耗时</td><td class="l">12–24 小时</td></tr>
+<tr><td class="l" colspan="2" style="text-align:center;font-weight:700;border-bottom:none">动作分块 Transformer（ACT）细节</td></tr>
+<tr><td class="l">编码器层数</td><td class="l">4</td></tr>
+<tr><td class="l">解码器层数</td><td class="l">6</td></tr>
+<tr><td class="l">多头自注意力头数</td><td class="l">8</td></tr>
+<tr><td class="l">隐藏维度</td><td class="l">768</td></tr>
+<tr><td class="l">前馈维度</td><td class="l">3072</td></tr>
+<tr><td class="l">Dropout</td><td class="l">0.1</td></tr>
+<tr><td class="l">位置编码</td><td class="l">正弦式</td></tr>
+<tr><td class="l">动作块长度</td><td class="l">30</td></tr>
+<tr><td class="l" colspan="2" style="text-align:center;font-weight:700;border-bottom:none">流匹配（Flow Matching）细节</td></tr>
+<tr><td class="l">解码器层数</td><td class="l">6</td></tr>
+<tr><td class="l">多头自注意力头数</td><td class="l">8</td></tr>
+<tr><td class="l">隐藏维度</td><td class="l">768</td></tr>
+<tr><td class="l">前馈维度</td><td class="l">3072</td></tr>
+<tr><td class="l">Dropout</td><td class="l">0.1</td></tr>
+<tr><td class="l">位置编码</td><td class="l">正弦式</td></tr>
+<tr><td class="l">动作块长度</td><td class="l">30</td></tr>
+<tr><td class="l">推理步数</td><td class="l">10</td></tr>
+<tr><td class="l">时间采样</td><td class="l">&tau; ~ Beta(1.0, 1.5)</td></tr>
+<tr><td class="l">ODE 求解器</td><td class="l">Euler</td></tr>
+<tr><td class="l">噪声分布</td><td class="l">N(0, I)</td></tr>
+</tbody>
+</table>
+
+<h3>C&nbsp;&nbsp;行为克隆的评估任务</h3>
+
+<h3>C.1&nbsp;&nbsp;任务描述</h3>
+
+<p>我们在五个长时程、富接触的操作任务上评估 FIRST 与各基线：</p>
+<ul>
+<li><b>LEGO 装配</b>（LEAP Hand V2 [51]）：用双手灵巧手把两块小乐高积木装配到一块大积木上。</li>
+<li><b>NIST 皮带装配</b>（夹爪）：用双夹爪把两条皮带绕到两组带轮上。</li>
+<li><b>NIST 插入</b>（夹爪）：把两组带轮插入 NIST 板上的销钉。</li>
+<li><b>工具清理</b>（夹爪）：先插入螺丝刀，再装配外壳。</li>
+<li><b>瓶盖拧紧</b>（夹爪）：抓取瓶盖、对准并拧到容器上直至拧紧。</li>
+</ul>
+
+<h3>C.2&nbsp;&nbsp;任务进度率的计算</h3>
+
+<p>除二值成功率外，我们还报告任务进度率，以便评估多阶段操作任务中的部分完成情况。每个任务被划分为若干阶段，每次 rollout 中每个阶段被标记为完成（s）或失败（f）。任务进度率计算为所有 rollout 中已完成阶段所占的百分比。</p>
+
+<p>任务阶段列于表 7。例如，LEGO 任务包括抓取、对准并插入红色与绿色积木；NIST 皮带任务包括拿起并对准两个皮带部件，然后把它们推到位；NIST 插入任务通过抓取、对准并插入黑色部件，然后拿起铝制部件来衡量进度；工具清理（Case Assembly）任务评估机器人能否抓取、对准并插入螺丝刀，然后装配盒子。</p>
+
+<p>对瓶盖拧紧任务，我们使用修正后的进度分数，因为策略可能在瓶盖已经拧紧后继续旋转而导致失败。因此我们按过度旋转的次数扣减惩罚，每次过度旋转使进度分数减少 0.02。这样可以惩罚那些完成了拧紧动作却不能正确停止的策略。</p>
+
+<p class="tcap"><b>表 7：</b>用于计算任务进度的阶段划分。</p>
+<table>
+<thead><tr><th class="l">任务</th><th class="l">阶段</th></tr></thead>
+<tbody>
+<tr><td class="l">LEGO</td><td class="l">抓红色、对准红色、插入红色、抓绿色、对准绿色、插入绿色</td></tr>
+<tr><td class="l">NIST 皮带</td><td class="l">抓橙色、对准大带轮、对准小带轮、推入、抓灰色、对准灰色、推入</td></tr>
+<tr><td class="l">NIST 插入</td><td class="l">抓黑色、对准黑色、插入黑色、抓铝制件</td></tr>
+<tr><td class="l">工具清理</td><td class="l">抓螺丝刀、对准螺丝刀、插入螺丝刀、装配盒子</td></tr>
+<tr><td class="l">瓶盖拧紧</td><td class="l">抓瓶盖、对准瓶盖、拧上、正确结束</td></tr>
+</tbody>
+</table>
+
+<h3>C.3&nbsp;&nbsp;带力信息的模仿学习基线实现</h3>
+
+<p class="noindent"><span class="kw">Base Policy：</span>我们使用 6.2 节描述的基础 ACT 或流匹配策略。策略以多视角 RGB 图像与机器人本体感觉（关节位置与夹爪状态）为输入，预测未来一段关节与夹爪指令。</p>
+
+<p class="noindent"><span class="kw">Base Policy + Torque：</span>该基线在基础策略上增加 NEXT 的外部关节力矩预测。预测的力矩信号经 MLP 嵌入后作为额外的观测 token 加入策略上下文。</p>
+
+<p class="noindent"><span class="kw">FACTR [6]：</span>FACTR 保持策略结构不变，对所有图像观测施加视觉课程（visual curriculum）。按照 FACTR 原实现，我们使用高斯模糊算子并采用线性课程调度。具体地，在训练第 <i>n</i> 步，模糊强度设为</p>
+
+<div class="eq"><img src="eqs/eqsig.png" style="width:4.2cm"></div>
+
+<p>其中 &sigma;<sub>0</sub> 是初始模糊强度，<i>N</i> 是课程总步数。因此，训练初期输入图像被强烈模糊，随着训练推进模糊逐渐被去除。</p>
+
+<p class="noindent"><span class="kw">TA-VLA [17]：</span>TA-VLA 在动作之外，把预测的力矩/接触信号作为辅助学习目标。推理时只执行机器人动作维度，辅助的力矩/接触预测仅用于在训练中塑造学到的表征。</p>
+
+<h3>D&nbsp;&nbsp;FIRST 的补充结果</h3>
+
+<h3>D.1&nbsp;&nbsp;轨迹接触阶段分割的可视化</h3>
+
+<p>图 10 展示了我们的迟滞阈值标注流程所产生的一个阶段标签示例。NEXT 估计的外部力矩在自由运动期间保持在零附近，在物理交互期间明显上升，从而可以把轨迹分为自由运动、接触前与接触三个阶段。接触前标签捕捉接触起始之前、需要精确对准的那段短区间；接触标签则捕捉持续交互的时段。这种传感级别的信号使得即使在没有专用力传感器的机械臂上，也能自动完成示教分割，为 FIRST 提供力引导重采样所需的阶段标注。</p>
+
+<figure>
+<img src="figs/fig10.png" style="width:14.3cm">
+<figcaption><b>图 10：</b>基于学到的外部力矩进行接触阶段分割。NEXT 输出的归一化 <i>&tau;</i><sub>ext</sub> 用于把示教分割为自由运动、接触前与接触三个阶段。图像叠加显示，预测的标签与任务过程中机器人的交互状态一致。</figcaption>
+</figure>
+
+<h3>D.2&nbsp;&nbsp;ACT 上的任务进度评估</h3>
+
+<p>除第 7 节的流匹配策略外，我们也在 ACT 上应用 FIRST。如图 11 所示，我们观察到相似的趋势：对接触前与接触阶段上采样可以改善任务进度，优于各基线。</p>
+
+<figure>
+<img src="figs/fig11.png" style="width:14.5cm">
+<figcaption><b>图 11：</b>使用 ACT 策略时，五个富接触操作任务上的任务进度。</figcaption>
+</figure>
+
+<h3>D.3&nbsp;&nbsp;各任务选用的重采样比例</h3>
+
+<p>表 8 报告了 FIRST 在各任务上使用的重采样比例。所有比例写作 <i>w</i><sub>F</sub> : <i>w</i><sub>PC</sub> : <i>w</i><sub>C</sub>，分别对应自由运动、接触前与接触样本的采样权重。对多数任务，FIRST 使用 1 : 5 : 1，即接触前样本的采样率是自由运动与接触样本的 5 倍。对瓶盖拧紧，FIRST 使用 1 : 3 : 3，同时上采样接触前与接触样本，因为持续接触是成功执行的核心。这些比例依据各任务的任务进度进行选取。</p>
+
+<p class="tcap"><b>表 8：</b>FIRST 在各任务上使用的最佳重采样比例。比例按 <i>w</i><sub>F</sub> : <i>w</i><sub>PC</sub> : <i>w</i><sub>C</sub> 报告，对应自由运动、接触前与接触的采样权重。</p>
+<table>
+<thead><tr><th class="l">任务</th><th>最佳重采样比例</th></tr></thead>
+<tbody>
+<tr><td class="l">LEGO 装配</td><td>1 : 5 : 1</td></tr>
+<tr><td class="l">NIST 皮带装配</td><td>1 : 5 : 1</td></tr>
+<tr><td class="l">NIST 插入</td><td>1 : 5 : 1</td></tr>
+<tr><td class="l">工具清理</td><td>1 : 5 : 1</td></tr>
+<tr><td class="l">瓶盖拧紧</td><td>1 : 3 : 3</td></tr>
+</tbody>
+</table>
+
+<h3>D.4&nbsp;&nbsp;上采样幅度的消融</h3>
+
+<p>图 12 消融了上采样幅度对任务进度的影响。我们把幅度 <i>m</i> 定义为分配给被上采样阶段的采样权重相对于自由运动的倍数。对接触前上采样，阶段权重为 <i>w</i><sub>F</sub> : <i>w</i><sub>PC</sub> : <i>w</i><sub>C</sub> = 1 : <i>m</i> : 1；对接触前 + 接触上采样，阶段权重为 <i>w</i><sub>F</sub> : <i>w</i><sub>PC</sub> : <i>w</i><sub>C</sub> = 1 : <i>m</i> : <i>m</i>。我们在 NIST 皮带装配、NIST 插入与工具清理三个任务上用 ACT 运行该消融；受时间与算力限制，流匹配的消融只在工具清理任务上额外运行。跨任务来看，适度的上采样可以改善任务进度，性能一般在 <i>m</i> = 5 附近达到峰值；更大的取值会导致饱和或下降，说明过于激进的上采样会使训练分布过度偏向与接触相关的片段，降低对完整任务轨迹的覆盖。</p>
+
+<figure>
+<img src="figs/fig12.png" style="width:14.3cm">
+<figcaption><b>图 12：</b>适度的上采样总体上能改善性能，最佳结果出现在 <i>m</i> = 5 附近；更大的取值导致饱和或性能下降。</figcaption>
+</figure>
+
+<h3>D.5&nbsp;&nbsp;不使用力输入时的上采样策略</h3>
+
+<p>虽然第 7 节在以外力关节力矩为条件的策略上评估 FIRST，但 FIRST 也可以在不把力作为策略输入的情况下使用。这种设置下，NEXT 只在离线阶段用于把示教分割为自由运动、接触前与接触三个阶段。随后 FIRST 用这些阶段标签重采样训练数据，提高每个 minibatch 中接触前与接触样本的频率。重要的是，策略本身只接收标准的视觉与本体感觉观测，不包含预测的外部关节力矩。</p>
+
+<p>表 9 突出了两个趋势。第一，在不含外部关节力矩的各列内部比较时，基于阶段的上采样优于标准行为克隆。对 ACT 与流匹配，使用 PC 或 PC+C 上采样通常比不上采样带来更高的任务成功率，说明即使力估计只在训练时用于数据重采样，由 NEXT 导出的阶段标签也是有用的。这表明 FIRST 可以通过把训练分布重塑到对准与接触敏感修正最关键的任务关键片段，来改进标准行为克隆。</p>
+
+<p>第二，横向比较带与不带外部关节力矩训练的策略，以力为条件的策略成功率始终更高。这说明仅靠基于阶段的上采样虽已带来明显收益，但把预测的外部关节力矩直接送入策略可提供额外的状态信息，进一步改善富接触操作。总体而言，当两个组件一起使用时性能最佳：NEXT 提供外部关节力矩作为策略输入，而 FIRST 用由 NEXT 导出的阶段标签在训练中对最相关的接触前与接触阶段上采样。</p>
+
+<p class="tcap"><b>表 9：</b>基于阶段的上采样对带/不带外部关节力矩训练的策略的影响。结果为任务成功率。</p>
+<table>
+<thead>
+<tr>
+  <th rowspan="2" class="l">策略</th><th rowspan="2">上采样策略</th>
+  <th colspan="2">不含 <i>&tau;</i><sub>ext</sub></th><th colspan="2">含 <i>&tau;</i><sub>ext</sub></th>
+</tr>
+<tr><th>皮带装配</th><th>工具清理</th><th>皮带装配</th><th>工具清理</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="3" class="l">ACT</td><td>无</td><td>0.220</td><td>0.600</td><td>0.347</td><td>0.650</td></tr>
+<tr><td>PC</td><td>0.360</td><td>0.600</td><td>0.687</td><td>0.650</td></tr>
+<tr><td>PC + C</td><td>0.283</td><td>0.763</td><td><b>0.770</b></td><td><b>0.788</b></td></tr>
+<tr><td rowspan="3" class="l">流匹配</td><td>无</td><td>0.150</td><td>0.463</td><td>0.431</td><td>0.525</td></tr>
+<tr><td>PC</td><td>0.213</td><td>0.575</td><td><b>0.767</b></td><td><b>0.805</b></td></tr>
+<tr><td>PC + C</td><td>0.241</td><td>0.525</td><td>0.649</td><td>0.775</td></tr>
+</tbody>
+</table>
+
+<h3>D.6&nbsp;&nbsp;输入关节电流与输入外部关节力矩对策略性能的影响</h3>
+
+<p>我们进一步考察：原始关节电流是否足以支撑接触感知的策略学习，还是说学到的外部关节力矩估计能提供更有用的表征。TA-VLA [17] 等此前的工作把低成本机械臂易于获取的关节电流测量直接作为与力相关的输入用于模仿学习。然而，关节电流只是物理交互的间接度量：它既包含自由空间运动所需的执行器出力，也包含外部接触的贡献，还混有硬件与控制相关的效应。因此策略必须隐式地把接触诱发的力矩与自由空间动力学解耦。</p>
+
+<p>相比之下，NEXT 通过从实测电机力矩中减去学到的自由空间力矩预测，显式地估计外部关节力矩。这一区别很重要，因为仅从电流估计出干净的外部力矩信号通常需要时间上下文。如附录 A.2 中 NEXT 自由空间逆动力学的消融所示，更长的本体感觉历史会改善力矩估计，说明仅靠瞬时电流与状态观测不足以可靠地把自由空间驱动与接触分离开。而标准的行为克隆策略通常只接收当前观测，而不是像 NEXT 那样 50 步的长历史。虽然可以把这样的历史直接喂给策略，但这会加重策略的负担：它必须同时推断动力学、定位接触并求解视觉运动任务。实践中，长的本体感觉历史还可能促使策略过拟合到与轨迹相关的运动模式，而不是恰当地利用视觉来应对场景变化。NEXT 通过在专门的力量估计模块中使用历史、同时给策略一个紧凑且与接触相关的外部力矩信号，避开了这一问题。</p>
+
+<p>我们在两个对接触敏感的任务——NIST 插入与瓶盖拧紧——上比较以原始关节电流为条件的策略与以学到的外部关节力矩为条件的策略。两个任务都需要力线索才能成功：NIST 插入依赖在插入过程中检测对准与接触，瓶盖拧紧则需判断瓶盖何时已完全拧紧。如表 10 所示，以关节电流为条件相比基础 ACT 策略改善了 NIST 插入，但未改善瓶盖拧紧；相比之下，以学到的外部关节力矩为条件在两个任务上都取得最佳性能。定性上我们观察到，以原始关节电流为条件的策略常常在瓶盖已拧紧后继续旋转，导致过度拧紧失败；而以学到的外部力矩为条件的策略能更好地检测已拧紧的接触状态，并适时终止拧紧动作。</p>
+
+<p>图 13 的注意力分析进一步支持这一观察。为可视化策略在 rollout 中如何使用与力相关的信息，我们计算第一个解码器层中从动作 token 到观测 token 的平均交叉注意力。解码器同时关注视觉 token 与力相关 token，但图 13 只画出分配给力相关 token 的注意力质量：对以电流为条件的策略是原始关节电流 token，对我们的策略是学到的外部力矩 token。因此该可视化度量的是策略在预测动作时对力输入的关注强度。</p>
+
+<p>在拧瓶盖操作中，以学到的外部力矩为条件的策略在关键接触事件附近（尤其是瓶盖被拧紧、拧紧动作应当停止时）注意力明显升高。相比之下，以原始关节电流为条件的策略对其电流 token 的注意力更弱，与事件的对齐也更差。虽然注意力只是一种诊断手段，本身并不能证明因果性，但这一模式说明：对力敏感的操作而言，学到的外部关节力矩比原始关节电流提供了更干净、也更与任务相关的接触表征。</p>
+
+<figure>
+<img src="figs/fig13.png" style="width:14.3cm">
+<figcaption><b>图 13：</b>拧瓶盖操作过程中的注意力数值。学到的外部力矩在关键接触事件附近产生比原始关节力更清晰的注意力。</figcaption>
+</figure>
+
+<p class="tcap"><b>表 10：</b>以原始关节电流为条件与以学到的外部关节力矩为条件时的策略性能。学到的外部关节力矩在两个接触敏感任务上都给出最佳性能。数值越高越好，粗体表示各任务内的最佳结果。</p>
+<table>
+<thead><tr><th class="l">方法</th><th>NIST 插入 &uarr;</th><th>瓶盖拧紧 &uarr;</th></tr></thead>
+<tbody>
+<tr><td class="l">ACT</td><td>0.220</td><td>0.440</td></tr>
+<tr><td class="l">ACT + 关节电流</td><td>0.431</td><td>0.440</td></tr>
+<tr><td class="l">ACT + <i>&tau;</i><sub>ext</sub></td><td><b>0.567</b></td><td><b>0.525</b></td></tr>
+</tbody>
+</table>
+
+<h3>D.7&nbsp;&nbsp;按 batch 上采样与加权回归的对比</h3>
+
+<p>我们进一步把 FIRST 与加权回归基线比较：后者依据每个样本属于自由运动、接触前还是接触阶段来对损失重新加权。两种方法都旨在强调与接触相关的数据，但方式不同：加权回归修改优化目标，而 FIRST 通过提高每个 batch 中有信息样本的出现频率来改变训练分布。</p>
+
+<p>如表 11 所示，加权回归要么使性能下降，要么相对不上采样基线只有有限改善；相比之下，加权采样在 LEGO 装配上稳定地改善了性能。我们在其它富接触任务上也观察到类似的定性趋势。这说明直接提高稀疏的接触相关样本的损失贡献可能使优化不稳定，导致策略过拟合到高权重片段，或忽略更广的轨迹上下文。相反，按 batch 上采样在保留原有回归目标的同时，让策略更频繁地接触到关键的接触前与接触转换，从而带来更稳定的策略学习。</p>
+
+<p class="tcap"><b>表 11：</b>在 LEGO 装配任务（ACT）上比较各阶段强调机制。</p>
+<table>
+<thead><tr><th class="l">阶段强调机制</th><th>被强调的阶段</th><th>任务进度</th></tr></thead>
+<tbody>
+<tr><td class="l">无</td><td>&ndash;</td><td>0.453</td></tr>
+<tr><td class="l" rowspan="2">加权回归</td><td>PC</td><td>0.345</td></tr>
+<tr><td>PC + C</td><td>0.478</td></tr>
+<tr><td class="l" rowspan="2"><b>FIRST（本文）</b></td><td>PC</td><td><b>0.573</b></td></tr>
+<tr><td>PC + C</td><td>0.501</td></tr>
+</tbody>
+</table>
+
+</body>
+</html>

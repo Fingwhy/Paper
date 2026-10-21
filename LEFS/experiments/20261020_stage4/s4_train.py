@@ -31,7 +31,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 
 HERE = Path(__file__).resolve().parent
 VENDOR_SRC = HERE.parent / "_vendor" / "factr2_next" / "src" / "factr2_next"
@@ -155,6 +155,13 @@ def main():
     ap.add_argument("--dropout", type=float, default=0.1)
     ap.add_argument("--hidden", type=int, default=128)
     ap.add_argument("--layers", type=int, default=2)
+    ap.add_argument("--weight-q2", action="store_true",
+                    help="按 q2 分箱反频率加权采样（论文 FIRST「按阶段重采样」的迁移）。"
+                         "依据：test 上 q2∈[95,120°] 的误差 0.243，是 [40,60°] 的 2.1 倍，"
+                         "而该区在训练集只占 1.7%（test 占 5.8%）")
+    ap.add_argument("--weight-power", type=float, default=0.5,
+                    help="反频率权重的指数，默认 0.5（开方，温和）。1.0 会让稀疏区权重"
+                         "放大 24 倍，过激；0.5 约 4.9 倍")
     ap.add_argument("--residual", action="store_true",
                     help="残差学习：先用训练集拟合 τ≈Aq+b 的线性重力基线，网络只学残差。"
                          "依据：线性基线已解释 J2 的 89%% 方差，残差 MAE 仅 0.123 N·m，"
@@ -214,7 +221,30 @@ def main():
           f"early-stop patience={args.patience} warmup={args.warmup}")
 
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.wd)
-    tl = DataLoader(train, batch_size=args.batch, shuffle=True, drop_last=False)
+    if args.weight_q2:
+        # 论文 §5 的 FIRST 是「按接触阶段重采样」；这里迁移成「按姿态稀疏度重采样」：
+        # 误差在 q2 高角度区最大（test 95~120° 是 0.243，40~60° 是 0.116），
+        # 而该区训练样本只占 1.7% ⇒ 反频率加权让模型多看这些样本。
+        # **必须用原始弧度**：train.X 在第 210 行已被 apply_norm 归一化成 z-score，
+        # 对它取 degrees() 得到的是垃圾（2026-10-21 踩到：分箱变成
+        # [62377, 891, 5065, ...]，而真实训练集 q2 全在 20~130°，见下）。
+        raw_q2 = npz["train_X"][train.centers][:, 1].astype(np.float64)
+        q2 = np.degrees(raw_q2)
+        assert q2.min() > -180 and q2.max() < 271, \
+            f"q2 分布异常（{q2.min():.1f}~{q2.max():.1f}°），可能又用到归一化后的 X"
+        edges = np.array([-360, 20, 40, 60, 75, 95, 360])
+        idx = np.digitize(q2, edges) - 1
+        cnt = np.bincount(idx, minlength=len(edges) - 1).astype(np.float64)
+        freq = cnt[idx] / len(idx)
+        w = (1.0 / np.maximum(freq, 1e-8)) ** args.weight_power
+        w = w / w.sum() * len(w)
+        print(f"[加权] q2 分箱窗口数 {cnt.astype(int).tolist()}，"
+              f"权重范围 {w.min():.2f}~{w.max():.2f}（{w.max()/w.min():.1f}×）")
+        sampler = WeightedRandomSampler(torch.as_tensor(w, dtype=torch.double),
+                                        num_samples=len(train), replacement=True)
+        tl = DataLoader(train, batch_size=args.batch, sampler=sampler, drop_last=False)
+    else:
+        tl = DataLoader(train, batch_size=args.batch, shuffle=True, drop_last=False)
     vl = DataLoader(val, batch_size=args.batch, shuffle=False)
 
     best = float("inf")

@@ -1,0 +1,40 @@
+数据 C:\Users\asus\WorkBuddy\论文解析复现\LEFS\experiments\20261020_stage4\data\step.npz  H=25
+窗口数：train 84243  val 6618
+  （train 36 段 / val 3 段；测试集 3 段不进训练）
+模型：{'type': 'lstm', 'hidden_size': 128, 'num_layers': 2, 'head_hidden': 256, 'head_layers': 2, 'dropout': 0.1, 'bidirectional': False, 'state_mode': 'stateless'}  参数 242.4k
+优化器：AdamW lr=0.001 wd=1e-06 clip=1.0 early-stop patience=20 warmup=10
+epoch 001  train 0.75835  val 0.75982  MAE 0.4117 N·m  [ 24.5s] *
+epoch 002  train 0.31560  val 0.59894  MAE 0.3160 N·m  [ 50.7s] *
+epoch 003  train 0.23213  val 0.61009  MAE 0.3324 N·m  [ 77.6s]
+epoch 004  train 0.20504  val 0.75725  MAE 0.3037 N·m  [105.0s] *
+epoch 005  train 0.18819  val 0.81494  MAE 0.2810 N·m  [132.1s] *
+epoch 006  train 0.17839  val 0.86876  MAE 0.2871 N·m  [157.4s]
+epoch 007  train 0.17181  val 0.85759  MAE 0.2848 N·m  [181.5s]
+epoch 008  train 0.16675  val 0.92080  MAE 0.2871 N·m  [208.1s]
+epoch 009  train 0.16128  val 0.96373  MAE 0.2815 N·m  [232.4s]
+epoch 010  train 0.15645  val 0.97513  MAE 0.2751 N·m  [259.9s] *
+epoch 011  train 0.15379  val 0.97968  MAE 0.2739 N·m  [286.3s] *
+epoch 012  train 0.15112  val 1.01668  MAE 0.2888 N·m  [310.0s]
+epoch 013  train 0.14902  val 1.03512  MAE 0.2867 N·m  [334.7s]
+epoch 014  train 0.14764  val 1.02939  MAE 0.2920 N·m  [359.7s]
+epoch 015  train 0.14526  val 1.02709  MAE 0.2996 N·m  [381.8s]
+epoch 016  train 0.14311  val 1.04383  MAE 0.3026 N·m  [406.3s]
+epoch 017  train 0.14143  val 1.01069  MAE 0.2934 N·m  [430.0s]
+epoch 018  train 0.13892  val 0.98003  MAE 0.2989 N·m  [453.7s]
+epoch 019  train 0.13674  val 0.99641  MAE 0.3059 N·m  [478.1s]
+epoch 020  train 0.13481  val 0.98084  MAE 0.3048 N·m  [500.1s]
+epoch 021  train 0.13286  val 0.95383  MAE 0.3032 N·m  [524.1s]
+epoch 022  train 0.13065  val 0.97279  MAE 0.2998 N·m  [547.0s]
+epoch 023  train 0.12935  val 0.92224  MAE 0.3008 N·m  [570.5s]
+epoch 024  train 0.13232  val 0.95416  MAE 0.2974 N·m  [595.0s]
+epoch 025  train 0.12809  val 0.91111  MAE 0.2899 N·m  [619.2s]
+epoch 026  train 0.12631  val 0.88223  MAE 0.2929 N·m  [642.5s]
+epoch 027  train 0.12574  val 0.94494  MAE 0.2879 N·m  [666.9s]
+epoch 028  train 0.12476  val 0.92771  MAE 0.2831 N·m  [690.4s]
+epoch 029  train 0.12405  val 0.91567  MAE 0.2813 N·m  [714.8s]
+epoch 030  train 0.12361  val 0.91763  MAE 0.2783 N·m  [739.2s]
+epoch 031  train 0.12272  val 0.94396  MAE 0.2815 N·m  [764.4s]
+早停：best epoch 11（val_mae 0.27386），连续 20 轮无改善
+
+保存 → runs\next_v2\model.pt（best epoch 11, val_mae 0.27386）
+总耗时 764.4 s

@@ -1,0 +1,92 @@
+{
+  "v": "stage1_cmd/2.0",
+  "kind": "sine",
+  "iface": "can0",
+  "dry_run": false,
+  "hz": 100.0,
+  "source_hz": 200.0,
+  "duration": 16.0,
+  "t0_wall": 1792479835.299114,
+  "t_start_wall": 1792479835.2991364,
+  "t_end_wall": 1792479851.2926931,
+  "n": 1600,
+  "n_skipped": 0,
+  "n_step_clamped": 0,
+  "n_limit_clamped": 0,
+  "n_send_failed": 0,
+  "n_tx_frames_ok": 4800,
+  "n_tx_frames_fail": 0,
+  "last_tx_error": null,
+  "tx_ids": [
+    "0x155",
+    "0x156",
+    "0x157"
+  ],
+  "envelope_deg": {
+    "joint_1": [
+      -153.0,
+      153.0
+    ],
+    "joint_2": [
+      -3.0,
+      182.91
+    ],
+    "joint_3": [
+      -173.0,
+      3.0
+    ],
+    "joint_4": [
+      -102.98,
+      102.98
+    ],
+    "joint_5": [
+      -72.9,
+      72.9
+    ],
+    "joint_6": [
+      -123.0,
+      123.0
+    ]
+  },
+  "aborted": false,
+  "guard_reason": null,
+  "allow_disabled": [],
+  "max_current_a": 3.0,
+  "cur_grace_s": 0.3,
+  "stall_win_s": 1.0,
+  "stall_eps_deg": 0.08,
+  "q0_rad": [
+    0.0,
+    1.3957747094049051,
+    -1.2214686770082315,
+    0.0,
+    0.610690705272816,
+    0.5237733085234983
+  ],
+  "amp_deg": [
+    0.0,
+    6.0,
+    6.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "freq_hz": 0.18,
+  "max_step_deg": 1.0,
+  "ctrl_mode": {
+    "name": "CAN_CTRL",
+    "code": 1
+  },
+  "limits_loaded": true,
+  "csv_columns": [
+    "t_wall",
+    "j1",
+    "j2",
+    "j3",
+    "j4",
+    "j5",
+    "j6"
+  ],
+  "unit": "rad",
+  "note": "t_wall 是「发送前一刻」的 epoch 秒；掉拍不补点，缺行即为真实丢发"
+}

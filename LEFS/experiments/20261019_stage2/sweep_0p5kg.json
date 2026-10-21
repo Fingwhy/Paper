@@ -1,0 +1,856 @@
+{
+  "version": "1.2-20261019",
+  "mass_kg": 0.5,
+  "pull_n": 10.0,
+  "flange_m": 0.05,
+  "k_sdk": {
+    "1": 1.18125,
+    "2": 1.18125,
+    "3": 1.18125,
+    "4": 0.95844,
+    "5": 0.95844,
+    "6": 0.95844
+  },
+  "poses": [
+    {
+      "pose": "P1 前伸水平",
+      "note": "经典标定姿态：力臂最长，J2/J3 激励最强",
+      "q_deg": [
+        0.0,
+        45.0,
+        -60.0,
+        0.0,
+        45.0,
+        0.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        2.0,
+        -0.884,
+        -0.011,
+        0.356,
+        -0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.7341,
+          "di_a": 0.62148,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.5797,
+          "di_a": 1.33727,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J5": {
+          "dtau_nm": 0.4607,
+          "di_a": 0.48073,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 1.4967,
+          "di_a": 1.26703,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -0.0,
+          "di_a": -1e-05,
+          "identifiable": false
+        },
+        "J3": {
+          "dtau_nm": -0.0,
+          "di_a": -1e-05,
+          "identifiable": false
+        },
+        "J4": {
+          "dtau_nm": 1.5633,
+          "di_a": 1.63112,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J6": {
+          "dtau_nm": 0.8,
+          "di_a": 0.83469,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P2 前伸下垂",
+      "note": "J2 大角度，重力臂换成 J3 主导",
+      "q_deg": [
+        0.0,
+        75.0,
+        -40.0,
+        0.0,
+        30.0,
+        0.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        -0.393,
+        -1.072,
+        -0.01,
+        0.197,
+        -0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.949,
+          "di_a": 0.80341,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.1246,
+          "di_a": 0.95203,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J5": {
+          "dtau_nm": 0.0055,
+          "di_a": 0.00579,
+          "identifiable": false
+        },
+        "J6": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 1.9348,
+          "di_a": 1.63794,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -0.0,
+          "di_a": -1e-05,
+          "identifiable": false
+        },
+        "J3": {
+          "dtau_nm": -0.0,
+          "di_a": -1e-05,
+          "identifiable": false
+        },
+        "J4": {
+          "dtau_nm": 1.3986,
+          "di_a": 1.45923,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": -0.0,
+          "di_a": -0.0,
+          "identifiable": false
+        },
+        "J6": {
+          "dtau_nm": 0.8,
+          "di_a": 0.83469,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P3 侧向水平",
+      "note": "J1 转出 60°，改变重力在各轴的分配",
+      "q_deg": [
+        60.0,
+        45.0,
+        -60.0,
+        0.0,
+        45.0,
+        0.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        2.0,
+        -0.884,
+        -0.011,
+        0.356,
+        -0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.7341,
+          "di_a": 0.62148,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.5797,
+          "di_a": 1.33727,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J5": {
+          "dtau_nm": 0.4607,
+          "di_a": 0.48073,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 1.4967,
+          "di_a": 1.26703,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -0.0,
+          "di_a": -1e-05,
+          "identifiable": false
+        },
+        "J3": {
+          "dtau_nm": -0.0,
+          "di_a": -1e-05,
+          "identifiable": false
+        },
+        "J4": {
+          "dtau_nm": 1.5633,
+          "di_a": 1.63112,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J6": {
+          "dtau_nm": 0.8,
+          "di_a": 0.83469,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P4 收拢竖直",
+      "note": "接近竖直，J3 力矩趋近 0（反向激励）",
+      "q_deg": [
+        0.0,
+        100.0,
+        -20.0,
+        0.0,
+        60.0,
+        0.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        -2.107,
+        -0.783,
+        -0.003,
+        -0.276,
+        0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.0827,
+          "di_a": 0.06997,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": -0.3444,
+          "di_a": -0.29157,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 0.0,
+          "di_a": 1e-05,
+          "identifiable": false
+        },
+        "J5": {
+          "dtau_nm": -0.7668,
+          "di_a": -0.80008,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 0.1685,
+          "di_a": 0.14266,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -0.0,
+          "di_a": -0.0,
+          "identifiable": false
+        },
+        "J3": {
+          "dtau_nm": -0.0,
+          "di_a": -3e-05,
+          "identifiable": false
+        },
+        "J4": {
+          "dtau_nm": 1.6215,
+          "di_a": 1.69185,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J6": {
+          "dtau_nm": 0.8,
+          "di_a": 0.83469,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P5 上举",
+      "note": "J2 负向激励（重力矩反号）",
+      "q_deg": [
+        -45.0,
+        30.0,
+        -80.0,
+        0.0,
+        50.0,
+        0.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        3.456,
+        -0.271,
+        -0.007,
+        0.39,
+        -0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.2355,
+          "di_a": 0.19936,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.3404,
+          "di_a": 1.13472,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J5": {
+          "dtau_nm": 0.7232,
+          "di_a": 0.75455,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 0.4801,
+          "di_a": 0.40643,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -0.0001,
+          "di_a": -6e-05,
+          "identifiable": false
+        },
+        "J3": {
+          "dtau_nm": -0.0,
+          "di_a": -3e-05,
+          "identifiable": false
+        },
+        "J4": {
+          "dtau_nm": 1.5949,
+          "di_a": 1.66408,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.0,
+          "di_a": 1e-05,
+          "identifiable": false
+        },
+        "J6": {
+          "dtau_nm": 0.8,
+          "di_a": 0.83469,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P6 腕部扭转",
+      "note": "J4 转 60°，检验 J4 是否被激励",
+      "q_deg": [
+        0.0,
+        60.0,
+        -50.0,
+        60.0,
+        40.0,
+        0.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        0.75,
+        -1.094,
+        -0.222,
+        0.128,
+        0.001
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.9498,
+          "di_a": 0.80408,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.4784,
+          "di_a": 1.25153,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": -0.6431,
+          "di_a": -0.67103,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.0731,
+          "di_a": 0.07627,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": -0.3385,
+          "di_a": -0.35321,
+          "identifiable": true
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 2.3414,
+          "di_a": 1.98215,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -1.0303,
+          "di_a": -0.87219,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 0.4531,
+          "di_a": 0.38358,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 0.5639,
+          "di_a": 0.5884,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 1.2699,
+          "di_a": 1.32495,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.2968,
+          "di_a": 0.30972,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P7 腕自转90",
+      "note": "J6 自转 90°，把偏心质量转到能产生力矩的方位",
+      "q_deg": [
+        0.0,
+        45.0,
+        -60.0,
+        0.0,
+        45.0,
+        90.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        2.0,
+        -0.884,
+        -0.01,
+        0.355,
+        0.001
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.9,
+          "di_a": 0.76189,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.7455,
+          "di_a": 1.47768,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": -0.3687,
+          "di_a": -0.38473,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.6266,
+          "di_a": 0.65378,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": -0.3556,
+          "di_a": -0.37105,
+          "identifiable": true
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 2.0016,
+          "di_a": 1.69451,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -1.094,
+          "di_a": -0.92614,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": -0.1868,
+          "di_a": -0.15811,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 1.0238,
+          "di_a": 1.06824,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.2385,
+          "di_a": 0.24885,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": -0.1351,
+          "di_a": -0.141,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P8 腕双转",
+      "note": "J4 与 J6 同时转开，检验两轴是否解耦",
+      "q_deg": [
+        0.0,
+        60.0,
+        -50.0,
+        90.0,
+        40.0,
+        90.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        0.761,
+        -1.084,
+        -0.25,
+        -0.022,
+        0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 1.2678,
+          "di_a": 1.07329,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.7964,
+          "di_a": 1.52074,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": -0.4432,
+          "di_a": -0.46241,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": -0.0388,
+          "di_a": -0.04048,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.022,
+          "di_a": 0.02295,
+          "identifiable": true
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 2.7393,
+          "di_a": 2.31897,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -1.1065,
+          "di_a": -0.93676,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": -0.2328,
+          "di_a": -0.1971,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": -0.7811,
+          "di_a": -0.81493,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 1.3178,
+          "di_a": 1.37499,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": -0.7479,
+          "di_a": -0.78032,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P9 腕自转30",
+      "note": "J6 变载档：sin30° ⇒ 约满量程的 1/2",
+      "q_deg": [
+        0.0,
+        45.0,
+        -60.0,
+        0.0,
+        45.0,
+        30.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        2.0,
+        -0.884,
+        -0.011,
+        0.356,
+        0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.7563,
+          "di_a": 0.64029,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.6019,
+          "di_a": 1.35609,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": -0.1844,
+          "di_a": -0.19236,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.483,
+          "di_a": 0.50391,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": -0.1778,
+          "di_a": -0.18552,
+          "identifiable": true
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 1.593,
+          "di_a": 1.34859,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -0.5297,
+          "di_a": -0.44839,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 0.0403,
+          "di_a": 0.03413,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 1.4742,
+          "di_a": 1.53816,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.3075,
+          "di_a": 0.32084,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.6282,
+          "di_a": 0.65541,
+          "identifiable": true
+        }
+      }
+    },
+    {
+      "pose": "P10 腕自转60",
+      "note": "J6 变载档：sin60° ⇒ 约满量程的 6/7",
+      "q_deg": [
+        0.0,
+        45.0,
+        -60.0,
+        0.0,
+        45.0,
+        60.0
+      ],
+      "tau_gravity_own": [
+        0.0,
+        2.0,
+        -0.884,
+        -0.01,
+        0.356,
+        0.0
+      ],
+      "payload": {
+        "J1": {
+          "dtau_nm": 0.0,
+          "di_a": 0.0,
+          "identifiable": false
+        },
+        "J2": {
+          "dtau_nm": 0.817,
+          "di_a": 0.69168,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": 1.6626,
+          "di_a": 1.40748,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": -0.3193,
+          "di_a": -0.33319,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.5437,
+          "di_a": 0.56725,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": -0.308,
+          "di_a": -0.32133,
+          "identifiable": true
+        }
+      },
+      "pull": {
+        "J1": {
+          "dtau_nm": 1.8041,
+          "di_a": 1.52727,
+          "identifiable": true
+        },
+        "J2": {
+          "dtau_nm": -0.912,
+          "di_a": -0.77204,
+          "identifiable": true
+        },
+        "J3": {
+          "dtau_nm": -0.0402,
+          "di_a": -0.03407,
+          "identifiable": true
+        },
+        "J4": {
+          "dtau_nm": 1.2733,
+          "di_a": 1.3285,
+          "identifiable": true
+        },
+        "J5": {
+          "dtau_nm": 0.3684,
+          "di_a": 0.38437,
+          "identifiable": true
+        },
+        "J6": {
+          "dtau_nm": 0.2569,
+          "di_a": 0.26801,
+          "identifiable": true
+        }
+      }
+    }
+  ]
+}

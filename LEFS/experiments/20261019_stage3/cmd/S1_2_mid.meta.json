@@ -1,0 +1,86 @@
+{
+  "v": "stage1_cmd/2.0",
+  "kind": "sine",
+  "iface": "can0",
+  "dry_run": false,
+  "hz": 100.0,
+  "source_hz": 200.0,
+  "duration": 14.0,
+  "t0_wall": 1792474778.8534603,
+  "t_start_wall": 1792474778.8534682,
+  "t_end_wall": 1792474792.8443198,
+  "n": 1400,
+  "n_skipped": 0,
+  "n_step_clamped": 0,
+  "n_limit_clamped": 0,
+  "n_send_failed": 0,
+  "n_tx_frames_ok": 4200,
+  "n_tx_frames_fail": 0,
+  "last_tx_error": null,
+  "tx_ids": [
+    "0x155",
+    "0x156",
+    "0x157"
+  ],
+  "envelope_deg": {
+    "joint_1": [
+      -153.0,
+      153.0
+    ],
+    "joint_2": [
+      -3.0,
+      182.91
+    ],
+    "joint_3": [
+      -173.0,
+      3.0
+    ],
+    "joint_4": [
+      -102.98,
+      102.98
+    ],
+    "joint_5": [
+      -72.9,
+      72.9
+    ],
+    "joint_6": [
+      -123.0,
+      123.0
+    ]
+  },
+  "aborted": false,
+  "q0_rad": [
+    0.0,
+    0.5231275367002604,
+    -1.0459583674276818,
+    0.0,
+    0.4360181537332234,
+    0.0
+  ],
+  "amp_deg": [
+    0.0,
+    6.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "freq_hz": 0.22,
+  "max_step_deg": 1.0,
+  "ctrl_mode": {
+    "name": "CAN_CTRL",
+    "code": 1
+  },
+  "limits_loaded": true,
+  "csv_columns": [
+    "t_wall",
+    "j1",
+    "j2",
+    "j3",
+    "j4",
+    "j5",
+    "j6"
+  ],
+  "unit": "rad",
+  "note": "t_wall 是「发送前一刻」的 epoch 秒；掉拍不补点，缺行即为真实丢发"
+}

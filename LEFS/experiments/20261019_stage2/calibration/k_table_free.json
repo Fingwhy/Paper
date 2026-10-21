@@ -1,0 +1,68 @@
+{
+  "version": "s21_pair_fit 1.0（无约束：每轴独立 K）",
+  "method": "同姿态空载−带载差分；τ_pay 只依赖运动学与已知质量，与 URDF 连杆质量无关",
+  "bottle_mass_kg": 0.525,
+  "c6_mm": [
+    -0.51,
+    5.3,
+    60.16
+  ],
+  "n_pairs": 10,
+  "last_s": 30.0,
+  "joints": {
+    "J1": {
+      "state": "未标定",
+      "K": null,
+      "reason": "重力与 J1 轴平行 ⇒ τ1≡0，静态法无解；需滑轮/弹簧秤切向拉"
+    },
+    "J2": {
+      "state": "已标定",
+      "K": 4.5364,
+      "sigma_K": 0.2493,
+      "delta_A": 0.02467,
+      "tau_span": 3.124,
+      "resid_rms_A": 0.03057,
+      "chi2_red": 1.13,
+      "K_over_SDK": 3.84,
+      "reason": ""
+    },
+    "J3": {
+      "state": "已标定",
+      "K": 3.9419,
+      "sigma_K": 0.142,
+      "delta_A": -0.03338,
+      "tau_span": 2.479,
+      "resid_rms_A": 0.02896,
+      "chi2_red": 0.21,
+      "K_over_SDK": 3.337,
+      "reason": ""
+    },
+    "J4": {
+      "state": "已标定",
+      "K": 0.6841,
+      "sigma_K": 0.0187,
+      "delta_A": -0.01186,
+      "tau_span": 0.518,
+      "resid_rms_A": 0.02671,
+      "chi2_red": 0.57,
+      "K_over_SDK": 0.714,
+      "reason": ""
+    },
+    "J5": {
+      "state": "已标定",
+      "K": 0.6263,
+      "sigma_K": 0.0076,
+      "delta_A": 0.00349,
+      "tau_span": 1.274,
+      "resid_rms_A": 0.02711,
+      "chi2_red": 0.1,
+      "K_over_SDK": 0.653,
+      "reason": ""
+    },
+    "J6": {
+      "state": "未标定",
+      "K": null,
+      "reason": "水瓶质心几乎在工具轴（=J6 转轴）上 ⇒ τ6≈0；需偏心横杆 80 mm"
+    }
+  }
+}

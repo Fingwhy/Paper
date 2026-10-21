@@ -1,0 +1,116 @@
+{
+  "v": "stage1_cmd/2.0",
+  "kind": "pose",
+  "iface": "can0",
+  "dry_run": false,
+  "hz": 100.0,
+  "source_hz": 200.0,
+  "rate_deg_s": 6.0,
+  "hold_s": 3.0,
+  "ramp_s": 4.3445,
+  "t0_wall": 1792477955.5817692,
+  "n": 748,
+  "n_ramp": 0,
+  "n_hold": 300,
+  "hold_start_idx": 448,
+  "n_send_failed": 0,
+  "n_tx_frames_ok": 2244,
+  "n_tx_frames_fail": 0,
+  "last_tx_error": null,
+  "tx_ids": [
+    "0x155",
+    "0x156",
+    "0x157"
+  ],
+  "envelope_deg": {
+    "joint_1": [
+      -153.0,
+      153.0
+    ],
+    "joint_2": [
+      -3.0,
+      182.91
+    ],
+    "joint_3": [
+      -173.0,
+      3.0
+    ],
+    "joint_4": [
+      -102.98,
+      102.98
+    ],
+    "joint_5": [
+      -72.9,
+      72.9
+    ],
+    "joint_6": [
+      -123.0,
+      123.0
+    ]
+  },
+  "target_deg": [
+    0.0,
+    30.0,
+    -60.0,
+    0.0,
+    25.0,
+    30.0
+  ],
+  "q0_deg": [
+    0.0,
+    56.067,
+    -50.06,
+    0.0,
+    40.018,
+    22.33
+  ],
+  "q_end_deg": [
+    0.0,
+    30.039000000000005,
+    -59.994,
+    0.0,
+    24.941,
+    30.058
+  ],
+  "residual_deg": [
+    0.0,
+    0.03900000000000503,
+    0.006000000000000227,
+    0.0,
+    -0.05900000000000105,
+    0.05799999999999983
+  ],
+  "max_delta_deg": 26.067,
+  "arrive_tol_deg": 0.5,
+  "reached": true,
+  "not_executed": false,
+  "aborted": false,
+  "abort_reason": null,
+  "guards_fired": {
+    "stall": 0,
+    "current": 0,
+    "height": 0,
+    "deadline": 0,
+    "launch": 0
+  },
+  "guard_cfg": {
+    "stall_win_s": 1.0,
+    "stall_eps_deg": 0.08,
+    "max_current_a": 3.0,
+    "max_drop_mm": 400.0,
+    "max_total_s": 0.0
+  },
+  "speed_pct": 30.0,
+  "n_motion_frames_151": 8,
+  "csv_columns": [
+    "t_wall",
+    "j1",
+    "j2",
+    "j3",
+    "j4",
+    "j5",
+    "j6"
+  ],
+  "unit": "rad",
+  "note": "pose：伺服步进（q_cmd = q_meas + clamp(Δ, ±rate*dt)），指令跟实测走；reached 只看实测 q；任一守卫触发即冻结在实测姿态并退出"
+}

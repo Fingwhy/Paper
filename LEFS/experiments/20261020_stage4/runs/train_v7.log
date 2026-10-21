@@ -1,0 +1,34 @@
+数据 data/step_v2.npz  H=25
+窗口数：train 85865  val 12278
+  （train 39 段 / val 5 段；测试集 3 段不进训练）
+[残差] 线性重力基线拟合完成，残差 y 的 std = [0.15479999780654907, 0.4074000120162964, 0.46650001406669617, 0.032099999487400055, 0.08420000225305557, 0.038600001484155655]
+模型：{'type': 'lstm', 'hidden_size': 128, 'num_layers': 2, 'head_hidden': 256, 'head_layers': 2, 'dropout': 0.1, 'bidirectional': False, 'state_mode': 'stateless'}  参数 242.4k
+优化器：AdamW lr=0.001 wd=1e-06 clip=1.0 early-stop patience=20 warmup=10
+epoch 001  train 0.88831  val 1.10419  MAE 0.1326 N·m  [ 34.6s] *
+epoch 002  train 0.67197  val 0.99953  MAE 0.1278 N·m  [ 73.6s] *
+epoch 003  train 0.55546  val 0.97505  MAE 0.1301 N·m  [119.2s]
+epoch 004  train 0.46456  val 1.02146  MAE 0.1277 N·m  [163.0s] *
+epoch 005  train 0.40918  val 1.06293  MAE 0.1323 N·m  [205.4s]
+epoch 006  train 0.37276  val 1.12985  MAE 0.1385 N·m  [246.4s]
+epoch 007  train 0.35377  val 1.16238  MAE 0.1410 N·m  [285.6s]
+epoch 008  train 0.34446  val 1.16522  MAE 0.1407 N·m  [327.2s]
+epoch 009  train 0.33738  val 1.17163  MAE 0.1395 N·m  [369.0s]
+epoch 010  train 0.33139  val 1.15728  MAE 0.1394 N·m  [408.5s]
+epoch 011  train 0.32744  val 1.16865  MAE 0.1396 N·m  [450.0s]
+epoch 012  train 0.32257  val 1.17000  MAE 0.1400 N·m  [493.4s]
+epoch 013  train 0.31956  val 1.16741  MAE 0.1410 N·m  [533.5s]
+epoch 014  train 0.31652  val 1.12576  MAE 0.1374 N·m  [577.8s]
+epoch 015  train 0.31361  val 1.13274  MAE 0.1385 N·m  [618.0s]
+epoch 016  train 0.30969  val 1.13106  MAE 0.1370 N·m  [662.0s]
+epoch 017  train 0.30693  val 1.10663  MAE 0.1362 N·m  [703.7s]
+epoch 018  train 0.30408  val 1.08112  MAE 0.1353 N·m  [745.1s]
+epoch 019  train 0.30236  val 1.08065  MAE 0.1370 N·m  [786.5s]
+epoch 020  train 0.29980  val 1.09851  MAE 0.1363 N·m  [831.8s]
+epoch 021  train 0.29632  val 1.09784  MAE 0.1375 N·m  [873.2s]
+epoch 022  train 0.29434  val 1.07727  MAE 0.1363 N·m  [914.3s]
+epoch 023  train 0.29362  val 1.08233  MAE 0.1363 N·m  [955.3s]
+epoch 024  train 0.29073  val 1.06163  MAE 0.1351 N·m  [995.1s]
+早停：best epoch 4（val_mae 0.12772），连续 20 轮无改善
+
+保存 → runs\next_v7_resid\model.pt（best epoch 4, val_mae 0.12772）
+总耗时 995.1 s

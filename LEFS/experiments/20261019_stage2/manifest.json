@@ -1,0 +1,81 @@
+{
+  "stage": 2,
+  "title": "力矩尺度核验",
+  "guide_section": "§5",
+  "state": "方案就绪，未采集",
+  "closed_at": null,
+  "date": "2026-10-19",
+  "started_design_at": "17:30",
+  "artifacts": {
+    "plan": "STAGE2_PLAN.md",
+    "design_sweep": "DESIGN_SWEEP.md",
+    "design_tool": "stage2_design.py",
+    "design_tool_version": "1.0-20261019",
+    "design_tool_selftest": "PASS 14/14",
+    "sweep_json": "sweep_1kg.json"
+  },
+  "starting_point_k": {
+    "source": "piper_sdk 0.6.1 piper_msgs/msg_v2/feedback/arm_feedback_high_spd.py:84 cal_effort",
+    "formula": "effort(0.001 N·m) = current_raw * coefficient",
+    "k_sdk_nm_per_a": {
+      "J1": 1.18125,
+      "J2": 1.18125,
+      "J3": 1.18125,
+      "J4": 0.95844,
+      "J5": 0.95844,
+      "J6": 0.95844
+    },
+    "caveat": "固定系数、六轴共用两组值，不是校准证书；effort 不携带独立于 cur 的信息（见 R40）",
+    "usage": "只作量级与符号的自洽起点（0.5~2.0 倍内即通过），K 必须靠砝码静态差分独立标定"
+  },
+  "identifiability_design": {
+    "method": "URDF 重力模型 + J^T @ wrench，载荷 1.0 kg / 法兰外伸 50 mm / 偏心横杆 80 mm / 横向拉力 10 N",
+    "structural_zeros": [
+      "J1：竖直重力绕 J1 轴力矩恒为 0（任意姿态）；径向拉力同样为 0，必须切向拉",
+      "J6：质心落在工具轴（= J6 转轴）上时恒为 0；且横杆若在轴-重力竖直平面内仍为 0，需 J6 自转 90°",
+      "J4：质心落在 J4 轴线上时为 0，需 J4 转开 >=60°"
+    ],
+    "excitation_plan": {
+      "J1": "滑轮 10 N 切向，Δτ 1.5~2.6 N·m（ΔI 1.3~2.2 A）",
+      "J2": "砝码，P1 +1.47 / P2 +1.90 N·m",
+      "J3": "砝码，P1 +3.16 / P4 -0.69 N·m（天然双向）",
+      "J4": "砝码 + 横杆，P6 -1.29 N·m",
+      "J5": "砝码，P1 +0.92 / P4 -1.53 N·m（双向）",
+      "J6": "砝码 + 横杆 + J6=90°，P7 -0.71 N·m"
+    },
+    "sign_determination": "用臂自重在不同姿态下反号（P1 J2 = +1.16 N·m，P2 = -1.65 N·m），不需要砝码"
+  },
+  "pending": [
+    "S2-A：stage1_cmd.py 增加 pose 子命令（绝对目标角 + 到位判据）",
+    "S2-0：空载静态对照两姿态（VM，无硬件，约 30 min）",
+    "S2-1：工装（砝码 0.5 kg、偏心横杆 80 mm、滑轮 + 测力计）与末端称重（门 9 关闭）",
+    "S2-1：称「夹爪+转接板+横杆」末端总重，用实测值覆盖 URDF 的 500 g（--gripper-mass）"
+  ],
+  "gates": {
+    "k_per_joint_with_sign_range_holdout_hysteresis": false,
+    "unexcited_joints_marked_uncalibrated": false,
+    "calib_and_test_data_disjoint": false
+  },
+  "red_lines": [
+    "不用 MIT 模式 T_ref 当力矩真值（本方案全程不用 MIT）",
+    "不用自由空间残差贴零证明 K（只认 holdout 独立误差与回差）",
+    "N 与 N·m 不共用变量名，所有外力先经 J^T 映射"
+  ],
+  "decisions": [
+    {
+      "id": "S2-D1",
+      "what": "末端配置：带标准两指夹爪 500 g（17:53 的「不装」已作废）",
+      "decided_at": "2026-10-19 17:58（修订 S2-D1，原 17:53 版作废）",
+      "decided_by": "用户",
+      "consequence": [
+        "重力模型 end_mass=0.500 kg、end_com=(0,0,0.0376)，--gripper urdf 为默认",
+        "负载预算：夹爪 0.50 + 工装 0.10 + 砝码 0.50 ≈ 1.10 kg（余量 0.4）；1.0 kg 砝码 → 1.6 kg 超载",
+        "砝码降到 0.5 kg 单档；用 J6 自转角（P9=30°/P10=60°）做「几何变载」补足工作点",
+        "S2-0 符号判据改 P1/P4（J2 +2.00 vs −2.11、J5 +0.36 vs −0.28）",
+        "门 9 称的是含夹爪的末端总重；夹爪标定期断电/断 CAN"
+      ],
+      "tooling": "stage2_design.py 1.2：--gripper {urdf,none}（默认 urdf）、--gripper-mass 实测覆盖、夹爪质心按 URDF 算"
+    }
+  ],
+  "version": "1.1 (2026-10-19 17:58 最终定案：带夹爪)"
+}

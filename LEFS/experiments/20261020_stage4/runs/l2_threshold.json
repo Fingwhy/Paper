@@ -1,0 +1,19 @@
+{
+  "checkpoint": "C:\\Users\\asus\\WorkBuddy\\论文解析复现\\LEFS\\experiments\\20261020_stage4\\runs\\next_v7_resid\\model.pt",
+  "axes": "J2~J5",
+  "T_high": 1.8903943769019877,
+  "T_low": 1.1342366261411927,
+  "low_ratio": 0.6,
+  "val_frames": 12278,
+  "val_dur_s": 245.56,
+  "test_events": 20,
+  "test_rate_per_min": 5.625879043600563,
+  "test_dur_s": 213.3,
+  "val_pct": {
+    "P50": 0.5388587553461308,
+    "P90": 0.9983655933303862,
+    "P99": 1.8903943769019877,
+    "P99.9": 2.2904685321171714,
+    "P100": 2.563691589104117
+  }
+}

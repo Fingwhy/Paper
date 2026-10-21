@@ -18,6 +18,7 @@ FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。GitHub 仓库 `Fing
 | **幻灯片讲解手册** | 逐页讲稿 + 名词表 + 数字溯源：每页讲什么、每个词什么意思、每个数从哪来 | [DOCX](./FACTR2_幻灯片讲解手册.docx) · [PDF](./FACTR2_幻灯片讲解手册.pdf) |
 | **复现进度看板** | 指南八阶段当前状态、阶段 0 九项门明细、下一步与风险 —— **每次汇报进度以此为准** | [PROGRESS.md](./PROGRESS.md) |
 | **复现实验记录** | 按 L0–L4 逐阶段留证的执行档案，从「阶段 0 环境与版本冻结」开始 | [阶段 0 报告](./experiments/20261019_stage0/STAGE0_REPORT.md) · [登记表](./experiments/20261019_stage0/manifest.json) |
+| **阶段 0 → L2 总总结** | 截至 2026-10-21 的总览：六阶段状态、K 标定、42 段数据集、NEXT 0.161 vs 线性 0.178、用电流称重（Φ / 盲测 / 分辨率）、工具清单、方法论与缺口 | [SUMMARY_STAGE0_TO_L2.md](./SUMMARY_STAGE0_TO_L2.md) |
 | **阶段 0 + L0 完成总结** | 截至 2026-10-19 17:00 的工作总结：九道门逐项结果、L0 判据、13 条技术定案、工具清单、现场事故方法论 | [SUMMARY_20261019.md](./experiments/SUMMARY_20261019.md) |
 | **阶段 2 施工方案** | 力矩尺度核验：K 的官方初值、八姿态可辨识性表、工装清单（滑轮 + 偏心横杆）、五步流程与三条红线落点 | [STAGE2_PLAN.md](./experiments/20261019_stage2/STAGE2_PLAN.md) · [设计表](./experiments/20261019_stage2/DESIGN_SWEEP.md) |
 | **门 9 末端配置留证** | 官方三方交叉数据（本体 4.2 kg / 负载 1.5 kg / 夹爪 500 g）、五套限位矛盾对照、有条件闭合逻辑 | [GATE9_END_EFFECTOR.md](./experiments/20261019_stage0/GATE9_END_EFFECTOR.md) |

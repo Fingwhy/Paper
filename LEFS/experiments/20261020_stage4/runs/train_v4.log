@@ -1,0 +1,31 @@
+数据 C:\Users\asus\WorkBuddy\论文解析复现\LEFS\experiments\20261020_stage4\data\step.npz  H=25
+窗口数：train 84243  val 6618
+  （train 36 段 / val 3 段；测试集 3 段不进训练）
+[残差] 线性重力基线拟合完成，残差 y 的 std = [0.16859999299049377, 0.3082999885082245, 0.38019999861717224, 0.03180000185966492, 0.0722000002861023, 0.035999998450279236]
+模型：{'type': 'lstm', 'hidden_size': 128, 'num_layers': 2, 'head_hidden': 256, 'head_layers': 2, 'dropout': 0.1, 'bidirectional': False, 'state_mode': 'stateless'}  参数 242.4k
+优化器：AdamW lr=0.001 wd=1e-06 clip=1.0 early-stop patience=20 warmup=10
+epoch 001  train 0.89707  val 1.63053  MAE 0.1817 N·m  [ 35.8s] *
+epoch 002  train 0.65385  val 1.69493  MAE 0.1914 N·m  [ 72.2s]
+epoch 003  train 0.54350  val 1.87538  MAE 0.2010 N·m  [109.0s]
+epoch 004  train 0.47439  val 2.03370  MAE 0.2153 N·m  [146.0s]
+epoch 005  train 0.43554  val 2.19426  MAE 0.2142 N·m  [179.8s]
+epoch 006  train 0.41469  val 2.19255  MAE 0.2068 N·m  [218.4s]
+epoch 007  train 0.40409  val 2.17721  MAE 0.2122 N·m  [257.7s]
+epoch 008  train 0.39744  val 2.11697  MAE 0.2052 N·m  [299.1s]
+epoch 009  train 0.39147  val 2.14047  MAE 0.2080 N·m  [337.3s]
+epoch 010  train 0.38701  val 2.10399  MAE 0.2062 N·m  [375.9s]
+epoch 011  train 0.38292  val 2.05032  MAE 0.2048 N·m  [411.1s]
+epoch 012  train 0.37949  val 2.09011  MAE 0.2051 N·m  [447.4s]
+epoch 013  train 0.37649  val 2.13217  MAE 0.2086 N·m  [481.1s]
+epoch 014  train 0.37426  val 1.99054  MAE 0.2020 N·m  [518.5s]
+epoch 015  train 0.37054  val 2.04452  MAE 0.2028 N·m  [555.0s]
+epoch 016  train 0.36716  val 2.07257  MAE 0.2052 N·m  [591.3s]
+epoch 017  train 0.36431  val 2.07225  MAE 0.2066 N·m  [628.3s]
+epoch 018  train 0.36060  val 1.94364  MAE 0.2048 N·m  [662.4s]
+epoch 019  train 0.35725  val 1.89459  MAE 0.2026 N·m  [698.7s]
+epoch 020  train 0.35392  val 2.11340  MAE 0.2131 N·m  [726.9s]
+epoch 021  train 0.35048  val 2.04667  MAE 0.2102 N·m  [750.1s]
+早停：best epoch 1（val_mae 0.18171），连续 20 轮无改善
+
+保存 → runs\next_v4_resid\model.pt（best epoch 1, val_mae 0.18171）
+总耗时 750.1 s

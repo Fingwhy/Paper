@@ -85,6 +85,12 @@ BENIGN_FLAGS = frozenset({"no_q_cmd", "qcmd_out_of_window"})
 JOINT_MIN = [-2.6180, 0.0, -2.9670, -1.7450, -1.2200, -2.0944]
 JOINT_MAX = [2.6180, 3.1416, 0.0, 1.7450, 1.2200, 2.0944]
 
+# 实测自然零位上 J2 = −2.003°、J3 = +1.798°：两个关节都落在 URDF 标称边界之外
+# （J2 下界 0、J3 上界 0）。1.7 版把这种情况判成 `oob` 并**把 q 置 null**，
+# 结果 S2-0 的样本里 q2/q3 全程为 null —— 六轴缺两轴，静态力矩根本拟合不了。
+# 越界 2° 属于已登记的模型差（手册 §10.3 的 DH 偏移），不是异常；放大 3° 后再判。
+JOINT_LIMIT_TOL = math.radians(3.0)
+
 
 def _s16(b: bytes) -> int:
     return int.from_bytes(b, "big", signed=True)
@@ -101,17 +107,25 @@ def _s32(b: bytes) -> int:
 # ---------------------------------------------------------------- 解码
 
 def decode_high_spd(joint_idx: int, data: bytes, pos251_unit: str) -> dict:
-    """0x251~0x256：字节0-1 转速(int16,0.001 rad/s)、2-3 电流(uint16,0.001 A)、4-7 位置(int32)。
+    """0x251~0x256：字节0-1 转速(int16,0.001 rad/s)、2-3 电流、4-7 位置(int32)。
 
-    位置单位存在两种说法（指南写 rad；FIRST_ARM 逐字节实测记 0.001 rad，差 1000 倍），
-    因此由 `pos251_unit` 显式选择，并在报告里用 0x2A5 交叉核验，不靠猜。
+    **电流字段的符号与量纲是实测纠正过的**（2026-10-20）：
+    SDK 文档写 `uint16 / 0.001 A`，但静止读出的原始字节是 `fffe`、`fbc9` 这类值 ——
+    按 uint16 就是 65.5 A，物理上不可能。按 **int16** 读则是 −2、−1079，即 −0.002 A /
+    −1.079 A，与「静态保持时各轴在零点附近小幅正负」完全吻合。
+    因此：`cur` 用 int16（0.001 A，带符号），`cur_raw` 保留无符号原值备查。
+    这条不改的话，S2-0 的「电流噪声 σ」和符号判定全建立在一个饱和假值上。
+
+    位置单位仍有两种说法（指南写 rad；实测 0.001 rad，差 1000 倍），由 `pos251_unit`
+    显式选择，并在报告里用 0x2A5 交叉核验，不靠猜。
     """
     scale = 1.0 if pos251_unit == "rad" else 0.001
+    cur_i = _s16(data[2:4])
     return {
         "joint": joint_idx,
         "dq": _s16(data[0:2]) * 0.001,
-        "cur_raw": _u16(data[2:4]),          # 符号未定，原始值一并保留
-        "cur": _u16(data[2:4]) * 0.001,
+        "cur_raw": _u16(data[2:4]),          # 无符号原值，备查
+        "cur": cur_i * 0.001,                # 实测口径：带符号
         "pos": _s32(data[4:8]) * scale,
     }
 
@@ -603,7 +617,8 @@ def cmd_parse(args) -> int:
                     ages[f"q{j}"] = round(age, 1)
                     if age > stale:
                         flags.append(f"stale:q{j}")
-                    elif not (JOINT_MIN[j - 1] <= hit[1] <= JOINT_MAX[j - 1]):
+                    elif not (JOINT_MIN[j - 1] - JOINT_LIMIT_TOL
+                              <= hit[1] <= JOINT_MAX[j - 1] + JOINT_LIMIT_TOL):
                         # 越界不写进 q：宁可留 null，也不让饱和值混进训练字段
                         flags.append(f"oob:q{j}")
                         q_rej[f"q{j}"] = round(hit[1], 6)
@@ -624,7 +639,9 @@ def cmd_parse(args) -> int:
                     else:
                         dq[j - 1] = hit[1]["dq"]
                         cur[j - 1] = hit[1]["cur"]
-                        if hit[1]["cur_raw"] >= 65535:
+                        if abs(hit[1]["cur"]) >= 32.0:
+                            # 32 A 远超本机任何合理电流（24 V/2 A 末端接口、本体 4.66 kg），
+                            # 超过即说明该路反馈不可信，别把它当负载信号用
                             flags.append(f"saturated:cur{j}")
 
             if all(v is not None for v in q):

@@ -33,6 +33,13 @@ LEFS/experiments/*/.venv/
 LEFS/experiments/*/raw/
 LEFS/experiments/*/episodes/
 
+# 可由 episodes 重建的中间二进制：训练数据快照、模型权重、解析后逐拍转储
+# （episodes/ 本身不入库，权重因此不可由仓库重建，需要时按 *_REPORT.md 的命令重跑训练）
+LEFS/experiments/*/data/*.npz
+LEFS/experiments/*/runs/*/model.pt
+LEFS/experiments/*/*/samples.jsonl
+
 # 幻灯片生成过程的中间态
 LEFS/.slidep/
 LEFS/tmp/
+LEFS/experiments/*/*_stale/

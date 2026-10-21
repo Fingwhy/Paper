@@ -1,0 +1,32 @@
+数据 C:\Users\asus\WorkBuddy\论文解析复现\LEFS\experiments\20261020_stage4\data\step.npz  H=25
+窗口数：train 84243  val 6618
+  （train 36 段 / val 3 段；测试集 3 段不进训练）
+模型：{'type': 'lstm', 'hidden_size': 128, 'num_layers': 2, 'head_hidden': 256, 'head_layers': 2, 'dropout': 0.3, 'bidirectional': False, 'state_mode': 'stateless'}  参数 242.4k
+优化器：AdamW lr=0.001 wd=0.0001 clip=1.0 early-stop patience=20 warmup=10
+epoch 001  train 0.54765  val 0.58807  MAE 0.3069 N·m  [ 20.1s] *
+epoch 002  train 0.23672  val 0.69516  MAE 0.3050 N·m  [ 45.2s] *
+epoch 003  train 0.20067  val 0.79192  MAE 0.2826 N·m  [ 74.2s] *
+epoch 004  train 0.18577  val 0.85977  MAE 0.2886 N·m  [ 97.0s]
+epoch 005  train 0.17747  val 0.97367  MAE 0.3056 N·m  [120.4s]
+epoch 006  train 0.16989  val 1.06434  MAE 0.2900 N·m  [143.5s]
+epoch 007  train 0.16375  val 1.00138  MAE 0.2977 N·m  [165.8s]
+epoch 008  train 0.16003  val 1.01677  MAE 0.3091 N·m  [204.6s]
+epoch 009  train 0.15716  val 0.98089  MAE 0.3157 N·m  [249.3s]
+epoch 010  train 0.15515  val 1.02560  MAE 0.3263 N·m  [291.5s]
+epoch 011  train 0.15275  val 0.92201  MAE 0.3326 N·m  [332.3s]
+epoch 012  train 0.14848  val 0.92441  MAE 0.3368 N·m  [375.6s]
+epoch 013  train 0.14570  val 0.95641  MAE 0.3458 N·m  [420.8s]
+epoch 014  train 0.14378  val 0.91499  MAE 0.3452 N·m  [468.5s]
+epoch 015  train 0.14154  val 0.88624  MAE 0.3522 N·m  [513.8s]
+epoch 016  train 0.14028  val 0.90136  MAE 0.3494 N·m  [558.1s]
+epoch 017  train 0.13905  val 0.88710  MAE 0.3446 N·m  [596.3s]
+epoch 018  train 0.13788  val 0.93687  MAE 0.3435 N·m  [639.6s]
+epoch 019  train 0.13659  val 0.88290  MAE 0.3279 N·m  [680.9s]
+epoch 020  train 0.13591  val 0.92761  MAE 0.3481 N·m  [723.6s]
+epoch 021  train 0.13504  val 0.93005  MAE 0.3531 N·m  [767.4s]
+epoch 022  train 0.13449  val 0.96239  MAE 0.3417 N·m  [814.7s]
+epoch 023  train 0.13375  val 0.87765  MAE 0.3506 N·m  [858.2s]
+早停：best epoch 3（val_mae 0.28265），连续 20 轮无改善
+
+保存 → runs\next_v3\model.pt（best epoch 3, val_mae 0.28265）
+总耗时 858.2 s

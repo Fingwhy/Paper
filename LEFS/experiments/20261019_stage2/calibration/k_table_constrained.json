@@ -1,0 +1,60 @@
+{
+  "version": "s21_group_fit 1.0",
+  "method": "同姿态空载−带载差分 + 组内等系数约束（K2=K3, K4=K5，依据 SDK 分组结构）",
+  "constraint_reason": "无约束解下 c6 与 K 近似简并，K4/K5 留一偏离 >100%；组约束换取 c6 可辨识性",
+  "bottle_mass_kg": 0.525,
+  "c6_mm": [
+    -7.22,
+    7.22,
+    80.94
+  ],
+  "n_pairs": 10,
+  "chi2": 17.97,
+  "dof": 31,
+  "chi2_free": 17.16,
+  "dof_free": 29,
+  "joints": {
+    "J1": {
+      "state": "未标定",
+      "K": null,
+      "reason": "重力与 J1 轴平行 ⇒ τ1≡0；需滑轮+测力计切向拉"
+    },
+    "J2": {
+      "state": "已标定",
+      "K": 4.7185,
+      "loo_max_dev": 0.5589,
+      "loo_rel_dev": 11.8,
+      "K_over_SDK": 3.995,
+      "reason": ""
+    },
+    "J3": {
+      "state": "已标定",
+      "K": 4.7185,
+      "loo_max_dev": 0.5589,
+      "loo_rel_dev": 11.8,
+      "K_over_SDK": 3.995,
+      "reason": ""
+    },
+    "J4": {
+      "state": "弱约束",
+      "K": 0.7446,
+      "loo_max_dev": 0.5929,
+      "loo_rel_dev": 79.6,
+      "K_over_SDK": 0.777,
+      "reason": "c6 与 K 简并导致留一偏离偏大，使用时须带此不确定度"
+    },
+    "J5": {
+      "state": "弱约束",
+      "K": 0.7446,
+      "loo_max_dev": 0.5929,
+      "loo_rel_dev": 79.6,
+      "K_over_SDK": 0.777,
+      "reason": "c6 与 K 简并导致留一偏离偏大，使用时须带此不确定度"
+    },
+    "J6": {
+      "state": "未标定",
+      "K": null,
+      "reason": "τ6 跨度仅 0.054 N·m（质心横偏 ~5 mm 造成），σ_K/K = 21% 未达判据；需偏心横杆 80 mm 把 τ6 放大 ~16 倍"
+    }
+  }
+}

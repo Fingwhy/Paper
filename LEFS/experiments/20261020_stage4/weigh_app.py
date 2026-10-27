@@ -353,7 +353,13 @@ def main():
             print(f"\n  中止：{e}")
         except Exception as e:
             print(f"\n  出错：{type(e).__name__}: {e}")
-        input("\n  按回车回到菜单…")
+        # 这一行也必须保护：用户常在「等我按回车」时按 Ctrl+C 想退出，
+        # 没有 try 就会打印一大段 Traceback（2026-10-21 用户实际踩到）。
+        try:
+            input("\n  按回车回到菜单…")
+        except (EOFError, KeyboardInterrupt):
+            print("\n  已退出。断电前记得先托住机械臂。")
+            return
 
 
 if __name__ == "__main__":

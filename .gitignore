@@ -47,3 +47,17 @@ LEFS/experiments/*/*_stale/
 
 # 论文解包临时目录中的原始 PDF 与 LEFS/paper/2606.12406v2.pdf 完全相同，不重复入库
 paper_2606.12406/2606.12406v2_original.pdf
+
+# 阶段 6：臂侧逐帧原始转储（arm_raw/、*_samples.jsonl）等价于 episodes/raw，不入库；
+# 外置力矩传感器的 sensor_*.jsonl 是唯一真值证据（k 已修正），保留入库
+LEFS/experiments/20261021_stage6/runs/arm_raw/
+LEFS/experiments/20261021_stage6/runs/**/*_samples.jsonl
+LEFS/experiments/20261021_stage6/runs/_old_k/
+LEFS/experiments/20261021_stage6/runs/_old_k6/
+LEFS/experiments/20261021_stage6/test_log.jsonl
+
+# 论文/手册解包临时目录（page.html、blocks.json、切图），正文与图已进 LEFS/ 与译文 PDF
+paper_2505.09069/raw/
+
+# 与 LEFS/experiments/20261021_stage6/torque_doc.txt 完全相同，仓库只留实验目录里那份
+torque_doc.txt

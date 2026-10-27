@@ -1,0 +1,14 @@
+数据集：11 段 / 12936 样本  obs 750 维 → act 10 维
+相构成：Free 9.9%  PreContact 8.7%  Contact 81.3%
+
+base_F1_PC1_C1             FM[F 1.32360 PC 1.87702 C 1.81234]  MAE[F 0.928 PC 1.119 C 1.117 All 1.100]  (7s)
+wregr_F1_PC3_C1            FM[F 1.36008 PC 1.86663 C 1.82096]  MAE[F 0.942 PC 1.112 C 1.116 All 1.100]  (12s)
+first_F1_PC3_C1            FM[F 1.38005 PC 1.85436 C 1.80500]  MAE[F 0.942 PC 1.110 C 1.115 All 1.099]  (17s)
+wregr_F1_PC5_C1            FM[F 1.37533 PC 1.86243 C 1.82900]  MAE[F 0.947 PC 1.103 C 1.115 All 1.099]  (22s)
+first_F1_PC5_C1            FM[F 1.38918 PC 1.84061 C 1.79964]  MAE[F 0.943 PC 1.099 C 1.110 All 1.094]  (27s)
+wregr_F1_PC10_C1           FM[F 1.38964 PC 1.87090 C 1.85072]  MAE[F 0.949 PC 1.096 C 1.113 All 1.096]  (32s)
+first_F1_PC10_C1           FM[F 1.44565 PC 1.86657 C 1.81443]  MAE[F 0.956 PC 1.114 C 1.117 All 1.102]  (39s)
+wregr_F1_PC20_C1           FM[F 1.45858 PC 1.88133 C 1.87842]  MAE[F 0.975 PC 1.094 C 1.114 All 1.099]  (43s)
+first_F1_PC20_C1           FM[F 1.49629 PC 1.87193 C 1.82822]  MAE[F 0.966 PC 1.107 C 1.116 All 1.102]  (48s)
+
+已保存 C:\Users\asus\WorkBuddy\论文解析复现\LEFS\experiments\20261021_stage6\runs\first_policy.json

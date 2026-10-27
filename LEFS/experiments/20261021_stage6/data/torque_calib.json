@@ -1,0 +1,27 @@
+{
+  "k_nm_per_count": 0.001,
+  "unit": "N·m per count（0x56 寄存器值）",
+  "status": "CONFIRMED_NO_CALIBRATION_NEEDED",
+  "note": "仪表 Sd=3 时 raw/1000 直接就是 N·m，不需要任何 k 标定。传感器读数为真值。",
+  "verification": {
+    "date": "2026-10-27T10:23",
+    "setup": "传感器轴水平，轴一侧挂 500 g 水瓶，力臂 120.0 mm",
+    "tau_theoretical_nm": 0.5884,
+    "reading_counts": 593.5,
+    "reading_nm": 0.5935,
+    "deviation_pct": 0.87,
+    "conclusion": "仪表读数即真值，偏差 +0.87%（含零点约 5 counts 与手放误差）"
+  },
+  "deprecated": {
+    "k_nm_per_count": 0.02774,
+    "method_used": "水瓶 0.525kg × 力臂 125/100/75/50mm 四点最小二乘（R²=0.9955）",
+    "why_wrong": "标定时力臂未真正作用于扭矩（挂法有误），导致 k 被高估",
+    "overestimate_factor": 27.98,
+    "action": "所有历史 sensor_*.jsonl 的 tau 已用 raw × 0.001 重算，原文件备份在 runs/_old_k/"
+  },
+  "typical_zero_count": 5,
+  "quantization_nm": 0.001,
+  "full_scale_nm": 5.0,
+  "counts_per_5Nm": 5000,
+  "updated": "2026-10-27T10:26"
+}

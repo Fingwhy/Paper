@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>基于电感传感器的新型六轴力/力矩传感器</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global', scale: 1.0 },
+  options: { enableMenu: false }
+};
+</script>
+<script src="assets/tex-svg.js" id="MathJax-script"></script>
+<style>
+@page { size: A4; margin: 20mm 18mm 18mm 18mm; }
+html { -webkit-print-color-adjust: exact; }
+body { font-family: "Noto Serif SC","Source Han Serif SC","SimSun",serif; font-size: 10.4pt; line-height: 1.82; color:#111; margin:0; text-align: justify; }
+h1 { font-family:"Noto Sans SC","Microsoft YaHei",sans-serif; font-size: 19pt; line-height:1.42; text-align:center; margin: 0 0 3mm 0; font-weight:700; }
+h1 .en { display:block; font-size:11pt; font-weight:400; color:#333; margin-top:3mm; line-height:1.4; }
+h2 { font-family:"Noto Sans SC","Microsoft YaHei",sans-serif; font-size: 13.2pt; margin: 7mm 0 2.4mm 0; font-weight:700; page-break-after: avoid; border-left: 3.5px solid #2b5c8a; padding-left: 6px; }
+h3 { font-family:"Noto Sans SC","Microsoft YaHei",sans-serif; font-size: 11.2pt; margin: 4.5mm 0 1.6mm 0; font-weight:700; page-break-after: avoid; }
+p { margin: 0 0 2.2mm 0; text-indent: 2em; }
+p.noindent { text-indent: 0; }
+.meta { text-align:center; font-size:9.6pt; line-height:1.6; color:#222; margin-bottom:4mm; }
+.meta .au { font-size:10pt; }
+.meta .aff { font-size:9pt; color:#333; }
+.note { border:1px solid #c9d6e2; background:#f4f8fc; padding:3mm 4mm; font-size:8.8pt; line-height:1.6; margin:0 0 6mm 0; color:#24405c; text-indent:0; }
+.note b { color:#12324e; }
+.abs { font-size:9.8pt; line-height:1.75; background:#fafafa; border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:3mm 0; margin-bottom:4mm; }
+.abs p { text-indent:0; }
+.abs .lab { font-family:"Noto Sans SC",sans-serif; font-weight:700; }
+.kw { font-size:9.6pt; text-indent:0; margin-bottom:5mm; }
+figure { margin: 4mm 0 4.5mm 0; text-align:center; page-break-inside: avoid; }
+figure img { display:block; margin:0 auto; }
+figcaption { font-size:8.8pt; line-height:1.6; text-align:justify; color:#222; margin-top:2mm; text-indent:0; }
+figcaption b { font-family:"Noto Sans SC",sans-serif; }
+.eqrow { display:flex; align-items:center; margin: 3mm 0 3.2mm 0; page-break-inside: avoid; }
+.eqbody { flex:1; text-align:center; }
+.eqnum { width:14mm; text-align:right; font-size:10pt; }
+table { border-collapse: collapse; margin: 1.5mm auto 2mm auto; font-size: 8.6pt; page-break-inside: auto; }
+tr { page-break-inside: avoid; }
+thead { display: table-header-group; }
+table caption { caption-side: top; font-size:8.8pt; text-align:justify; line-height:1.6; margin-bottom:1.5mm; color:#222; }
+th, td { border-top: 0.6px solid #666; border-bottom: 0.6px solid #666; padding: 1.1mm 2.2mm; text-align:center; vertical-align:middle; }
+thead th { border-bottom: 1.2px solid #333; }
+td.l, th.l { text-align:left; }
+.tcap { font-size:8.8pt; line-height:1.6; text-align:justify; margin: 4mm 0 0 0; color:#222; text-indent:0; page-break-after: avoid; }
+ul, ol { margin: 1mm 0 2.4mm 0; padding-left: 7mm; }
+li { margin-bottom: 1.6mm; text-align: justify; }
+.refs p { text-indent:-1.6em; padding-left:1.6em; font-size:8.4pt; line-height:1.55; margin-bottom:1.1mm; text-align:left; }
+.pb { page-break-before: always; }
+table.keep { page-break-inside: avoid; }
+.sechd { font-family:"Noto Sans SC",sans-serif; }
+</style>
+</head>
+<body>
+
+<h1>基于电感传感器的新型六轴力/力矩传感器
+<span class="en">A Novel 6-axis Force/Torque Sensor Using Inductance Sensors</span>
+</h1>
+
+<div class="meta">
+<div class="au">Hyun-Bin Kim&nbsp;&nbsp;&nbsp;&nbsp;Kyung-Soo Kim</div>
+<div class="aff" style="margin-top:2mm">韩国科学技术院（KAIST）机械工程系，机电、系统与控制实验室<br>大田市大鹤路 291 号，韩国&nbsp;&nbsp;|&nbsp;&nbsp;arXiv:2505.09069v1</div>
+</div>
+
+<div class="note">
+<b>译者说明</b>：本文件是 arXiv:2505.09069v1（<i>A Novel 6-axis Force/Torque Sensor Using Inductance Sensors</i>）的中文译文，供阅读与技术参考。正文、图注、表头与表格均按原文逐段翻译，<b>插图取自原文，公式按原文 LaTeX 重排，表格数值逐一转录、未做改动</b>；参考文献保留英文原貌以便检索。公式编号、图号、表号与原文一致。学术引用请以英文原文为准。
+</div>
+
+<div class="abs">
+<p><span class="lab">摘要：</span>本文提出一种基于电感传感技术的新型六轴力/力矩（F/T）传感器。与需要直接接触与外部放大的传统应变片式传感器不同，所提传感器利用非接触式电感测量，通过导电靶标的位移来估计力。将基于 CAN-FD 的信号处理模块直接集成在 PCB 上，实现了紧凑的全集成架构，从而无需外部数据采集（DAQ）系统即可完成最高 4 kHz 的高速数据采集。传感机理通过有理函数拟合方法进行建模与标定，在均方根误差（RMSE）、决定系数（<span class="sechd">R</span><sup>2</sup>）与线性度误差方面均优于其他非线性模型。静态与重复性实验验证了传感器的精度：分辨率达到 0.03 N，量化级超过 55,000 步，优于商用传感器。该传感器还表现出低串扰、高灵敏度与良好的噪声特性。其性能与结构使其适用于精密机器人应用，尤其在强调紧凑性、非接触工作与集成化处理的场景中。</p>
+</div>
+
+<p class="kw"><b>索引词</b>——力/力矩传感器，电感传感器，非接触测量</p>
+
+<h2>I&nbsp;&nbsp;引言</h2>
+
+<p>近年来，协作机器人（co-bots）、四足机器人与仿人机器人等各类机器人领域发展迅速 [1]–[6]。其中，协作机器人尤其需要精确的力控制，以确保与人操作者之间安全、可靠的交互，这使得六轴力/力矩（F/T）传感器的需求急剧增长。目前，市面上可获得的六轴传感器多数基于应变片技术，该技术因可靠性久经验证、适用面广而被广泛采用。然而，应变片式传感器 [7]–[9] 本身受制于高昂的生产成本与有限的耐久性。这类传感器通常以直接接触方式工作，用硅胶等黏结剂把应变片粘贴到弹性体基板上。这种结构在反复加载与外部冲击下易于劣化，其长期可靠性与耐久性因而受到质疑。此外，这类传感器往往需要专用的数据采集（DAQ）设备。因此，当使用多个传感器时，也需要多台 DAQ 单元，这对多关节机器人等复杂机器人系统的研制构成实际制约。</p>
+
+<p>为克服上述成本与鲁棒性方面的局限，用于 F/T 测量的非接触传感技术日益受到关注。一个代表性例子是电容式传感方法，它通过监测电极与接地板之间电容的变化来间接估计所施加的力 [10]–[12]。电容式传感器以低成本与结构简单见长，适用于机器人手以及小型手术 F/T 传感器等应用 [13]、[14]。其紧凑的外形与设计灵活性进一步增强了它在嵌入式机器人系统中的适用性。</p>
+
+<p>此外，光学传感技术也得到了广泛研究 [15]–[17]，包括用光电耦合器测量距离 [18]–[20]，以及用光纤布拉格光栅（FBG）传感器检测应变 [21]。基于光电耦合器的系统在小型化与电路简洁性方面具有优势，可减少元件数量并降低制造成本。相反，基于 FBG 的传感器精度与灵敏度极高，但需要专用的光学换能器与分析设备，这增加了系统的体积与复杂度。而且，与电容式方法相比，光学传感器通常更易受环境温度变化影响，因而需要额外的补偿机制 [22]。</p>
+
+<p>这些非接触技术各有独特优势，但在成本效益、耐久性、紧凑集成与温度稳定性方面仍面临挑战。为此，本研究提出一种利用电感变化进行力检测的新型六轴 F/T 传感器。受金属探测器工作原理启发，所提传感器利用电感的变化——由磁场中附近金属构件位移引起（磁场由线圈产生）——来精确推断力。电感传感方式对机械冲击有较强的抵抗能力，在温度变化下性能稳定，并具有非接触工作的优点。就温度敏感性而言，电容式传感器因介电常数强烈依赖温度而受到显著影响；相比之下，尽管电感式传感器（尤其在磁性材料中）的磁导率会随温度变化，但这种变化通常更小、更稳定，因而温度敏感性相对更低。</p>
+
+<p>本文系统地阐述所提电感式传感器的设计方法、制造工艺、性能评估，以及与现有商用替代方案的对比分析。</p>
+
+<h3>I-A&nbsp;&nbsp;主要贡献</h3>
+
+<p>本研究的关键贡献概括如下：</p>
+<ul>
+<li><b>提出非接触式电感传感方法</b>：提出一种基于电感变化的新测量原理，以克服传统应变片式与电容式传感器的局限。该方法同时实现成本效益与耐久性提升，并对环境扰动具有更好的抵抗力。</li>
+<li><b>全集成印制电路板（PCB）传感器架构</b>：传感器采用纯 PCB 结构设计，无需复杂的机械装配或额外的分立元件。这显著简化了制造工艺，并提升了批量生产的一致性与可靠性。</li>
+<li><b>高分辨率力检测性能</b>：通过对线圈电感进行精确建模与标定，所提传感器分辨率达到传统应变片式传感器的两倍以上，约为 0.03 N。实验验证确认了其在精度敏感的机器人与工业任务中的适用性。</li>
+<li><b>板载信号处理的紧凑集成</b>：与传统依赖外部信号处理单元的传感器不同，本设计把基于 CAN 的信号处理模块直接集成在 PCB 上。这种紧凑集成消除了对外部 DAQ 硬件的需求，从而降低布线复杂度，并提升系统的整体灵活性与可部署性。</li>
+</ul>
+
+<h2>II&nbsp;&nbsp;传感器设计</h2>
+
+<h3>II-A&nbsp;&nbsp;工作原理</h3>
+
+<figure>
+<img src="raw/img/Inductanceprinciplee.png" style="width:15.4cm">
+<figcaption><b>图 1：</b>所提传感器的原理。(a) 带导电靶标的电感数字转换器；(b) 相对电感与线圈—导电靶标距离的关系。</figcaption>
+</figure>
+
+<p>所提传感器的工作原理本质上与金属探测器相同。如图 1(a) 所示，传感器测量由电容与线圈构成的系统的谐振频率，谐振频率为 \(f_{0}=1/(2\pi\sqrt{LC})\)。当金属物体接近电感附近时，周围磁场受到扰动，产生涡流损耗，电感 \(L\) 因而减小。电感数字转换器（LDC）以高精度检测这一频率变化，并将测量结果数字化后输出。如图 1(b) 所示，当线圈与金属物体之间的距离进入相对于线圈直径的某一区间时，相对电感出现明显变化。这一原理使得估计线圈与金属物体之间的距离成为可能。利用该现象：当外力作用于弹性体、使其产生微小变形时，由此引起的距离变化可被检测出来，随后反算即可估计所施加的力。</p>
+
+<div class="eqrow"><div class="eqbody">\[ D_{\text{in}}=D_{\text{out}}-(2N+1)s-(2N-1)w \]</div><div class="eqnum">(1)</div></div>
+
+<p>其中 \(D_{\text{in}}\) 表示线圈内径，\(D_{\text{out}}\) 表示外径；\(N\) 为匝数，\(s\) 为相邻走线间距，\(w\) 为单条走线宽度。</p>
+
+<div class="eqrow"><div class="eqbody">\[ D_{\text{avg}}=\left(1+\frac{4}{\pi}\left(\frac{d_{L}}{D_{\text{out}}}-1\right)\right)\cdot\frac{D_{\text{in}}+D_{\text{out}}}{2} \]</div><div class="eqnum">(2)</div></div>
+
+<p>平均直径 \(D_{\text{avg}}\) 由上式求得，其中 \(d_{L}\) 为在最外层走线中心处测得的直径。这里没有采用简单的算术平均，而是引入修正因子 \(\left(1+\frac{4}{\pi}\left(\frac{d_{L}}{D_{\text{out}}}-1\right)\right)\)，以计入线圈绕组的物理分布。</p>
+
+<div class="eqrow"><div class="eqbody">\[ \alpha=\frac{D_{\text{out}}-D_{\text{in}}}{D_{\text{out}}+D_{\text{in}}} \]</div><div class="eqnum">(3)</div></div>
+
+<p>几何参数 \(\alpha\) 量化线圈厚度与其整体尺寸之比。该参数反映线圈绕制的厚实程度，并影响电感计算。</p>
+
+<div class="eqrow"><div class="eqbody">\[ L_{\text{layer}}=\frac{\mu_{0}}{2}\cdot N^{2}\cdot D_{\text{avg}}\cdot\left[\ln\left(\frac{2.46}{\alpha}\right)+0.2\alpha^{2}\right] \]</div><div class="eqnum">(4)</div></div>
+
+<p>由于 PCB 通常由多层构成，需计算单层的自感 \(L_{\text{layer}}\)。它由真空磁导率 \(\mu_{0}\)、匝数 \(N\) 与平均直径 \(D_{\text{avg}}\) 决定；几何参数 \(\alpha\) 通过对数项与多项式项的调整引入，以更准确地反映线圈几何。</p>
+
+<div class="eqrow"><div class="eqbody">\[ k(h)=\frac{1}{0.184h^{3}-0.525h^{2}+1.038h+1.001} \]</div><div class="eqnum">(5)</div></div>
+
+<p>其中 \(h\) 表示层间的归一化距离。耦合因子 \(k(h)\) 表征相邻层之间的磁耦合强度，是计算不同层间互感的关键。</p>
+
+<div class="eqrow"><div class="eqbody">\[ L_{\text{total}}=\left(2\sum_{i=1}^{M-1}k_{i}+M\right)\cdot L_{\text{layer}} \]</div><div class="eqnum">(6)</div></div>
+
+<p>无金属靶标时的总电感 \(L_{\text{total}}\) 由自感与互感的贡献合并得到。\(M\) 表示层数，其中 \(M\cdot L_{\text{layer}}\) 对应自感部分，求和项则对应层间耦合。</p>
+
+<div class="eqrow"><div class="eqbody">\[ f_{\text{res}}=\frac{1}{2\pi\sqrt{L_{\text{total}}(C+C_{\text{par}})}} \]</div><div class="eqnum">(7)</div></div>
+
+<p>无金属靶标时，LC 回路的谐振频率 \(f_{\text{res}}\) 由总电感 \(L_{\text{total}}\)、电容 \(C\) 与寄生电容 \(C_{\text{par}}\) 共同计算。本研究中依据电路布局假设寄生电容为 4 pF。</p>
+
+<div class="eqrow"><div class="eqbody">\[ \Delta L=L_{\text{total}}-L^{\prime}=L_{\text{layer}}\cdot\left[\left(2\sum k_{i}^{\text{target}}+M\right)-\left(2\sum k_{i}+M\right)\right] \]</div><div class="eqnum">(8)</div></div>
+
+<p>当导电靶标与线圈相互作用时，电感减小。靶标的接近改变了层间耦合系数 \(k_{i}^{\text{target}}\)，导致总电感变化 \(\Delta L\)。该变化可与作用于弹性体的外力建立关联 [23]–[25]。</p>
+
+<p>LDC 通过测量谐振频率 \(f_{\text{res}}^{\prime}=1/\left(2\pi\sqrt{L_{\text{total}}^{\prime}(C+C_{\text{par}})}\right)\) 来检测电感的变化。由于 LDC 所测值与频率成反比，其原始数字输出实际上与 \(\sqrt{L}\) 成正比。</p>
+
+<h3>II-B&nbsp;&nbsp;弹性体与印制电路板设计</h3>
+
+<figure>
+<img src="raw/img/pcbdesign.png" style="width:10.6cm">
+<figcaption><b>图 2：</b>弹性体与印制电路板设计。(a) 弹性体与 T 型梁结构；(b) 含垂直线圈与水平线圈的传感 PCB；(c) 信号处理 PCB 设计。</figcaption>
+</figure>
+
+<figure>
+<img src="raw/img/targetinductance.png" style="width:10.2cm">
+<figcaption><b>图 3：</b>线圈电感与导电靶标距离的计算曲线。(a) 水平线圈；(b) 垂直线圈。</figcaption>
+</figure>
+
+<p>弹性体结构采用广泛使用的 T 型梁设计，这是应变片式六轴 F/T 传感器中最常见的构型之一。如图 2(a) 所示，弹性体内布置三根 T 型梁，彼此间隔 120°。相应的几何参数 \(l_{1}\)、\(l_{2}\)、\(b_{1}\)、\(b_{2}\) 与 \(h\) 的定义及取值见表 I。该结构设计可承受至少 800 N 的力与 27 N·m 的力矩。</p>
+
+<table class="keep">
+<caption><b>表 I：</b>T 型梁参数取值</caption>
+<thead><tr><th>变量</th><th>\(l_{1}\)</th><th>\(l_{2}\)</th><th>\(b_{1}\)</th><th>\(b_{2}\)</th><th>\(h\)</th></tr></thead>
+<tbody><tr><td class="l">数值（mm）</td><td>21.5</td><td>31.7</td><td>4</td><td>0.5</td><td>7</td></tr></tbody>
+</table>
+
+<p>所提传感器的传感 PCB 如图 2(b) 所示，包含两类不同的线圈：垂直线圈与水平线圈。垂直线圈主要用于测量力矩分量 \(T_{x}\)、\(T_{y}\) 与轴向力 \(F_{z}\)；水平线圈则用于检测横向力 \(F_{x}\)、\(F_{y}\) 与扭转力矩 \(T_{z}\)。</p>
+
+<p>垂直线圈采用 18 匝、分布于三层。每条走线宽 4 mil，线间距 4 mil，铜厚 1 oz，线圈直径 10 mm。第一层与第二层之间的间距为 59 mil，第二层与第三层之间为 5.9 mil。</p>
+
+<p>水平线圈由 10 匝构成，分布于四层，整体高度 4.7 mm，宽度 13 mm。第三层与第四层之间的间距同样设为 5.9 mil。</p>
+
+<p>图 2(c) 给出信号处理印制电路板，其上集成德州仪器（Texas Instruments）的 LDC1614 芯片。板上集成高性能 STM32H750 微控制器，可通过 CAN 协议直接通信；系统采用支持最高 5 Mbps 数据速率的 CAN-FD 完成高速数据传输。</p>
+
+<p>为支撑高频采样，每个传感线圈连接到独立的 LDC1614 通道，从而实现并行、快速的电感测量。系统以 5 V 输入电压工作，对外提供四个连接端：电源输入、地、CAN High 与 CAN Low。该架构使传感器模块紧凑且全集成，非常适合部署于嵌入式机器人系统。</p>
+
+<h3>II-C&nbsp;&nbsp;传感器制造</h3>
+
+<figure>
+<img src="raw/img/Design.png" style="width:15.8cm">
+<figcaption><b>图 4：</b>所提传感器的组成。五个金属件：顶部件、弹性体、金属板、支撑件与底部件；两块 PCB：传感 PCB 与信号处理 PCB。</figcaption>
+</figure>
+
+<p>所提传感器由五个机加工金属件与两块 PCB 组成。所有金属件均使用 AL7075-T6 加工，这种铝合金相比其他牌号铝材具有较低的滞回。如图 4 所示，装配过程按自下而上的顺序进行。</p>
+
+<p>传感器底座处，信号处理 PCB 被封装在底部件内部。底座上方安装支撑结构，用于把传感 PCB 固定在位。传感 PCB 之上放置一块金属板，它作为线圈测距的电感靶标。该金属板与弹性体机械耦合，而弹性体由螺栓夹紧在支撑件与底部件之间，从而保证结构完整性。</p>
+
+<p>顶部件是外力施加到传感器上的接口。虽然铜因电导率更高而具有更好的灵敏度，但金属板仍选用铝，以便在保持足够性能的同时，确保整机的材料一致性与可制造性。</p>
+
+<table class="keep">
+<caption><b>表 II：</b>原型传感器的机械规格</caption>
+<thead><tr><th class="l">项目</th><th>数值</th><th>单位</th></tr></thead>
+<tbody>
+<tr><td class="l">直径</td><td>85</td><td>mm</td></tr>
+<tr><td class="l">高度</td><td>36</td><td>mm</td></tr>
+<tr><td class="l">材料</td><td>AL7075-T6</td><td>—</td></tr>
+<tr><td class="l">输入力量程（\(F_{x}\) 与 \(F_{y}\)）</td><td>\(\pm\)890</td><td>N</td></tr>
+<tr><td class="l">输入力量程（\(F_{z}\)）</td><td>\(\pm\)1,435</td><td>N</td></tr>
+<tr><td class="l">输入力矩量程（\(T_{x}\)、\(T_{y}\)）</td><td>\(\pm\)27</td><td>N·m</td></tr>
+<tr><td class="l">输入力矩量程（\(T_{z}\)）</td><td>\(\pm\)45</td><td>N·m</td></tr>
+<tr><td class="l">采样频率</td><td>4</td><td>kHz</td></tr>
+<tr><td class="l">重量</td><td>280</td><td>g</td></tr>
+</tbody>
+</table>
+
+<p>表 II 汇总了所提传感器的机械规格。传感器直径 85 mm、高 36 mm，工作采样率约为 4 kHz，这与 LDC1614 芯片所支持的最高速率（4.08 kHz）相对应。含 PCB 在内，传感器总重 280 g。</p>
+
+<p>同样如表 II 所示，传感器设计为可测量 890 N 至 1435 N 范围的力，以及 27 N·m 至 45 N·m 范围的力矩。由于 T 型梁结构的对称配置，传感器沿 \(x\) 轴与 \(y\) 轴的力响应几乎相同；绕 \(x\) 轴与 \(y\) 轴的力矩响应也表现出相似特性，从而保证平面加载条件下的一致性能。</p>
+
+<h2>III&nbsp;&nbsp;传感器评估</h2>
+
+<p>所提传感器的性能通过与一款已标定的商用六轴 F/T 传感器——ATI Industrial Automation 的 MINI-85 SI-1900-80 型号——进行对比来评估。评估之前，需要先完成标定流程。</p>
+
+<h3>III-A&nbsp;&nbsp;标定</h3>
+
+<figure>
+<img src="raw/img/calibration.png" style="width:10.4cm">
+<figcaption><b>图 5：</b>标定方法：通过连接夹具沿 \(z\) 轴直接对接；用握柄施加 F/T 进行标定。</figcaption>
+</figure>
+
+<figure>
+<img src="raw/img/Fittingmethod.png" style="width:12.0cm">
+<figcaption><b>图 6：</b>各方法的拟合结果：(a) 多项式拟合；(b) Sigmoid 模型拟合；(c) 高斯混合模型拟合；(d) 有理函数拟合。</figcaption>
+</figure>
+
+<p>标定采用文献中广泛使用的方法，即通过直接施力把已知输入与传感器输出关联起来。如图 5 所示，所提传感器经由自行设计的连接夹具与参考传感器刚性连接，外力用握柄手动施加。</p>
+
+<p>所提传感器中的每个传感线圈经电感数字转换器产生数字输出，该输出反映电感值的平方根，即 \(\sqrt{L}\)。由于电感 \(L\) 与传感线圈到靶标金属板之间的距离呈非线性关系，构造传统的线性标定矩阵会降低精度。因此，需要一种更稳健的非线性标定方法，把传感器输出准确映射到对应的 F/T。</p>
+
+<div class="eqrow"><div class="eqbody">\[ F=\mathbf{A}y,\qquad y=\begin{bmatrix}y_{1}\\ y_{2}\\ y_{3}\\ y_{4}\\ y_{5}\\ y_{6}\\ 1\end{bmatrix} \]</div><div class="eqnum">(9)</div></div>
+
+<div class="eqrow"><div class="eqbody">\[ y=f\left(x_{\text{raw}}\right) \]</div><div class="eqnum">(10)</div></div>
+
+<p>这里 \(F\) 表示 F/T 向量，\(y\) 表示变形量；\(x_{\text{raw}}\) 指 LDC1614 的原始数据输出，函数 \(f\) 描述 \(x_{\text{raw}}\) 与 \(y\) 之间的关系。由于 LDC1614 的输出与频率成正比，因而也与 \(\sqrt{L}\) 成正比。矩阵 \(\mathbf{A}\) 是一个 \(6\times 7\) 的标定矩阵，把变形映射为对应的 F/T 值。</p>
+
+<p>由于 LDC1614 测量的是电感的平方根 \(\sqrt{L}\)，标定中使用的是 \(\sqrt{L}\) 与靶标距离之间的关系。图 6 比较了多项式拟合、Sigmoid 模型拟合、高斯混合模型拟合与有理函数拟合的结果。每个模型包含 5 个或 6 个参数，各自的表达式给出如下。</p>
+
+<div class="eqrow"><div class="eqbody">\[ y=a_{4}x^{4}+a_{3}x^{3}+a_{2}x^{2}+a_{1}x+a_{0} \]</div><div class="eqnum">(11)</div></div>
+
+<p>其中 \(x\) 表示 \(\sqrt{L}\)，\(y\) 表示靶标距离 \(d\)。系数 \(a_{n}\) 对应第 \(n\) 阶多项式项。</p>
+
+<div class="eqrow"><div class="eqbody">\[ y=\frac{b_{1}}{1+\exp\left(-b_{2}(x-b_{3})\right)}+\frac{b_{4}}{1+\exp\left(-b_{5}(x-b_{6})\right)} \]</div><div class="eqnum">(12)</div></div>
+
+<p>类似地，在 Sigmoid 模型中，\(x\) 表示 \(\sqrt{L}\)，\(y\) 表示靶标距离 \(d\)。使用 Sigmoid 函数的拟合结果见图 6(b)，其均方根误差（RMSE）为 0.131。各参数 \(b_{n}\) 表示 Sigmoid 模型的第 \(n\) 个系数。</p>
+
+<div class="eqrow"><div class="eqbody">\[ y=c_{1}\exp\left(-\frac{(x-c_{2})^{2}}{2c_{3}^{2}}\right)+c_{4}\exp\left(-\frac{(x-c_{5})^{2}}{2c_{6}^{2}}\right) \]</div><div class="eqnum">(13)</div></div>
+
+<p>同样地，另一种常用的非线性模型拟合技术——高斯混合模型——表述如下。系数 \(c_{n}\) 表示高斯混合模型的参数，共 6 个。如图 6(c) 所示，该模型得到的 RMSE 为 0.007，相比前两种模型相对更低。</p>
+
+<div class="eqrow"><div class="eqbody">\[ y=\frac{d_{1}x^{2}+d_{2}x+d_{3}}{d_{4}x^{2}+d_{5}x+1} \]</div><div class="eqnum">(14)</div></div>
+
+<p>最后给出有理函数拟合模型。系数 \(d_{n}\) 表示有理函数的参数。如图 6(d) 所示，有理函数得到的 RMSE 为 0.001，显著低于其他模型。这表明 \(\sqrt{L}\) 的结构特性特别适合有理函数拟合，因此采用该模型进行标定。为同时确定有理函数系数与标定矩阵，采用了基于优化的方法，具体使用 MATLAB 的 <span class="sechd">lsqnonlin</span> 函数完成标定流程。</p>
+
+<table class="keep">
+<caption><b>表 III：</b>各拟合函数的比较</caption>
+<thead><tr><th class="l">模型</th><th>参数个数</th><th>RMSE</th><th>\(R^{2}\)</th><th>线性度误差（%）</th></tr></thead>
+<tbody>
+<tr><td class="l">多项式函数</td><td>5</td><td>0.0488</td><td>0.9968</td><td>4.73</td></tr>
+<tr><td class="l">Sigmoid 函数</td><td>6</td><td>0.1307</td><td>0.9774</td><td>11.30</td></tr>
+<tr><td class="l">高斯模型</td><td>6</td><td>0.1404</td><td>0.9739</td><td>12.04</td></tr>
+<tr><td class="l">有理函数</td><td>5</td><td>0.0009</td><td>1.0000</td><td>0.11</td></tr>
+</tbody>
+</table>
+
+<p>为定量评价各拟合模型，计算了三项关键指标：RMSE、决定系数（\(R^{2}\)）与线性度误差（最大偏差占满量程的百分比）。表 III 汇总了结果。</p>
+
+<p>在对比的模型中，有理函数取得了最低的 RMSE（0.0009）、最高的 \(R^{2}\)（1.0000）与最小的线性度误差（0.11%）。值得注意的是，它仅需 5 个参数，而 Sigmoid 函数等其他非线性模型使用了 6 个。这些结果表明，有理模型不仅拟合最优，还具有更好的泛化性与稳健性。</p>
+
+<h3>III-B&nbsp;&nbsp;评估</h3>
+
+<figure>
+<img src="raw/img/static1.png" style="width:16.6cm">
+<figcaption><b>图 7：</b>各轴 F/T 的静态时间响应评估：(a) x 轴力；(b) y 轴力；(c) z 轴力；(d) x 轴力矩；(e) y 轴力矩；(f) z 轴力矩。</figcaption>
+</figure>
+
+<p>传感器性能采用静态力测量方法评估，这也是此前研究常用的做法 [18]。用两项指标量化性能：时间响应的 RMSE 与百分比误差。百分比误差按满量程误差计算，定义为所提传感器与参考传感器之差，除以所提传感器的满量程测量范围。</p>
+
+<p>每个轴的测量持续 100 秒。在此期间沿各轴多次重复施力，因而在静态评估之外同时起到了重复性测试的作用。</p>
+
+<p>图 7 给出全部六个轴的结果，可见所提传感器在各方向上与参考传感器高度吻合。两个传感器均以 1 kHz 采样，参考传感器采用了 838 Hz 低通滤波。实验中，参考传感器通过以太网 UDP 通信，所提传感器则使用 CAN 通信；所有实验均基于 Simulink Desktop Real-Time 完成。值得注意的是，所提传感器在测量中未施加任何低通滤波。</p>
+
+<table>
+<caption><b>表 IV：</b>满量程误差与 RMSE 分析</caption>
+<thead>
+<tr><th rowspan="2" class="l">轴</th><th colspan="3">百分比误差（%）</th><th rowspan="2">RMS 误差<br>(N, N·m)</th></tr>
+<tr><th>均值</th><th>标准差</th><th>最大值</th></tr>
+</thead>
+<tbody>
+<tr><td class="l">\(F_{x}\)</td><td>0.0119</td><td>0.0154</td><td>0.151</td><td>0.310</td></tr>
+<tr><td class="l">\(F_{y}\)</td><td>0.0125</td><td>0.0161</td><td>0.0916</td><td>0.318</td></tr>
+<tr><td class="l">\(F_{z}\)</td><td>0.102</td><td>0.137</td><td>0.641</td><td>3.92</td></tr>
+<tr><td class="l">\(T_{x}\)</td><td>0.0346</td><td>0.0452</td><td>0.209</td><td>0.0244</td></tr>
+<tr><td class="l">\(T_{y}\)</td><td>0.0891</td><td>0.120</td><td>0.749</td><td>0.0648</td></tr>
+<tr><td class="l">\(T_{z}\)</td><td>0.00887</td><td>0.0110</td><td>0.0728</td><td>0.00989</td></tr>
+</tbody>
+</table>
+
+<p>表 IV 汇总了所提传感器的误差分析。力测量中观测到的最大百分比误差出现在 \(F_{z}\) 方向，为 0.64%；力矩测量中的最高误差出现在 \(M_{y}\) 方向，为 0.75%。由于多数商用六轴 F/T 传感器标称各轴满量程百分比误差约为 1%，所提传感器可认为已满足商用级系统的标准性能要求。</p>
+
+<p>此外，还进行了分辨率评估，以进一步考察所提传感器的性能。分辨率与两款广泛使用的商用传感器进行对比：一款是基于应变片、弹性体结构与本文类似的传感器（ATI Industrial Automation 的 MINI-85 [7]），另一款是 AIDIN ROBOTICS 开发的电容式传感器 [26]。</p>
+
+<p>为量化分辨率，对 MINI-85 与所提传感器分别计算 10 秒区间内各轴的标准差，再用所得标准差确定各轴的分辨率。详细结果汇总于表 V。</p>
+
+<table class="keep">
+<caption><b>表 V：</b>商用传感器与所提传感器的标准差比较</caption>
+<thead><tr><th class="l"></th><th>\(F_{x}\) 与 \(F_{y}\)</th><th>\(F_{z}\)</th><th>\(T_{x}\) 与 \(T_{y}\)</th><th>\(T_{z}\)</th></tr></thead>
+<tbody>
+<tr><td class="l">厂商 (A)</td><td>0.116</td><td>0.175</td><td>0.00570</td><td>0.00332</td></tr>
+<tr><td class="l">所提传感器</td><td>0.0120</td><td>0.0386</td><td>0.00151</td><td>0.000574</td></tr>
+</tbody>
+</table>
+
+<p>按此方法确定了所提传感器的分辨率，结果列于表 VI，分别以分辨率（单位 N 与 N·m）及相应的量化级数给出。</p>
+
+<table class="keep">
+<caption><b>表 VI：</b>商用传感器与所提传感器的分辨率比较</caption>
+<thead><tr><th class="l">分辨率</th><th>\(F_{x}\) 与 \(F_{y}\) (N)</th><th>\(F_{z}\) (N)</th><th>\(T_{x}\) 与 \(T_{y}\) (N·m)</th><th>\(T_{z}\) (N·m)</th></tr></thead>
+<tbody>
+<tr><td class="l">厂商 (A)</td><td>0.321</td><td>0.429</td><td>0.0134</td><td>0.00936</td></tr>
+<tr><td class="l">厂商 (B)</td><td>0.150</td><td>0.150</td><td>0.0150</td><td>0.0150</td></tr>
+<tr><td class="l">所提传感器</td><td>0.0347</td><td>0.0945</td><td>0.00365</td><td>0.00163</td></tr>
+<tr><td colspan="5" style="border-bottom:0.6px solid #666;padding-top:2mm"><b>量化级</b></td></tr>
+<tr><td class="l">厂商 (A)</td><td>11822</td><td>17733</td><td>11968</td><td>17097</td></tr>
+<tr><td class="l">厂商 (B)</td><td>4000</td><td>4000</td><td>3333</td><td>3333</td></tr>
+<tr><td class="l">所提传感器</td><td>51312</td><td>30370</td><td>14810</td><td>55351</td></tr>
+</tbody>
+</table>
+
+<p>如表 VI 所示，所提传感器对 \(x\)、\(y\) 轴力的分辨率约为 0.035 N，比参考传感器细约九倍。此外，\(T_{z}\) 力矩的分辨率低至 1.6 mN·m，说明力矩测量同样具有高灵敏度。</p>
+
+<p>量化级定义为满量程范围与分辨率之比，是衡量传感器能多细致地区分力或力矩输入的有效指标。所提传感器最高达到 55,351 个量化步，超过传统传感方法粒度（量化级数）的两倍以上。</p>
+
+<table class="keep">
+<caption><b>表 VII：</b>串扰百分比误差矩阵（%）</caption>
+<thead><tr><th class="l"></th><th>\(F_{x}\)</th><th>\(F_{y}\)</th><th>\(F_{z}\)</th><th>\(T_{x}\)</th><th>\(T_{y}\)</th><th>\(T_{z}\)</th></tr></thead>
+<tbody>
+<tr><td class="l">\(F_{x}\)</td><td>100.</td><td>0.193</td><td>0.152</td><td>0.0248</td><td>0.153</td><td>0.0279</td></tr>
+<tr><td class="l">\(F_{y}\)</td><td>0.0907</td><td>100.</td><td>0.0773</td><td>0.0642</td><td>0.00533</td><td>0.0102</td></tr>
+<tr><td class="l">\(F_{z}\)</td><td>0.236</td><td>0.128</td><td>100.</td><td>0.0161</td><td>0.0146</td><td>0.0345</td></tr>
+<tr><td class="l">\(T_{x}\)</td><td>0.175</td><td>0.301</td><td>0.195</td><td>100.</td><td>0.00125</td><td>0.150</td></tr>
+<tr><td class="l">\(T_{y}\)</td><td>0.596</td><td>0.719</td><td>0.385</td><td>0.152</td><td>100.</td><td>0.122</td></tr>
+<tr><td class="l">\(T_{z}\)</td><td>0.0654</td><td>0.201</td><td>0.0555</td><td>0.0457</td><td>0.00600</td><td>100.</td></tr>
+</tbody>
+</table>
+
+<p>串扰同样通过分别对单轴以及同时多轴施力来评估。串扰值以百分比表示，即基于表 II 所列传感器量程计算的满量程比值。例如，\(x\) 轴力的量程为 890 N，因此计算所用的满量程参考值为 1780 N。</p>
+
+<h2>IV&nbsp;&nbsp;讨论与结论</h2>
+
+<figure>
+<img src="raw/img/whak2.png" style="width:9.8cm">
+<figcaption><b>图 8：</b>用于评估的静态 F/T 响应放大图：(a) 沿 \(x\) 轴的力（\(F_{x}\)）；(b) 沿 \(y\) 轴的力（\(F_{y}\)）；(c) 绕 \(z\) 轴的力矩（\(M_{z}\)）。</figcaption>
+</figure>
+
+<p>本工作的主要贡献在于新颖的电感传感结构、机械集成与系统级验证。虽然采用了非线性拟合技术来提高标定精度，但本研究的重点并不在标定算法本身，而在于展示传感器的整体性能与工程适用性。</p>
+
+<p>所提出的标定流程通过大量静态与重复性实验得到验证，各轴结果一致，RMSE 与百分比误差均较低。这些结果表明，即使在未做显式噪声灵敏度分析的情况下，系统在预期的传感范围内仍能稳健工作。</p>
+
+<p>在评估的拟合模型中，有理函数仅用 5 个参数便取得了最低的 RMSE，而高斯混合模型与 Sigmoid 模型等其他模型使用了 6 个参数。这提示有理模型能为底层的非线性关系提供更高效、更可泛化的表达。因此，选择有理拟合的依据不仅是精度，还包括模型的简洁性与抗过拟合能力。</p>
+
+<p>图 8 给出了静态力响应的放大视图：图 8(a) 为 \(x\) 轴力，(b) 为 \(y\) 轴力，(c) 为 \(z\) 轴力矩。各图中红线代表所提传感器，黑线对应参考传感器。两者的对比显示，所提传感器的噪声水平明显更低。</p>
+
+<p>在性能方面，所提传感器具有更高的分辨率，其量化级最高可达商用传感器的四倍。多数商用传感器依赖外部 DAQ 单元；就应变片式系统而言，还需要惠斯通电桥与放大器来检测应变变化。这一放大过程本身会引入噪声，而要实现高分辨率通常需要大量滤波。</p>
+
+<p>相比之下，所提传感器直接测量电感变化，无需放大，这一结构优势天然带来更低的噪声。此外，系统支持约 4 kHz 的最高采样率，对动态测量已足够快。许多商用传感器的采样率在 200 Hz 左右，这说明所提传感器在数据采集速度方面同样具有优势。同时，得益于非接触测量原理，它相比传统接触式应变片传感器在抗冲击与长时间加载方面更为稳健。</p>
+
+<p>表 VIII 给出了所提传感器与其他研究型传感器及商用六轴力/力矩传感器之间的对比。所提传感器的精度优于磁式与压力式传感器，同时在所有对比系统中分辨率最高。此外，4 kHz 的采样率使其运行速度显著快于典型商用传感器。</p>
+
+<p>所提系统支持约 4 kHz 的最高采样率，这是 LDC1614 硬件规格所定义的上限。但在本研究的静态与对比实验中，为保证与参考传感器兼容并维持信号稳定性，实际采用了 1 kHz 的采样率。</p>
+
+<p>所提传感器基于电感传感，采用非接触测量方式，仅使用 6 个敏感元件，相对其他构型而言数量较少。采用光电耦合器或电容原理研制的传感器一般面向小型化进行优化。相反，应变片式传感器往往体积偏大，且测量六个自由度至少需要 12 个应变片。磁式与压力式传感器通常分辨率低、精度差。本系统紧凑的设计、非接触的工作方式与集成的高速信号处理单元，凸显了其在嵌入式机器人应用中的适用性。</p>
+
+<p>虽然所提传感器目前采用电感传感，其性能仍受制于尚未优化的参数，例如线圈匝数、层数以及与导电靶标的距离。这些因素构成本研究当前的局限。例如，负责测量 \(x\)、\(y\) 轴力与 \(z\) 轴力矩的水平传感线圈，目前分辨率高于测量 \(x\)、\(y\) 轴力矩与 \(z\) 轴力的垂直线圈。这一差异说明，进一步优化线圈匝数与靶标距离，有望提升所有测量轴的性能。</p>
+
+<p>作为未来工作，预期可通过优化线圈匝数、层配置以及与导电靶标的间距来提升性能。此外，将引入温度补偿，以进一步增强传感器在不同环境条件下的稳健性。同时，还需要进一步研究，以评估传感器在电磁干扰（EMI）与电磁兼容（EMC）环境下的稳健性。由于电感传感的本质，系统可能易受电磁扰动影响。因此，应考虑全面的稳定性测试以及在设计中引入屏蔽策略，以确保在此类条件下可靠工作。本文未包含对非线性拟合函数的正式灵敏度分析，但系统在各种测试条件下均表现出可靠性能；若标定方法进一步推广或应用于不同的传感器平台，更细致的噪声分析可作为未来探索的课题。</p>
+
+<table>
+<caption><b>表 VIII：</b>与其他 F/T 传感器的对比</caption>
+<thead><tr><th class="l">方案</th><th>精度（满量程误差 %）</th><th>采样率</th><th>分辨率</th><th>接触方式</th></tr></thead>
+<tbody>
+<tr><td class="l">本文方法</td><td>1.0</td><td>\(\sim\)4,000 Hz</td><td>15 bit，无需外部 DAQ</td><td>非接触</td></tr>
+<tr><td class="l">光学式 [18]</td><td>2.0</td><td>5,000 Hz</td><td>14 bit，无需外部 DAQ</td><td>非接触</td></tr>
+<tr><td class="l">电容式 [10]</td><td>4.1</td><td>200 Hz</td><td>11 bit，无需外部 DAQ</td><td>非接触</td></tr>
+<tr><td class="l">磁式 [27]</td><td>22.5</td><td>2 ms 延迟</td><td>低</td><td>非接触</td></tr>
+<tr><td class="l">压敏式 [17]</td><td>22.2</td><td>1,000 Hz</td><td>低</td><td>接触</td></tr>
+<tr><td class="l">RFT80-6A01（商用）[28]</td><td>3.0</td><td>1,000 Hz</td><td>13 bit，无需外部 DAQ</td><td>非接触</td></tr>
+<tr><td class="l">AFT200-KIT（商用）[26]</td><td>—</td><td>1,000 Hz</td><td>11 bit，无需外部 DAQ</td><td>非接触</td></tr>
+<tr><td class="l">SensOne-Serial（商用）[29]</td><td>2.0</td><td>800 Hz</td><td>11 bit，无需外部 DAQ</td><td>接触</td></tr>
+<tr><td class="l">MINI-85（商用）[7]</td><td>\(\sim\)2.0</td><td>7,000 Hz</td><td>13 bit，需 DAQ</td><td>接触</td></tr>
+<tr><td colspan="5" style="border-bottom:0.6px solid #666;padding-top:2mm"><b>续表 VIII</b></td></tr>
+<tr><td class="l">方案</td><td>重量</td><td>载荷能力</td><td>敏感元件数</td><td>传感方式</td></tr>
+<tr><td class="l">本文方法</td><td>280 g</td><td>2,870 N</td><td>6</td><td>电感传感器</td></tr>
+<tr><td class="l">光学式 [18]</td><td>79 g</td><td>3,700 N</td><td>6</td><td>光电耦合器</td></tr>
+<tr><td class="l">电容式 [10]</td><td>15 g</td><td>100 N</td><td>6</td><td>电容传感器</td></tr>
+<tr><td class="l">磁式 [27]</td><td>—</td><td>1,000 N</td><td>5（2 自由度）</td><td>磁性传感器</td></tr>
+<tr><td class="l">压敏式 [17]</td><td>—</td><td>\(\sim\)450 N</td><td>9（3 自由度）</td><td>压力传感器</td></tr>
+<tr><td class="l">RFT80-6A01（商用）[28]</td><td>226 g</td><td>800 N</td><td>6</td><td>电容传感器</td></tr>
+<tr><td class="l">AFT200-KIT（商用）[26]</td><td>236 g</td><td>400 N</td><td>6</td><td>电容传感器</td></tr>
+<tr><td class="l">SensOne-Serial（商用）[29]</td><td>235 g</td><td>2,400 N</td><td>12</td><td>应变片</td></tr>
+<tr><td class="l">MINI-85（商用）[7]</td><td>635 g</td><td>3,800 N</td><td>12</td><td>应变片</td></tr>
+</tbody>
+</table>
+
+<h2>参考文献</h2>
+
+<div class="refs">
+<p>[1] J. Di Carlo, P. M. Wensing, B. Katz, G. Bledt, and S. Kim, "Dynamic locomotion in the MIT Cheetah 3 through convex model-predictive control," in <i>2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</i>, pp. 1–9. IEEE, 2018.</p>
+<p>[2] S. Choi, G. Ji, J. Park, H. Kim, J. Mun, J. H. Lee, and J. Hwangbo, "Learning quadrupedal locomotion on deformable terrain," <i>Science Robotics</i>, vol. 8, no. 74, p. eade2256, 2023.</p>
+<p>[3] J. Kang, H. Kim, and K.-S. Kim, "VIEW: Visual-inertial external wrench estimator for legged robot," <i>IEEE Robotics and Automation Letters</i>, vol. 8, no. 12, pp. 8366–8373, 2023.</p>
+<p>[4] G. Valsecchi, R. Grandia, and M. Hutter, "Quadrupedal locomotion on uneven terrain with sensorized feet," <i>IEEE Robotics and Automation Letters</i>, vol. 5, no. 2, pp. 1548–1555, 2020.</p>
+<p>[5] Y. Liu, S. Liu, B. Chen, Z.-X. Yang, and S. Xu, "Fusion-perception-to-action transformer: Enhancing robotic manipulation with 3D visual fusion attention and proprioception," <i>IEEE Transactions on Robotics</i>, 2025.</p>
+<p>[6] J. Chen, Z.-Y. Dong, S. Shi, Y. Wei, X. Yu, and L. Ou, "Adaptive-constrained admittance control for physical human–robot interaction," <i>Transactions of the Institute of Measurement and Control</i>, p. 01423312241298351, 2025.</p>
+<p>[7] "ATI Industrial Automation," https://www.ati-ia.com/, accessed: 2025-05-14.</p>
+<p>[8] J.-H. Kim, "Multi-axis force-torque sensors for measuring zero-moment point in humanoid robots: A review," <i>IEEE Sensors Journal</i>, vol. 20, no. 3, pp. 1126–1141, 2019.</p>
+<p>[9] P. Billeschou, C. Albertsen, J. C. Larsen, and P. Manoonpong, "A low-cost, compact, sealed, three-axis force/torque sensor for walking robots," <i>IEEE Sensors Journal</i>, vol. 21, no. 7, pp. 8916–8926, 2021.</p>
+<p>[10] U. Kim, D.-H. Lee, Y. B. Kim, D.-Y. Seok, and H. R. Choi, "A novel six-axis force/torque sensor for robotic applications," <i>IEEE/ASME Transactions on Mechatronics</i>, vol. 22, no. 3, pp. 1381–1391, 2016.</p>
+<p>[11] M. Pu, Q. Luo, Q. Liang, and J. Zhang, "Modeling for elastomer displacement analysis of capacitive six-axis force/torque sensor," <i>IEEE Sensors Journal</i>, vol. 22, no. 2, pp. 1356–1365, 2021.</p>
+<p>[12] Q. Luo, Q. Liang, J. Zhang, R. Zhao, Z. Ai, and M. Pu, "Parameters optimization for a capacitive six-axis force/torque sensor by using analytical method," <i>IEEE Sensors Journal</i>, vol. 22, no. 22, pp. 21735–21744, 2022.</p>
+<p>[13] U. Kim, Y. B. Kim, D.-Y. Seok, J. So, and H. R. Choi, "A surgical palpation probe with 6-axis force/torque sensing capability for minimally invasive surgery," <i>IEEE Transactions on Industrial Electronics</i>, vol. 65, no. 3, pp. 2755–2765, 2017.</p>
+<p>[14] U. Kim, Y. B. Kim, J. So, D.-Y. Seok, and H. R. Choi, "Sensorized surgical forceps for robotic-assisted minimally invasive surgery," <i>IEEE Transactions on Industrial Electronics</i>, vol. 65, no. 12, pp. 9604–9613, 2018.</p>
+<p>[15] G. Palli and S. Pirozzi, "An optical torque sensor for robotic applications," <i>International Journal of Optomechatronics</i>, vol. 7, no. 4, pp. 263–282, 2013.</p>
+<p>[16] O. Al-Mai, M. Ahmadi, and J. Albert, "Design, development and calibration of a lightweight, compliant six-axis optical force/torque sensor," <i>IEEE Sensors Journal</i>, vol. 18, no. 17, pp. 7005–7014, 2018.</p>
+<p>[17] Á. Tar and G. Cserey, "Development of a low cost 3D optical compliant tactile force sensor," in <i>2011 IEEE/ASME International Conference on Advanced Intelligent Mechatronics (AIM)</i>, pp. 236–240. IEEE, 2011.</p>
+<p>[18] H.-B. Kim, K.-H. Choi, and K.-S. Kim, "A compact six-axis force/torque sensor using photocouplers for impact robustness," <i>Review of Scientific Instruments</i>, vol. 95, no. 4, 2024.</p>
+<p>[19] S. Jeong, Y. Chitalia, and J. P. Desai, "Miniature force sensor based on dual-photointerrupter with high linearity and disturbance compensation," <i>IEEE Sensors Journal</i>, vol. 20, no. 11, pp. 5855–5864, 2020.</p>
+<p>[20] S. H. Jeong, H. J. Lee, K.-R. Kim, and K.-S. Kim, "Design of a miniature force sensor based on photointerrupter for robotic hand," <i>Sensors and Actuators A: Physical</i>, vol. 269, pp. 444–453, 2018.</p>
+<p>[21] L. Xiong, Y. Guo, G. Jiang, X. Zhou, L. Jiang, and H. Liu, "Six-dimensional force/torque sensor based on fiber Bragg gratings with low coupling," <i>IEEE Transactions on Industrial Electronics</i>, vol. 68, no. 5, pp. 4079–4089, 2020.</p>
+<p>[22] H.-P. Wang, J.-G. Dai, and X.-Z. Wang, "Improved temperature compensation of fiber Bragg grating-based sensors applied to structures under different loading conditions," <i>Optical Fiber Technology</i>, vol. 63, p. 102506, 2021.</p>
+<p>[23] F. W. Grover, <i>Inductance Calculations: Working Formulas and Tables</i>. Courier Corporation, 2004.</p>
+<p>[24] S. S. Mohan, M. del Mar Hershenson, S. P. Boyd, and T. H. Lee, "Simple accurate expressions for planar spiral inductances," <i>IEEE Journal of Solid-State Circuits</i>, vol. 34, no. 10, pp. 1419–1424, 1999.</p>
+<p>[25] "Texas Instruments application note (SNOA930A)," https://www.ti.com/lit/an/snoa930a/snoa930a.pdf, accessed: 2025-05-14.</p>
+<p>[26] "AIDIN ROBOTICS," https://www.aidinrobotics.co.kr/smart-6-axis-f-t-sensor, accessed: 2025-05-14.</p>
+<p>[27] A. Ananthanarayanan, S. Foong, and S. Kim, "A compact two DOF magneto-elastomeric force sensor for a running quadruped," in <i>2012 IEEE International Conference on Robotics and Automation</i>, pp. 1398–1403. IEEE, 2012.</p>
+<p>[28] "Robotous - innovative robotic solutions," http://www.robotous.com/main, accessed: 2025-05-14.</p>
+<p>[29] "Bota Systems," https://www.botasys.com/, accessed: 2025-05-14.</p>
+</div>
+
+</body>
+</html>

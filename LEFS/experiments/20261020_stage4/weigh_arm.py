@@ -59,7 +59,7 @@ import stage2_design as S  # noqa: E402  提供 END_LINK
 # ---------------------------------------------------------------------------
 CFG = dict(
     open_mm=70.0,        # 张开行程（mm）。机械上限约 68.5 mm，给 70 就是全开
-    open_effort=400,     # 张开时的力限（0.001 N·m）。太大没必要，400 足够
+    open_effort=800,     # 张开力限（0.001 N·m）。从 0 mm 极限位起步阻力大，400 会顶住不动
     close_effort=2000,   # 夹持力限（0.001 N·m）= 2.0 N·m（这是上限）。要温柔改成 600~1200
     hold_seconds=5.0,    # grasp 时张开后等你放物体的秒数
     squeeze_mm=1.0,      # 碰到物体后再往里压多少 mm（把「轻碰」变成「夹紧」）
@@ -124,24 +124,49 @@ def _send(p, ang, effort, n=2):
         time.sleep(DT / n)
 
 
-def _ramp(p, target, effort, step=1500, lag=3000, stop_on_contact=False):
-    """渐进改变开度：每级 1.5 mm、40 ms，绝不一步到位（猛夹会撞坏东西）。"""
-    cur, _ = _grip(p)
+def _ramp(p, target, effort, step=1500, lag=3000, stop_on_contact=False,
+          timeout_s=25.0, stall_rounds=30):
+    """渐进改变开度：每级 1.5 mm、40 ms，绝不一步到位（猛夹会撞坏东西）。
+
+    2026-10-21 修两个现场问题：
+    1. **死循环**：旧写法「跟不上就 cur = meas」，下一轮又 cur += step；
+       当夹爪完全不动时，指令在 0→1500→3000→4500→0 之间转圈，
+       永远到不了目标 —— 表现为「张开到一半卡住不动」（用户实际踩到）。
+       现在：基准一律取实测值，并加「连续 stall_rounds 轮无变化即退出」。
+    2. **零位起动阻力大**：从 0 mm 起步时容易顶住，加总超时避免无限等待。
+    """
+    t0 = time.time()
+    cum, _ = _grip(p)
+    last = cum
+    stall = 0
     while True:
+        if time.time() - t0 > timeout_s:
+            print(f"    ！超时 {timeout_s:.0f}s，停在 {last/1000:.1f} mm")
+            return last, False
         if stop_on_contact:
-            if cur <= target:
+            if cum <= target:
                 break
-            cur = max(target, cur - step)
+            cmd = max(target, cum - step)
         else:
-            if cur == target:
-                break
-            cur = min(target, cur + step) if target > cur else max(target, cur - step)
-        _send(p, cur, effort)
+            if abs(cum - target) <= step:
+                cmd = target                      # 最后一步直接给目标
+            else:
+                cmd = cum + step if target > cum else cum - step
+        _send(p, cmd, effort)
         meas, _ = _grip(p)
-        if stop_on_contact and meas > cur + lag:
-            return meas, True          # 被物体挡住
-        if not stop_on_contact and abs(meas - cur) > lag:
-            cur = meas                 # 跟不上就按实测走，不硬顶
+        if stop_on_contact and meas > cum + lag:
+            return meas, True                     # 被物体挡住
+        if abs(meas - last) < 50:                 # <0.05 mm 认为没动
+            stall += 1
+            if stall >= stall_rounds:
+                print(f"    ！连续 {stall_rounds} 轮无进展，停在 {meas/1000:.1f} mm 退出")
+                return meas, False
+        else:
+            stall = 0
+        last = meas
+        cum = meas                                # 指令跟实测走
+        if not stop_on_contact and abs(cum - target) <= 50:
+            break
     return _grip(p)[0], False
 
 

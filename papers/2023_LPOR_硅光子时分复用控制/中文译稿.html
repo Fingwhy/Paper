@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>基于单片 CMOS 电子学的可编程硅光子电路时分复用控制</title>
+<style>
+  @page { size: A4; margin: 20mm 18mm 18mm 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Times New Roman", "SimSun", "宋体", serif;
+    font-size: 10.8pt;
+    line-height: 1.72;
+    color: #111;
+    margin: 0;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+  .journal {
+    font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+    font-size: 8.6pt; letter-spacing: .04em; color: #666;
+    border-bottom: 1.5px solid #222; padding-bottom: 5px; margin-bottom: 16px;
+    display: flex; justify-content: space-between;
+  }
+  h1 {
+    font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+    font-size: 17pt; line-height: 1.42; font-weight: 700;
+    margin: 0 0 6px 0; text-align: left;
+  }
+  .subtitle {
+    font-family: "Times New Roman", serif;
+    font-size: 11.5pt; font-style: italic; color: #444;
+    margin: 0 0 14px 0; text-align: left;
+  }
+  .authors { font-size: 10.5pt; line-height: 1.6; margin-bottom: 4px; }
+  .affil { font-size: 9pt; color: #444; line-height: 1.6; margin-bottom: 2px; }
+  .doiline { font-size: 9pt; color: #444; margin-bottom: 16px; }
+  .abstract {
+    background: #f5f4f1; border-left: 3.5px solid #7a6a52;
+    padding: 11px 14px 9px 14px; margin: 0 0 8px 0; font-size: 10.2pt; line-height: 1.68;
+  }
+  .abstract .lab {
+    font-family: "Microsoft YaHei", sans-serif; font-weight: 700; font-size: 9.6pt;
+    letter-spacing: .1em; color: #5c4f3c; display: block; margin-bottom: 5px;
+  }
+  .kw { font-size: 9.2pt; color: #333; margin: 0 0 20px 0; line-height: 1.6; }
+  .kw b { font-family: "Microsoft YaHei", sans-serif; }
+  h2 {
+    font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+    font-size: 12pt; font-weight: 700; margin: 20px 0 8px 0;
+    padding-bottom: 3px; border-bottom: .6px solid #ccc;
+    page-break-after: avoid;
+  }
+  h2 .num { color: #7a6a52; margin-right: .5em; }
+  p { margin: 0 0 .62em 0; text-indent: 2em; }
+  p.noind { text-indent: 0; }
+  .figcap {
+    font-size: 9.2pt; line-height: 1.62; color: #222;
+    background: #faf9f6; border: .6px solid #ddd; border-left: 3px solid #c8bda8;
+    padding: 8px 11px; margin: 10px 0 16px 0; text-indent: 0; text-align: justify;
+    page-break-inside: avoid;
+  }
+  .figcap b { font-family: "Microsoft YaHei", sans-serif; font-size: 9pt; }
+  .eq {
+    text-align: center; margin: 8px 0 10px 0; text-indent: 0;
+    font-size: 11pt; font-family: "Times New Roman", serif;
+  }
+  .eq .tag { float: right; font-size: 10pt; }
+  .miss {
+    font-family: "Microsoft YaHei", sans-serif; font-size: 8.2pt;
+    color: #8a4b2a; background: #f6ece4; border: .5px solid #dcc4b0;
+    padding: 0 3px; border-radius: 2px; white-space: nowrap;
+  }
+  .note {
+    margin-top: 22px; padding: 12px 14px; border: .8px dashed #b9ac95;
+    background: #fbfaf7; font-size: 9pt; line-height: 1.65; text-indent: 0;
+  }
+  .note h3 {
+    font-family: "Microsoft YaHei", sans-serif; font-size: 9.6pt;
+    margin: 0 0 6px 0; color: #5c4f3c;
+  }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin-bottom: 3px; }
+  .foot {
+    margin-top: 16px; padding-top: 8px; border-top: .6px solid #ccc;
+    font-size: 8.4pt; color: #777; text-indent: 0; text-align: center;
+  }
+  sup { font-size: .72em; vertical-align: super; line-height: 0; }
+  .ref { color: #555; font-size: .84em; vertical-align: super; line-height: 0; }
+</style>
+</head>
+<body>
+
+<div class="journal">
+  <span>Laser &amp; Photonics Reviews — 中文译本</span>
+  <span>DOI: 10.1002/lpor.202300124</span>
+</div>
+
+<h1>基于单片 CMOS 电子学的可编程硅光子电路时分复用控制</h1>
+<p class="subtitle">Time-Multiplexed Control of Programmable Silicon Photonic Circuits<br>Enabled by Monolithic CMOS Electronics</p>
+
+<p class="authors noind">Francesco Zanetto<sup>*</sup>，Fabio Toso，Vittorio Grimaldi，Matteo Petrini，Andres Martinez，Maziyar Milanizadeh，Alessandro Perino，Francesco Morichetti，Andrea Melloni，Giorgio Ferrari，Marco Sampietro</p>
+<p class="affil noind">米兰理工大学（Politecnico di Milano），Piazza Leonardo da Vinci 32，20133 米兰，意大利<br>
+电子、信息与生物工程系（前九位作者）；物理系（Giorgio Ferrari）</p>
+<p class="doiline noind"><sup>*</sup>通讯作者：francesco.zanetto@polimi.it　｜　ORCID: 0000-0002-0242-5016</p>
+
+<div class="abstract">
+  <span class="lab">摘　要</span>
+  可编程光子电路需要一层电子控制层，以便在运行过程中配置并稳定其光学功能。这类控制动作通常的实现方式是：用集成光探测器监视电路状态，并把反馈信号送到集成执行器。本文证明，只要把所需的电信号直接在光子芯片上做时分复用，就能高效地完成这些控制动作。为此，作者把所需的电子功能单片集成到常规的 220 nm 硅光子平台中，且不改变标准制造工艺流程。借助非常规的器件结构实现金属—氧化物—半导体场效应晶体管（MOSFET），把电子控制器与可编程光子电路协同设计，从而做到：对集成光电探测器进行时分复用的读出，以及用片上电子存储器对热光移相器进行顺序激励。这种时分复用控制的精度（在小于 10 ms 的时间尺度上达到）已通过无代价地路由 10 Gbit/s 调制信号得到验证。该方法可直接用于大规模光子芯片，以减少所需的电输入/输出（I/O）连接数量。
+</div>
+
+<p class="kw noind"><b>关键词：</b>可编程光子电路；单片集成电子学；CMOS 零改动集成；时分复用；光路由器；采样保持</p>
+
+<h2><span class="num">1</span>引言</h2>
+
+<p>大规模可编程光子电路由基本光学元件构成的集成网络组成<span class="ref">[1]</span>，这些元件的工作点需要被校准、稳定，并自适应地重新配置，以“编程”出总体的光子功能。因此需要一层实时主动控制层，以确保可靠的光学操作；目前这一层由电子反馈环路实现，环路通过外部电路连接到片上的光传感器与执行器<span class="ref">[2–10]</span>。这种做法虽然有效，但其可扩展性受限于所需的电输入/输出（I/O）连接数量<span class="ref">[11,12]</span>，在大规模架构中这一数量已逼近无法接受的水平。基于铜柱（copper-pillar）技术的倒装焊电子—光子互连<span class="ref">[13]</span>相比引线键合可获得更大的 I/O 端口数，但会带来额外的组装与封装成本。</p>
+
+<p>电子与光子在同一个技术平台上的单片集成，被认为不仅能突破电 I/O 瓶颈，还能为光子芯片赋予新的使能功能<span class="ref">[14–16]</span>。在成熟的微电子工艺栈上构建光子电路<span class="ref">[17,18]</span>已被证明尤其适合实现高速光电子系统，例如工作在数十 GHz 的收发机<span class="ref">[19,20]</span>——把前端与驱动电路靠近光子调制器集成，可大幅降低寄生效应。为此人们开发了定制的单片平台，重新考虑并优化了光子与电子的集成工艺，以最大化能效与速度性能<span class="ref">[21]</span>。</p>
+
+<p>然而，如果目标换成可编程光学系统的实时控制，高速电子学就不再必要，因为重新配置过程与功能漂移的补偿通常发生在微秒到毫秒的时间尺度上。在这些情况下，在常规光子平台上集成工作频率仅几 MHz 的电子电路，是在保持低成本的同时突破 I/O 瓶颈的可行选择。这条路线已通过实现结型场效应晶体管与双极晶体管探索过<span class="ref">[22,23]</span>，但其性能不足以把它们集成进一颗可实际工作的光子芯片。相比之下，CMOS 器件与电路迄今尚未被证明可行，原因是硅光子技术（硅厚 220 或 300 nm）所采用的工艺流程排除了实现具有良好沟道调制和足够低阈值电压的垂直 MOS 晶体管的可能。事实上，硅光子学缺乏对扩散的纵向控制，也没有自对准栅工艺；它通常只提供少数几档掺杂浓度（量级约 10<sup>17</sup>，p 型与 n 型各若干），而用于电布线的金属层通常与波导（WG）芯区的硅之间至少隔了 700 nm 的氧化层，以压低传输损耗。因此，在这项技术中实现的光电器件——如光电探测器、可变光衰减器和调制器<span class="ref">[24–29]</span>——通常是电阻或横向结，靠对做波导的同一层 220 nm 厚硅做局部掺杂而获得。</p>
+
+<p>本文提出一种非常规策略：在商用 220 nm 绝缘体上硅（SOI）平台上设计出功能完整的 MOS 场效应晶体管（MOSFET），且不对标准工艺流程做任何修改，从而实现真正的“零改动、工艺透明”集成。文章从最基本的晶体管出发，逐级描述复杂度递增的若干电子功能模块的实现，直至集成电子多路复用器——使可编程光子架构具备顺序监测、配置与控制能力；并展望通过完整的电子—光子协同设计，让芯片最终摆脱对外部电子学的依赖。</p>
+
+<h2><span class="num">2</span>CMOS 侧栅晶体管的设计与集成</h2>
+
+<p>图 1a 给出了在集成光子技术（新加坡 Advanced Micro Foundry<span class="ref">[30]</span>）所用典型 SOI 叠层中提出的 MOSFET 结构。通常用作波导芯区的 220 nm 厚硅层（轻 p 掺杂，标称 <span class="miss">数值缺失</span>）在这里被用作晶体管的衬底。一条硅栅被图形化在衬底旁边，间距取该工艺允许的最小值，并做 p 型掺杂（<span class="miss">数值缺失</span>）以保证良好导电性。该工艺的栅氧化层厚 200 nm；沟道宽度 <i>W</i> 则由硅层厚度决定，为 220 nm。低衬底掺杂加上侧向栅极的紧邻布置，共同保证阈值电压落在 1.5～2.5 V 之间。n 型 MOSFET 的漏（D）与源（S）接触最终通过在硅层上做局部 n 型掺杂（<span class="miss">数值缺失</span>）形成，而 p 型扩散（<span class="miss">数值缺失</span>）则提供晶体管的体（B）接触。沟道长度 <i>L</i> 取 4 μm，该值经数值仿真优化（支持信息 S1 节），目的是在关断状态下同时获得高电阻与低漏电流。最终的 MOSFET 器件是沿 D–S 轴镜像单个结构得到的对称单元，以高效利用硅面积（图 1b）。SOI 层的轻掺杂水平，加上界面处发生的电荷陷阱效应，使原生硅几乎表现得像电导率极低的本征半导体<span class="ref">[31]</span>，很适合充任 n 型和 p 型 MOSFET 共同的衬底。因此 pMOSFET 可以采用与 nMOSFET 完全相同的几何结构，只需把实现晶体管扩散区的掺杂类型反过来即可。如有必要，还可以给芯片衬底施加适当电压（作为公共背栅）来进一步调节原生硅的电导率。</p>
+
+<div class="figcap"><b>图 1</b>　a) 硅光子芯片典型技术叠层的概览，其中给出了所提出的侧壁 MOSFET 架构的截面。b) nMOS 晶体管单元的三维标注视图；c) 其 SEM 图像。d) 在不同栅—源电压下测得的 nMOS 与 pMOS 晶体管特性曲线。e) 两只器件的实测转移特性曲线，显示出高开/关比，且无论所加漏—源电压为何，漏电流都很低。</div>
+
+<p>已制备的晶体管（图 1c）经过了系统表征。选取的参数可保证 n 型与 p 型 MOSFET 都具备良好性能与低漏电流。图 1d 与 1e 分别给出两只器件实测的特性曲线与转移特性曲线。nMOS（pMOS）的阈值电压为 2.45 V（1.8 V），增益因子为 <span class="miss">数值缺失</span>，厄利电压为 35 V（55 V），反亚阈值斜率为 350 mV/dec（250 mV/dec）。这些数值完全足以实现具备所需性能的功能完整电子电路，后文各节将逐一展示。</p>
+
+<h2><span class="num">3</span>硅光子芯片上的单片电子多路复用器</h2>
+
+<p>利用第 2 节所述的 MOSFET 结构，一个由 596 只 nMOSFET 和 84 只 pMOSFET 构成的 16 选 1 模拟多路复用器（MUX）被单片集成到光子芯片上，且不损害光子器件的制备。该电子电路包含 16 个模拟开关，以及正确驱动它们的数字逻辑。电路设计用于顺序询问 16 个监测用光电探测器（PD）<span class="ref">[32]</span>——这些探测器接到同一个外部跨阻放大器（TIA）；或者用于驱动同一芯片上集成的 16 个执行器（热调谐器，见第 4 节），以管理可编程光子电路。</p>
+
+<p>接 16 个 PD 的多路复用器电路原理图见图 2a。单刀双掷（SPDT）模拟开关用于把其中一个光电二极管接到外部放大器、其余接地，使它们始终偏置在同一工作电压上，以缩短电路开关时间。CMOS 数字逻辑根据输入地址位驱动相应的开关。多路复用器的总占片面积为 <span class="miss">数值缺失</span>（图 2b）。图 2c 给出各通道实测的开/关电流，证实电路能按数字命令正确接通与断开光电二极管。导通电阻（<span class="miss">数值缺失</span>）的取值可保证：当数百 μA 量级的电流流过 MUX 时，PD 的偏置电压不会被明显改变。此外，由于它远低于光电二极管的等效电阻，每个开关引入的噪声相对于后续 TIA 的串联噪声可以忽略，因而不会影响读出灵敏度。</p>
+
+<p>每个开关传递函数的实测带宽约为 100 MHz，因此所有通道上都能传输到这一频率的信号。图 2d 给出改变数字位配置时发生的瞬态过程，可观察到约 500 ns 的建立时间，对应最大开关频率 2 MHz。这允许以约 100 kHz 的读出速率对 16 个 PD 做时分复用，并可线性扩展为以约 10 kHz 询问 160 个 PD。实际上，特定应用所需的最低刷新率才是限制该器件最大通道数的因素。详细测量装置见支持信息 S2 节。</p>
+
+<p>驱动一个接 <i>N</i> 个器件的 <i>N</i> 选 1 多路复用器所需的电连接数为</p>
+<p class="eq"><i>N</i><sub>conn</sub> = log<sub>2</sub><i>N</i> + 4　<span class="tag">(1)</span></p>
+<p>因为除了提供数字地址的若干位之外，还需要 1 个输出端口、2 路电源（<span class="miss">数值缺失</span>）和 1 个基准电压（<span class="miss">数值缺失</span>）。而按传统方式逐个寻址每个器件需要 <i>N</i> 条连接，因此当 <i>N</i> &gt; <span class="miss">数值缺失</span> 时使用多路复用器更划算，且器件数量越多优势越明显（把 MUX 通道数翻倍只需多加一位数字地址位）。因此，对于需要寻址大量传感器与执行器的复杂光子架构，该器件是实现功能扩展的关键一环。</p>
+
+<div class="figcap"><b>图 2</b>　a) 片上集成多路复用器的原理图；b) 其显微照片，电路占片面积为 <span class="miss">数值缺失</span>。c) 多路复用器的实测开/关响应，证实其开/关电流比很高。d) 改变配置位时多路复用器的响应时间，由此可推出最大开关频率约 2 MHz。</div>
+
+<h2><span class="num">4</span>用片上电子存储器对易失性执行器实施顺序控制</h2>
+
+<p>时分复用方法同样可以有效用于对集成执行器实施顺序控制，即使这些执行器是易失性的——即需要持续偏置才能工作，热调谐器就是典型例子。为此，需要在光子芯片上把片上存储器件与执行器驱动器集成在一起，配置方式如图 3a 所示。功率晶体管由 700 只并联 nMOSFET 构成，接成源极跟随器形式为加热器供电，栅极电压与电流之间呈线性关系。存储功能则由接在驱动器栅极上的采样保持（S&amp;H）架构提供。S&amp;H 可以利用 DEMUX 的开关（结构与第 3 节相同）配合一组约 10 pF 的存储电容实现，电容取自该工艺可用的金属层交错结构<span class="miss">数量缺失</span>。开关闭合时，输入为相应的存储电容充电，从而确定加热器电流；开关断开时，存储电容把栅极电压保持不变，使光子器件的工作条件保持稳定。最大保持时间取决于开关漏电流与存储电容，在本文的原型中约为 1 s。</p>
+
+<p>图 3b 给出功率 MOSFET 与单个 S&amp;H 通道的俯视照片。为测试其功能，把集成驱动器接到平衡马赫—曾德尔干涉仪（MZI）一个臂中的热光移相器上（图 3a）。图 3c 显示：当电源电压取 12 V 时，驱动器可输出高达 11 mA 的电流（蓝色曲线）；这在被热调谐的波导中转换成约 3π 的相移，并由 MZI 与电压相关的透射特性（红色曲线）所证实。图 3d 展示了 S&amp;H 电路的工作情况：DEMUX 的位命令与输入电压分别由 10 kHz 和 20 kHz 的两路方波控制。测量表明，符合预期地，输入电压只在 S&amp;H 开关闭合（开关 ON）时才引起加热器电流的变化；而当开关 OFF 时，电流由存储电容维持恒定，不受输入影响。驱动器的响应时间（约 300 ns）远快于执行器的热时间常数（约 10 μs），说明电子电路并不限制 MZI 的功能。</p>
+
+<p>作者还研究了 S&amp;H 的放电时间，以验证为易失性热执行器实现片上电子存储器的可行性。为此把驱动器电压设为 5.5 V，使 MZI 偏置在最小透射点（−26 dB，见图 3c），并用频率可调的方波驱动 S&amp;H 位命令。图 3e 给出因 S&amp;H 放电造成的 MZI 输出光功率变化。当 S&amp;H 的开关频率高于 100 Hz 时，测得的退化仅 0.03 dB，可以忽略，说明驱动器能把加热器电流维持恒定。残余误差来自电荷注入效应——它在开关断开时改变了存储的电压。由于 S&amp;H 所用的 DEMUX 与第 3 节讨论的 MUX 结构和性能相同、寻址时间为 500 ns，可以估计：最多可对 20 000 个执行器做时分复用而不付出光学性能代价。</p>
+
+<p>作者还研究了 S&amp;H 驱动器的放电对经由 MZI 开关传输的光信号质量的影响。为此考虑图 4a 插图所示的那部分光子电路：两路以 10 Gbit/s 开关键控（OOK）调制的光信号注入两个输入端口，参考信号与干扰信号波长同为 1550 nm，功率分别为 −4 dBm 与 −8 dBm。干扰信号的影响关键取决于第一个 MZI 的工作点，而该工作点正是由 S&amp;H 驱动器设定并维持的。图 4a 给出了在不同 S&amp;H 开关频率下、在参考信号输出端测得的误码率（BER）。当刷新频率高于数 Hz 时，MZI 工作点保持稳定，BER 接近关掉干扰时测得的 10<sup>−11</sup>。反之，在低频段 BER 会退化：S&amp;H 放电引起 MZI 偏置点漂移，对干扰信号的抑制随之变差。图 4b 给出了干扰抑制最弱（干扰最强）时，以及把 S&amp;H 开关频率分别设为 0.1 Hz 和 10 Hz 时观察到的眼图；后者提供的抑制超过 20 dB（见图 3c）。</p>
+
+<div class="figcap"><b>图 3</b>　a) 在 MZI 二叉树上顺序驱动易失性执行器所需的连接示意；b) 含存储电容的集成加热器驱动器的显微照片。c) 实测执行器电流随栅极电压的变化，以及对应的 MZI 响应。d) 实测加热器电流与 MZI 透射随驱动器栅极电压和位命令的变化。符合预期地，开关关断后加热器电流保持恒定、MZI 透射不变。e) 工作在交叉状态的 MZI 输出光功率随 S&amp;H 刷新频率的变化；在 10 Hz 以上，MZI 工作点不变。</div>
+
+<div class="figcap"><b>图 4</b>　a) 在 10 Gbit/s 下的 BER 测量：在把加热器驱动器控制在干扰最小的情况下，于图中插图所示光学结构的输出端采集，横轴为开关频率。b) 输出端对应的眼图。这两项测量证实，S&amp;H 允许以低至 10 Hz 的刷新率对执行器做时分复用而无代价。</div>
+
+<h2><span class="num">5</span>光子路由器的时分复用控制</h2>
+
+<p>由集成电子电路支撑的时分复用控制策略，已被用于配置一套可编程光学架构并自动完成光信号的路由。该光学路由器由 MZI 构成的四层二叉树搭成（图 5a），含 110 个光子构建模块，可把光从 16 个输入之一引导到单一光学输出。图 5b 给出集成该光学路由器以及用于传感器读出的 MUX 的光子芯片的俯视照片。每个 MZI 的状态由 15 个监测 PD 观察，其光电流经 MUX 送到读出 TIA，再用于调谐每个 MZI 开关的工作点。相比并行检测方案<span class="ref">[11,33,34]</span>，MUX 减少了电 I/O 数量（由式 (1) 给出），同时也简化了读出方案——只需一个 TIA 即可监测整个光子系统的状态。作者实现了时分复用逻辑来实时控制路由器功能，方法是把抖动（dithering）技术与积分控制器结合使用<span class="ref">[35]</span>。抖动频率取 2 kHz、MUX 开关取 80 kHz，因此每条路径上的 4 个传感器可以 20 kHz 的速率读出，足以避免混叠。读出信号需要做解串（deserialization），以便从单个模数转换器（ADC）的位流中恢复出四路数据序列，并依据所选光路把控制电压施加到正确的加热器上。解串器、抖动提取模块、积分控制器与系统管理逻辑，均由安放在外部控制电子板上的 FPGA 实现（见支持信息 S3 节）<span class="ref">[36]</span>。</p>
+
+<p>图 5c 给出了控制系统激活时光子路由器的配置瞬态，由所选路径上 4 个 PD 的功率以及输出信号监测得到。激光注入输入端口 IN1，10 ms 后启动配置流程。加热器电压从随机的初始条件出发，由反馈环更新，以最小化 PD1、PD9、PD13、PD15 的光电流，使全部光都被路由到输出端口 OUT。每个 MZI 的配置在几毫秒内完成，整条路径在不到 10 ms 内建立。作者对所有其他输入—输出配置都测试了该时分复用逻辑，证明它既不影响 PD 的读出，也不会在它们之间产生电串扰。</p>
+
+<p>为量化时分复用控制策略作用于整套路由器架构时光信号的退化程度，作者做了传输测量（详细光学装置见支持信息 S4 节）。把 10 Gbit/s 的 OOK 信号注入光子电路，在芯片输出端观察。图 5d 给出八种不同输入—输出配置下测得的 BER，每个数据点取自约 4 min 的时间窗。结果显示：相对于背靠背（B2B，即通过同一芯片内集成的直波导传输）情形，平均功率代价仅 0.3 dB，不同配置之间的代价波动约 0.2 dB。这些曲线证实 MUX 与时分复用控制策略工作正常，且不限制光学性能。由于测量是在总计约 3 h 的时间窗内完成的，这也证明了光子芯片热波动的有效抑制。图 5e 给出相同输入—输出配置下的眼图，在所有条件下都清晰张开，平均消光比 9 dB，所选光路之间的差异为 0.1 dB。</p>
+
+<div class="figcap"><b>图 5</b>　a) 完整电光系统的原理图，包括带集成多路复用器的光子芯片与控制电子学；b) 电子—光子芯片的显微照片。c) 网格从 IN1 到 OUT 路径配置瞬态期间的 PD 电流，整个过程在不到 10 ms 内完成。d) 8 种不同 I/O 配置下的 BER 测量，以及 e) 眼图，均在把 10 Gbit/s 调制信号经受控光子芯片路由时获得。BER 曲线的每个数据点取自 4 min 时间窗，总实验时长约 3 h。</div>
+
+<h2><span class="num">6</span>结论</h2>
+
+<p>本工作证明了这样一条途径的可行性：借助单片 CMOS 晶体管的集成，把所需的电信号直接在光子芯片上做时分复用，从而控制硅光子电路。该途径已被用于以毫秒级时间尺度顺序询问集成在 MZI 网格中的光电探测器。类似地，电控制信号的时分复用被用于设定热执行器的工作点，并通过模拟电存储器把它保持住，相对传统的外部驱动电路没有任何代价。后一项功能可以直接推广到为通用的易失性执行器提供电子记忆，包括电光、铁电、压电或液晶移相器。</p>
+
+<p>随着光学架构复杂度的提升，片上复用的优势会愈发明显，因为从光子电路通往外部控制电子学的输入/输出电连接数量会显著减少。因此，当 MUX 与 DEMUX 电路都被集成并在同一颗芯片上运行时，该方法有望成为集成光学系统进一步功能扩展的关键使能技术。此外，由于所提出的单片 CMOS 器件可以集成进标准的“有源”硅光子平台，未来预计会有大量光学芯片把电子功能做在板上，从而以零成本、且不牺牲光子性能的方式提供一层有效的控制层。</p>
+
+<h2><span class="num">　</span>致谢</h2>
+<p>本工作得到欧盟 H2020 项目 NEBULA（资助号 871658）以及 NextGenerationEU 意大利国家复苏与韧性计划（NRRP）“未来电信”伙伴关系（PE00000001——“RESTART”计划，结构项目 “Rigoletto” 与重点项目 “Hepic”）的支持。作者感谢 Advanced Micro Foundry 在芯片制备过程中的持续配合，感谢 PoliFab（米兰理工大学）工作人员在引线键合与划片方面的帮助，以及 Paola Piedimonte 在 SEM 研究方面的工作。</p>
+
+<h2><span class="num">　</span>利益冲突</h2>
+<p class="noind">作者声明无利益冲突。</p>
+
+<h2><span class="num">　</span>数据可用性声明</h2>
+<p>支持本研究结论的数据可在合理请求下向通讯作者索取。</p>
+
+<div class="note">
+  <h3>译者说明（阅读时请注意）</h3>
+  <ul>
+    <li><b>来源：</b>本译文据 Wiley Online Library 上该文公开的 HTML 全文（DOI: 10.1002/lpor.202300124）逐段翻译，章节顺序、段落划分与原文一致；图注、致谢与各项声明均照原文译出。</li>
+    <li><b>缺失数值：</b>标注为 <span class="miss">数值缺失</span> 的位置，是因为原文中这些数值是以排版公式（MathML）形式嵌入的，网页文本抽取后只剩一对空括号。具体包括：第 2 节的衬底/栅/源漏/体接触掺杂浓度、nMOS 与 pMOS 的增益因子；第 3 节的 MUX 占片面积、导通电阻、两路电源电压、基准电压、式 (1) 中“多路复用更划算”的器件数门限；第 4 节存储电容的个数标号。<b>这些数字未作任何推测填充</b>，如需精确值请查阅原 PDF 或支持信息。</li>
+    <li><b>未含图片：</b>译文只保留了图注（Fig. 1–5），未嵌入原始插图与显微照片。图注中“图 X”指引的正是原 PDF 中的对应插图。</li>
+    <li><b>术语处理：</b>关键术语首次出现时附英文原词，如 MUX（多路复用器）、DEMUX（解复用器）、S&amp;H（采样保持）、TIA（跨阻放大器）、MZI（马赫—曾德尔干涉仪）、B2B（背靠背）、BER（误码率）、OOK（开关键控）；后续沿用缩写。</li>
+    <li><b>式 (1)：</b>原文公式在网页中同样以图片形式渲染，无法读取。此处按正文文字描述（“除提供数字地址的若干位外，还需 1 个输出端口、2 路电源和 1 个基准电压”）还原为 <i>N</i><sub>conn</sub> = log<sub>2</sub><i>N</i> + 4，仅作阅读辅助，正式引用请以原文公式为准。</li>
+    <li><b>单位与符号：</b>原文中 “10μs” 一处疑为 “10 µs” 之误，译文按 ≈10 μs 处理；其余数值、单位与原文一致。</li>
+  </ul>
+</div>
+
+<p class="foot">本文为中文参考译本，仅供阅读使用；引用、转述请以 Laser &amp; Photonics Reviews 原文为准。</p>
+
+</body>
+</html>

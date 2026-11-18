@@ -1,6 +1,6 @@
 # Learning External Force Sensing（LEFS）
 
-FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。GitHub 仓库 `Fingwhy/Paper` 根目录下只有这一个文件夹，本 README 即它的入口。
+FACTR 2 论文解析与 AgileX PiPER 标准版复现存档。本目录是仓库 `Fingwhy/Paper` 的主体工程（另一个顶层目录 `papers/` 存放论文中文译本汇总），本 README 是 `LEFS/` 的入口。
 
 每篇论文一份完整存档：原文全文、提取的图表、中文解析报告，以及可重跑的排版脚本；配套机械臂的官方资料与「在这台机器上怎么复现」的施工图单独成册。
 

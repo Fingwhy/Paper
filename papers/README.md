@@ -1,37 +1,37 @@
 # 论文译文汇总
 
-三篇论文的中文译本与配套材料。每篇一个目录，命名规则 `年份_来源ID_主题/`。
+三篇论文，一篇一个文件夹，文件夹名就是论文名。
 
-| # | 目录 | 论文 | 来源 | 我的产出 |
-|---|---|---|---|---|
-| 1 | [`2023_LPOR_硅光子时分复用控制/`](2023_LPOR_硅光子时分复用控制/) | Time-Multiplexed Control of Programmable Silicon Photonic Circuits Enabled by Monolithic CMOS Electronics<br><sub>Zanetto 等，米兰理工</sub> | [DOI 10.1002/lpor.202300124](https://doi.org/10.1002/lpor.202300124) | 中文全译本（6 页）+ 学生版复现指南 + 可跑仿真脚本 |
-| 2 | [`2025_arXiv2505.09069_电感式六轴力矩传感器/`](2025_arXiv2505.09069_电感式六轴力矩传感器/) | 电感式六轴力/力矩传感器（论文解析） | [arXiv:2505.09069](https://arxiv.org/abs/2505.09069) | 中文译文 PDF + 带公式的在线稿 |
-| 3 | [`2026_arXiv2606.12406_FACTR2_六轴力控/`](2026_arXiv2606.12406_FACTR2_六轴力控/) | FACTR 2: Learning External Force Sensing for Commodity Robot Arms Improves Policy Learning<br><sub>CMU × Waseda，本项目主复现对象</sub> | [arXiv:2606.12406](https://arxiv.org/abs/2606.12406) | 中文译文 PDF + 抽取的公式/图片 + 全文文本 |
+| # | 文件夹（= 论文名） | 原文标题 | 来源 |
+|---|---|---|---|
+| 1 | [`基于单片CMOS电子学的可编程硅光子电路时分复用控制/`](基于单片CMOS电子学的可编程硅光子电路时分复用控制/) | Time-Multiplexed Control of Programmable Silicon Photonic Circuits Enabled by Monolithic CMOS Electronics<br><sub>Zanetto 等，米兰理工</sub> | [DOI 10.1002/lpor.202300124](https://doi.org/10.1002/lpor.202300124) |
+| 2 | [`基于电感传感器的新型六轴力-力矩传感器/`](基于电感传感器的新型六轴力-力矩传感器/) | A Novel 6-axis Force/Torque Sensor Using Inductance Sensors<br><sub>Kim 等，KAIST</sub> | [arXiv:2505.09069](https://arxiv.org/abs/2505.09069) |
+| 3 | [`FACTR2_学习外部力感知改进普通机械臂策略学习/`](FACTR2_学习外部力感知改进普通机械臂策略学习/) | FACTR 2: Learning External Force Sensing for Commodity Robot Arms Improves Policy Learning<br><sub>CMU × Waseda，本项目主复现对象</sub> | [arXiv:2606.12406](https://arxiv.org/abs/2606.12406) |
 
-## 各目录里有什么
+## 每个文件夹里有什么
 
 **统一约定**：`*_中文译文.pdf` 是成品（读这个）；`中文译稿.html` 是源文件（改排版用这个）；
-其余是支撑材料（图、公式、抽取脚本）。
+其余是支撑材料（图、公式、抽取脚本、复现指南）。
 
 ```
 papers/
-├── 2023_LPOR_硅光子时分复用控制/
-│   ├── LPOR2023_硅光子时分复用控制_中文译文.pdf   成品，6 页 A4
-│   ├── 中文译稿.html                              源文件（改完可重新导 PDF）
-│   ├── 学生版复现指南.md                          四个阶段 + 验收点 + 踩坑清单
-│   └── code/sim_core.py                           零依赖，直接跑出对照表
-├── 2025_arXiv2505.09069_电感式六轴力矩传感器/
-│   ├── 电感式六轴力矩传感器_中文译文.pdf
-│   ├── 中文译稿.html                              公式由 assets/tex-svg.js 本地渲染
-│   ├── images/                                    译稿引用的 8 张图
-│   ├── extract3.py                                网页→结构化文本的抽取脚本
-│   └── assets/tex-svg.js                          MathJax 运行时（离线可看公式）
-└── 2026_arXiv2606.12406_FACTR2_六轴力控/
-    ├── FACTR2_六轴力控_中文译文.pdf
+├── 基于单片CMOS电子学的可编程硅光子电路时分复用控制/
+│   ├── 基于单片CMOS电子学的可编程硅光子电路时分复用控制_中文译文.pdf   成品，6 页 A4
+│   ├── 中文译稿.html                                                    源文件（改完可重导 PDF）
+│   ├── 学生版复现指南.md                                                四阶段 + 验收点 + 踩坑清单
+│   └── code/sim_core.py                                                 零依赖，直接跑出对照表
+├── 基于电感传感器的新型六轴力-力矩传感器/
+│   ├── 基于电感传感器的新型六轴力-力矩传感器_中文译文.pdf
+│   ├── 中文译稿.html                                                    公式由 assets/tex-svg.js 本地渲染
+│   ├── images/                                                          译稿引用的 8 张图
+│   ├── extract3.py                                                      网页→结构化文本的抽取脚本
+│   └── assets/tex-svg.js                                                MathJax 运行时（离线可看公式）
+└── FACTR2_学习外部力感知改进普通机械臂策略学习/
+    ├── FACTR2_学习外部力感知改进普通机械臂策略学习_中文译文.pdf
     ├── 中文译稿.html
-    ├── fulltext.txt                               原文纯文本，方便全文搜索
-    ├── figs/  eqs/                                13 张插图 + 11 个公式 PNG
-    └── ...                                        （原文 PDF 不在此处，见下）
+    ├── fulltext.txt                                                     原文纯文本，方便全文搜索
+    ├── figs/  eqs/                                                      13 张插图 + 11 个公式 PNG
+    └── ...                                                              （原文 PDF 不在此处，见下）
 ```
 
 ## 几点说明

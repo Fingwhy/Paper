@@ -13,7 +13,7 @@
 - 想照着**在这台机器上复现** → [`LEFS/PiPER_FACTR2_复现指南.pdf`](LEFS/PiPER_FACTR2_复现指南.pdf)
 - 想看**当前进度** → [`LEFS/PROGRESS.md`](LEFS/PROGRESS.md)
 - 想要**某篇论文的中文全文** → [`papers/README.md`](papers/README.md)
-- 想跟着**练一遍 LPOR 那篇的建模** → [`papers/2023_LPOR_硅光子时分复用控制/学生版复现指南.md`](papers/2023_LPOR_硅光子时分复用控制/学生版复现指南.md)
+- 想跟着**练一遍 LPOR 那篇的建模** → [`papers/基于单片CMOS电子学的可编程硅光子电路时分复用控制/学生版复现指南.md`](papers/基于单片CMOS电子学的可编程硅光子电路时分复用控制/学生版复现指南.md)
 
 ## 关于本仓库
 

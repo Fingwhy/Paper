@@ -21,42 +21,45 @@ desktop.ini
 ~$*.docx
 ~$*.pdf
 
+# 下面所有规则都锚定到 FACTR 2 那篇的复现目录，用 **/ 前缀，
+# 这样论文文件夹改名也不会失效（当前路径：
+#   FACTR2_学习外部力感知改进普通机械臂策略学习/解析与复现/）
+
 # 生成过程的临时预览（不随仓库分发）
-LEFS/paper/preview.pdf
-LEFS/paper/repro_preview/
-LEFS/paper/_*
-LEFS/tmp/
+**/解析与复现/paper/preview.pdf
+**/解析与复现/paper/repro_preview/
+**/解析与复现/paper/_*
+**/解析与复现/tmp/
 
 # 复现实验：第三方克隆、虚拟环境、原始帧不入库；只入库 manifest / 报告 / 脚本
-LEFS/experiments/_vendor/
-LEFS/experiments/*/.venv/
-LEFS/experiments/*/raw/
-LEFS/experiments/*/episodes/
+**/解析与复现/experiments/_vendor/
+**/解析与复现/experiments/*/.venv/
+**/解析与复现/experiments/*/raw/
+**/解析与复现/experiments/*/episodes/
 
 # 可由 episodes 重建的中间二进制：训练数据快照、模型权重、解析后逐拍转储
 # （episodes/ 本身不入库，权重因此不可由仓库重建，需要时按 *_REPORT.md 的命令重跑训练）
-LEFS/experiments/*/data/*.npz
-LEFS/experiments/*/runs/*/model.pt
-LEFS/experiments/*/runs/**/model.pt
-LEFS/experiments/*/*/samples.jsonl
+**/解析与复现/experiments/*/data/*.npz
+**/解析与复现/experiments/*/runs/*/model.pt
+**/解析与复现/experiments/*/runs/**/model.pt
+**/解析与复现/experiments/*/*/samples.jsonl
 
 # 幻灯片生成过程的中间态
-LEFS/.slidep/
-LEFS/tmp/
-LEFS/experiments/*/*_stale/
-
-# 原文 PDF 统一放 LEFS/paper/，papers/ 下只留译文与抽取物，不重复存原文
-papers/**/*_original.pdf
-# 网页解包临时目录（page.html、blocks.json 等），正文、公式图与插图已单独入库
-papers/**/raw/
+**/解析与复现/.slidep/
+**/解析与复现/experiments/*/*_stale/
 
 # 阶段 6：臂侧逐帧原始转储（arm_raw/、*_samples.jsonl）等价于 episodes/raw，不入库；
 # 外置力矩传感器的 sensor_*.jsonl 是唯一真值证据（k 已修正），保留入库
-LEFS/experiments/20261021_stage6/runs/arm_raw/
-LEFS/experiments/20261021_stage6/runs/**/*_samples.jsonl
-LEFS/experiments/20261021_stage6/runs/_old_k/
-LEFS/experiments/20261021_stage6/runs/_old_k6/
-LEFS/experiments/20261021_stage6/test_log.jsonl
+**/解析与复现/experiments/20261021_stage6/runs/arm_raw/
+**/解析与复现/experiments/20261021_stage6/runs/**/*_samples.jsonl
+**/解析与复现/experiments/20261021_stage6/runs/_old_k/
+**/解析与复现/experiments/20261021_stage6/runs/_old_k6/
+**/解析与复现/experiments/20261021_stage6/test_log.jsonl
 
-# 与 LEFS/experiments/20261021_stage6/torque_doc.txt 完全相同，仓库只留实验目录里那份
+# 原文 PDF 统一放在 解析与复现/paper/，各论文文件夹下只留译文与抽取物，不重复存原文
+/*/*_original.pdf
+# 网页解包临时目录（page.html、blocks.json 等），正文、公式图与插图已单独入库
+/*/raw/
+
+# 与 解析与复现/experiments/20261021_stage6/torque_doc.txt 完全相同，仓库只留实验目录里那份
 torque_doc.txt
